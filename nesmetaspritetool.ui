@@ -1,0 +1,1020 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NESMetaspriteTool</class>
+ <widget class="QMainWindow" name="NESMetaspriteTool">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>779</width>
+    <height>522</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>779</width>
+    <height>522</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>16777215</width>
+    <height>16777215</height>
+   </size>
+  </property>
+  <property name="acceptDrops">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>NES Metasprite Tool</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <item>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Metasprites</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMaximumSize</enum>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Label:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="MetaspriteManager" name="gvMetasprite">
+           <property name="minimumSize">
+            <size>
+             <width>256</width>
+             <height>256</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>256</width>
+             <height>256</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
+           <property name="verticalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOff</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QLabel" name="labelMetaspriteSlider">
+             <property name="text">
+              <string>0</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSlider" name="hsMetaspriteSlider">
+             <property name="maximum">
+              <number>255</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QListWidget" name="listSprites"/>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QPushButton" name="btnMoveUp">
+             <property name="minimumSize">
+              <size>
+               <width>21</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>21</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>^</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnMoveDown">
+             <property name="minimumSize">
+              <size>
+               <width>21</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>21</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>v</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnHFlip">
+             <property name="minimumSize">
+              <size>
+               <width>31</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>HFlip</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnVFlip">
+             <property name="minimumSize">
+              <size>
+               <width>31</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>VFlip</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnDel">
+             <property name="minimumSize">
+              <size>
+               <width>31</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>31</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>Del</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>321</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>Tileset</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <item>
+            <spacer name="horizontalSpacer_11">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="TilesetManager" name="gvTileset">
+             <property name="minimumSize">
+              <size>
+               <width>256</width>
+               <height>256</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>256</width>
+               <height>256</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="verticalScrollBarPolicy">
+              <enum>Qt::ScrollBarAlwaysOff</enum>
+             </property>
+             <property name="horizontalScrollBarPolicy">
+              <enum>Qt::ScrollBarAlwaysOff</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_12">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Palettes</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
+          <spacer name="verticalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="gridLayout_6">
+           <item row="0" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>0:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="SpritePaletteView" name="gvPalette0">
+               <property name="minimumSize">
+                <size>
+                 <width>64</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>64</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QLabel" name="label_7">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>3:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="SpritePaletteView" name="gvPalette3">
+               <property name="minimumSize">
+                <size>
+                 <width>64</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>64</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="0" column="0">
+            <spacer name="horizontalSpacer_9">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="0" column="2">
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>1:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="SpritePaletteView" name="gvPalette1">
+               <property name="minimumSize">
+                <size>
+                 <width>64</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>64</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="1">
+            <layout class="QHBoxLayout" name="horizontalLayout_6">
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>2:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="SpritePaletteView" name="gvPalette2">
+               <property name="minimumSize">
+                <size>
+                 <width>64</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>64</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="0" column="3">
+            <spacer name="horizontalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <item>
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="PaletteManager" name="gvPaletteManager">
+             <property name="minimumSize">
+              <size>
+               <width>224</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>224</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="acceptDrops">
+              <bool>true</bool>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="sceneRect">
+              <rectf>
+               <x>0.000000000000000</x>
+               <y>0.000000000000000</y>
+               <width>224.000000000000000</width>
+               <height>64.000000000000000</height>
+              </rectf>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_13">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboPalettes"/>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>779</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpenCHR"/>
+    <addaction name="actionLoadPalette"/>
+    <addaction name="actionSavePalette"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <action name="actionSavePalette">
+   <property name="text">
+    <string>Save Palette</string>
+   </property>
+  </action>
+  <action name="actionLoadPalette">
+   <property name="text">
+    <string>Open Palette</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionOpenCHR">
+   <property name="text">
+    <string>Open CHR</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>PaletteManager</class>
+   <extends>QGraphicsView</extends>
+   <header>palettemanager.h</header>
+   <slots>
+    <signal>newSpritePalette0(QGraphicsScene*)</signal>
+    <signal>newSpritePalette1(QGraphicsScene*)</signal>
+    <signal>newSpritePalette2(QGraphicsScene*)</signal>
+    <signal>newSpritePalette3(QGraphicsScene*)</signal>
+    <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb)</signal>
+    <slot>spritePaletteSelected(QString,quint8)</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>SpritePaletteView</class>
+   <extends>QGraphicsView</extends>
+   <header>spritepaletteview.h</header>
+   <slots>
+    <signal>spritePaletteSelected(QString,quint8)</signal>
+    <signal>getSpritePaletteScene(QObject*)</signal>
+    <slot>setPaletteScene(QGraphicsScene*)</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>TilesetManager</class>
+   <extends>QGraphicsView</extends>
+   <header>tilesetmanager.h</header>
+   <slots>
+    <signal>sendTile(QPointF,QPixmap)</signal>
+    <slot>loadCHRBank(QString)</slot>
+    <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb)</slot>
+    <slot>createTile(QPointF)</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>MetaspriteManager</class>
+   <extends>QGraphicsView</extends>
+   <header>metaspritemanager.h</header>
+   <slots>
+    <signal>requestTile(QPointF)</signal>
+    <slot>setNewSpriteColours(QRgb)</slot>
+    <slot>addTile(QPointF,QPixmap)</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>hsMetaspriteSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>labelMetaspriteSlider</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>170</x>
+     <y>377</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>170</x>
+     <y>355</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSavePalette</sender>
+   <signal>triggered()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>savePalette()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>389</x>
+     <y>261</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLoadPalette</sender>
+   <signal>triggered()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>openPalette()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>389</x>
+     <y>261</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>389</x>
+     <y>261</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>NESMetaspriteTool</sender>
+   <signal>chrFileOpened(QString)</signal>
+   <receiver>gvTileset</receiver>
+   <slot>loadCHRBank(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>389</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>622</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionOpenCHR</sender>
+   <signal>triggered()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>openCHR()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>389</x>
+     <y>261</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPaletteManager</sender>
+   <signal>newSpritePalette0(QGraphicsScene*)</signal>
+   <receiver>gvPalette0</receiver>
+   <slot>setPaletteScene(QGraphicsScene*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>513</x>
+     <y>411</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>355</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPaletteManager</sender>
+   <signal>newSpritePalette1(QGraphicsScene*)</signal>
+   <receiver>gvPalette1</receiver>
+   <slot>setPaletteScene(QGraphicsScene*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>732</x>
+     <y>419</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>696</x>
+     <y>369</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPaletteManager</sender>
+   <signal>newSpritePalette2(QGraphicsScene*)</signal>
+   <receiver>gvPalette2</receiver>
+   <slot>setPaletteScene(QGraphicsScene*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>530</x>
+     <y>415</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>555</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPaletteManager</sender>
+   <signal>newSpritePalette3(QGraphicsScene*)</signal>
+   <receiver>gvPalette3</receiver>
+   <slot>setPaletteScene(QGraphicsScene*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>721</x>
+     <y>412</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>699</x>
+     <y>379</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPalette0</sender>
+   <signal>spritePaletteSelected(QString,quint8)</signal>
+   <receiver>gvPaletteManager</receiver>
+   <slot>spritePaletteSelected(QString,quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>557</x>
+     <y>358</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>517</x>
+     <y>419</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPalette1</sender>
+   <signal>spritePaletteSelected(QString,quint8)</signal>
+   <receiver>gvPaletteManager</receiver>
+   <slot>spritePaletteSelected(QString,quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>697</x>
+     <y>354</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>734</x>
+     <y>417</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPalette2</sender>
+   <signal>spritePaletteSelected(QString,quint8)</signal>
+   <receiver>gvPaletteManager</receiver>
+   <slot>spritePaletteSelected(QString,quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>557</x>
+     <y>384</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>524</x>
+     <y>435</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPalette3</sender>
+   <signal>spritePaletteSelected(QString,quint8)</signal>
+   <receiver>gvPaletteManager</receiver>
+   <slot>spritePaletteSelected(QString,quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>690</x>
+     <y>387</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>712</x>
+     <y>431</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboPalettes</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>setNewPaletteFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>613</x>
+     <y>481</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>613</x>
+     <y>518</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPaletteManager</sender>
+   <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb)</signal>
+   <receiver>gvTileset</receiver>
+   <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>567</x>
+     <y>432</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>688</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPaletteManager</sender>
+   <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>setNewSpriteColours(QRgb)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>554</x>
+     <y>442</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>253</x>
+     <y>325</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvTileset</sender>
+   <signal>sendTile(QPointF,QPixmap)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>addTile(QPointF,QPixmap)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>520</x>
+     <y>138</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>requestTile(QPointF)</signal>
+   <receiver>gvTileset</receiver>
+   <slot>createTile(QPointF)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>261</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>543</x>
+     <y>163</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>chrFileOpened(QString)</signal>
+  <slot>savePalette()</slot>
+  <slot>openPalette()</slot>
+  <slot>openCHR()</slot>
+  <slot>setNewPaletteFile(QString)</slot>
+ </slots>
+</ui>
