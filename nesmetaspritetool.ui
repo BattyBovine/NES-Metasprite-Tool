@@ -667,7 +667,7 @@
     <signal>newSpritePalette1(QGraphicsScene*)</signal>
     <signal>newSpritePalette2(QGraphicsScene*)</signal>
     <signal>newSpritePalette3(QGraphicsScene*)</signal>
-    <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb)</signal>
+    <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</signal>
     <slot>spritePaletteSelected(QString,quint8)</slot>
    </slots>
   </customwidget>
@@ -686,7 +686,7 @@
    <extends>QGraphicsView</extends>
    <header>tilesetmanager.h</header>
    <slots>
-    <signal>sendTile(QPointF,QPixmap)</signal>
+    <signal>sendTile(QPointF,QImage)</signal>
     <slot>loadCHRBank(QString)</slot>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb)</slot>
     <slot>createTile(QPointF)</slot>
@@ -698,8 +698,10 @@
    <header>metaspritemanager.h</header>
    <slots>
     <signal>requestTile(QPointF)</signal>
-    <slot>setNewSpriteColours(QRgb)</slot>
-    <slot>addTile(QPointF,QPixmap)</slot>
+    <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
+    <slot>addTile(QPointF,QImage)</slot>
+    <slot>flipHorizontal()</slot>
+    <slot>flipVertical()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -947,7 +949,7 @@
   </connection>
   <connection>
    <sender>gvPaletteManager</sender>
-   <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb)</signal>
+   <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</signal>
    <receiver>gvTileset</receiver>
    <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb)</slot>
    <hints>
@@ -962,26 +964,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>gvPaletteManager</sender>
-   <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb)</signal>
-   <receiver>gvMetasprite</receiver>
-   <slot>setNewSpriteColours(QRgb)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>554</x>
-     <y>442</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>253</x>
-     <y>325</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>gvTileset</sender>
-   <signal>sendTile(QPointF,QPixmap)</signal>
+   <signal>sendTile(QPointF,QImage)</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>addTile(QPointF,QPixmap)</slot>
+   <slot>addTile(QPointF,QImage)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>520</x>
@@ -1006,6 +992,54 @@
     <hint type="destinationlabel">
      <x>543</x>
      <y>163</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnHFlip</sender>
+   <signal>clicked()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>flipHorizontal()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>488</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>39</x>
+     <y>318</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnVFlip</sender>
+   <signal>clicked()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>flipVertical()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>403</x>
+     <y>483</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>57</x>
+     <y>323</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPaletteManager</sender>
+   <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>558</x>
+     <y>421</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>233</y>
     </hint>
    </hints>
   </connection>

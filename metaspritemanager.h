@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QGraphicsView>
-#include <QGraphicsPixmapItem>
 
 #include <QDragMoveEvent>
 #include <QDragEnterEvent>
@@ -14,6 +13,8 @@
 #include <QMessageBox>
 
 #include <QtMath>
+
+#include "metaspritetileitem.h"
 
 #define MSM_SCALE 3
 #define MSM_TILESIZE (8*MSM_SCALE)
@@ -29,8 +30,10 @@ signals:
     void requestTile(QPointF);
 
 public slots:
-    void setNewSpriteColours(QRgb);
-    void addTile(QPointF,QPixmap);
+    void setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8);
+    void addTile(QPointF,QImage);
+    void flipHorizontal();
+    void flipVertical();
 
 protected:
     void dragMoveEvent(QDragMoveEvent*e){e->accept();}
@@ -39,6 +42,7 @@ protected:
     void dragLeaveEvent(QDragLeaveEvent*e){e->accept();}
     void mousePressEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
+    void keyPressEvent(QKeyEvent*);
 
 private:
     void drawGridLines();

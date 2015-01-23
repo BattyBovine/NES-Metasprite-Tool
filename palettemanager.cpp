@@ -193,5 +193,6 @@ void PaletteManager::generateNewSpritePalettes()
     emit(newSpriteColours(this->vPaletteColours.at(this->iSpritePaletteIndices[this->iSpritePaletteSelected][0]).rgb(),
                           this->vPaletteColours.at(this->iSpritePaletteIndices[this->iSpritePaletteSelected][1]).rgb(),
                           this->vPaletteColours.at(this->iSpritePaletteIndices[this->iSpritePaletteSelected][2]).rgb(),
-                          this->vPaletteColours.at(this->iSpritePaletteIndices[this->iSpritePaletteSelected][3]).rgb()));
+                          this->vPaletteColours.at(this->iSpritePaletteIndices[this->iSpritePaletteSelected][3]).rgb(),
+                          this->iSpritePaletteSelected));
 }

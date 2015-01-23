@@ -145,5 +145,5 @@ void TilesetManager::setNewSpriteColours(QRgb c0, QRgb c1, QRgb c2, QRgb c3)
 
 void TilesetManager::createTile(QPointF p)
 {
-    emit(sendTile(p,this->gpiTileset->pixmap().copy(this->pSelection.x()/TSM_SCALE,this->pSelection.y()/TSM_SCALE,8,8)));
+    emit(sendTile(p,this->imgTileset.copy(this->pSelection.x()/TSM_SCALE,this->pSelection.y()/TSM_SCALE,8,8)));
 }

@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     palettemanager.cpp \
     spritepaletteview.cpp \
     tilesetmanager.cpp \
-    metaspritemanager.cpp
+    metaspritemanager.cpp \
+    metaspritetileitem.cpp
 
 HEADERS  += nesmetaspritetool.h \
     palettemanager.h \
     spritepaletteview.h \
     tilesetmanager.h \
-    metaspritemanager.h
+    metaspritemanager.h \
+    metaspritetileitem.h
 
 FORMS    += nesmetaspritetool.ui
 

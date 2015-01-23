@@ -29,7 +29,7 @@ public:
     ~TilesetManager();
 
 signals:
-    void sendTile(QPointF,QPixmap);
+    void sendTile(QPointF,QImage);
 
 public slots:
     bool loadCHRBank(QString);
