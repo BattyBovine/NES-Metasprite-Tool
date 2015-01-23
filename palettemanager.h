@@ -28,7 +28,7 @@ signals:
     void newSpritePalette1(QGraphicsScene*);
     void newSpritePalette2(QGraphicsScene*);
     void newSpritePalette3(QGraphicsScene*);
-    void newSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8);
+    void newSpriteColours(QVector<QRgb>,quint8);
 
 public slots:
     void setPaletteFile(QString);

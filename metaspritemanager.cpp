@@ -45,11 +45,10 @@ void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
 
 void MetaspriteManager::keyPressEvent(QKeyEvent *e)
 {
-    if(e->key()==Qt::Key_Delete) {
-        QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
-        foreach(QGraphicsItem *s, sel) {
-            this->gsMetasprite->removeItem(s);
-        }
+    switch(e->key()) {
+    case Qt::Key_Delete:
+        this->deleteSelectedTiles();
+        break;
     }
 }
 
@@ -84,12 +83,22 @@ void MetaspriteManager::drawGridLines()
     this->gsMetasprite->addLine(0,-128,0,128,thickdashes);
 }
 
-void MetaspriteManager::setNewSpriteColours(QRgb c0, QRgb c1, QRgb c2, QRgb c3, quint8 p)
+void MetaspriteManager::setNewSpriteColours(QVector<QRgb> c, quint8 p)
 {
-    this->gsMetasprite->setBackgroundBrush(QBrush(QColor(c0)));
-    QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
-    foreach(QGraphicsItem *i, sel) {
-        ((MetaspriteTileItem*)i)->setNewColours(c1,c2,c3,p);
+    this->gsMetasprite->setBackgroundBrush(QBrush(QColor(c.at(0))));
+    foreach(MetaspriteTileItem *j, this->vItems) {
+        for(int i=0; i<4; i++) {
+            if(j->palette()==i)
+                j->setNewColours(c.at((4*i)+1),c.at((4*i)+2),c.at((4*i)+3),i);
+        }
+    }
+
+    QList<QGraphicsItem*>items = this->gsMetasprite->selectedItems();
+    foreach(QGraphicsItem *i, items) {
+        ((MetaspriteTileItem*)i)->setNewColours(c.at((4*p)+1),
+                                                c.at((4*p)+2),
+                                                c.at((4*p)+3),
+                                                p);
     }
 }
 
@@ -100,6 +109,16 @@ void MetaspriteManager::addTile(QPointF p, QImage t)
     pi->setScale(MSM_SCALE);
     pi->setPos((qRound(p.x()/MSM_SCALE)*MSM_SCALE),(qRound(p.y()/MSM_SCALE)*MSM_SCALE));
     this->gsMetasprite->addItem(pi);
+    this->vItems.append(pi);
+}
+
+void MetaspriteManager::deleteSelectedTiles()
+{
+    QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
+    foreach(QGraphicsItem *s, sel) {
+        this->gsMetasprite->removeItem(s);
+        this->vItems.removeAll(((MetaspriteTileItem*)s));
+    }
 }
 
 void MetaspriteManager::flipHorizontal()

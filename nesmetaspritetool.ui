@@ -667,7 +667,7 @@
     <signal>newSpritePalette1(QGraphicsScene*)</signal>
     <signal>newSpritePalette2(QGraphicsScene*)</signal>
     <signal>newSpritePalette3(QGraphicsScene*)</signal>
-    <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</signal>
+    <signal>newSpriteColours(QVector,quint8)</signal>
     <slot>spritePaletteSelected(QString,quint8)</slot>
    </slots>
   </customwidget>
@@ -688,7 +688,7 @@
    <slots>
     <signal>sendTile(QPointF,QImage)</signal>
     <slot>loadCHRBank(QString)</slot>
-    <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb)</slot>
+    <slot>setNewSpriteColours(QVector,quint8)</slot>
     <slot>createTile(QPointF)</slot>
    </slots>
   </customwidget>
@@ -702,6 +702,7 @@
     <slot>addTile(QPointF,QImage)</slot>
     <slot>flipHorizontal()</slot>
     <slot>flipVertical()</slot>
+    <slot>deleteSelectedTiles()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -948,22 +949,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>gvPaletteManager</sender>
-   <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</signal>
-   <receiver>gvTileset</receiver>
-   <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>567</x>
-     <y>432</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>688</x>
-     <y>247</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>gvTileset</sender>
    <signal>sendTile(QPointF,QImage)</signal>
    <receiver>gvMetasprite</receiver>
@@ -1028,18 +1013,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>gvPaletteManager</sender>
-   <signal>newSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</signal>
+   <sender>btnDel</sender>
+   <signal>clicked()</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
+   <slot>deleteSelectedTiles()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>558</x>
-     <y>421</y>
+     <x>429</x>
+     <y>478</y>
     </hint>
     <hint type="destinationlabel">
-     <x>127</x>
-     <y>233</y>
+     <x>74</x>
+     <y>324</y>
     </hint>
    </hints>
   </connection>

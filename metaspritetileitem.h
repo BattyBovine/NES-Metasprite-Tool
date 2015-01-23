@@ -18,6 +18,7 @@ public:
     void flipVertical(bool);
     bool flippedHorizontal();
     bool flippedVertical();
+    quint8 palette(){return this->iPalette;}
 
     void setNewColours(QRgb,QRgb,QRgb,quint8);
 

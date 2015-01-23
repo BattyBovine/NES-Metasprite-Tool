@@ -133,12 +133,12 @@ bool TilesetManager::loadCHRBank(QString filename)
     return true;
 }
 
-void TilesetManager::setNewSpriteColours(QRgb c0, QRgb c1, QRgb c2, QRgb c3)
+void TilesetManager::setNewSpriteColours(QVector<QRgb> c, quint8 i)
 {
-    this->gsTileset->setBackgroundBrush(QBrush(QColor(c0)));
-    this->imgTileset.setColor(1,c1);
-    this->imgTileset.setColor(2,c2);
-    this->imgTileset.setColor(3,c3);
+    this->gsTileset->setBackgroundBrush(QBrush(QColor(c.at(4*i))));
+    this->imgTileset.setColor(1,c.at((4*i)+1));
+    this->imgTileset.setColor(2,c.at((4*i)+2));
+    this->imgTileset.setColor(3,c.at((4*i)+3));
 
     this->redrawTileset();
 }

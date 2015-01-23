@@ -30,8 +30,9 @@ signals:
     void requestTile(QPointF);
 
 public slots:
-    void setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8);
+    void setNewSpriteColours(QVector<QRgb>,quint8);
     void addTile(QPointF,QImage);
+    void deleteSelectedTiles();
     void flipHorizontal();
     void flipVertical();
 
@@ -48,6 +49,7 @@ private:
     void drawGridLines();
 
     QGraphicsScene *gsMetasprite;
+    QVector<MetaspriteTileItem*> vItems;
 };
 
 #endif // METASPRITEMANAGER_H

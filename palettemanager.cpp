@@ -190,9 +190,12 @@ void PaletteManager::generateNewSpritePalettes()
     emit(newSpritePalette2(this->gsSpritePaletteScene[2]));
     emit(newSpritePalette3(this->gsSpritePaletteScene[3]));
 
-    emit(newSpriteColours(this->vPaletteColours.at(this->iSpritePaletteIndices[this->iSpritePaletteSelected][0]).rgb(),
-                          this->vPaletteColours.at(this->iSpritePaletteIndices[this->iSpritePaletteSelected][1]).rgb(),
-                          this->vPaletteColours.at(this->iSpritePaletteIndices[this->iSpritePaletteSelected][2]).rgb(),
-                          this->vPaletteColours.at(this->iSpritePaletteIndices[this->iSpritePaletteSelected][3]).rgb(),
-                          this->iSpritePaletteSelected));
+    QVector<QRgb> palettecolours;
+    for(int i=0; i<4; i++) {
+        for(int j=0; j<4; j++) {
+            palettecolours.append(this->vPaletteColours.at(this->iSpritePaletteIndices[i][j]).rgb());
+        }
+    }
+
+    emit(newSpriteColours(palettecolours, this->iSpritePaletteSelected));
 }

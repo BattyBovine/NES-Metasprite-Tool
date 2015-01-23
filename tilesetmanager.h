@@ -33,7 +33,7 @@ signals:
 
 public slots:
     bool loadCHRBank(QString);
-    void setNewSpriteColours(QRgb,QRgb,QRgb,QRgb);
+    void setNewSpriteColours(QVector<QRgb>,quint8);
 
     void createTile(QPointF);
 
