@@ -29,7 +29,7 @@ public:
     ~TilesetManager();
 
 signals:
-    void sendTile(QPointF,QImage);
+    void sendTile(QPointF,QImage,quint8);
 
 public slots:
     bool loadCHRBank(QString);
@@ -49,6 +49,7 @@ private:
     QImage imgTileset;
     QByteArray baTilesetData;
     QGraphicsPixmapItem *gpiTileset;
+    quint8 iPalette;
 
     QGraphicsRectItem *griSelection[2];
     QPointF pSelection;

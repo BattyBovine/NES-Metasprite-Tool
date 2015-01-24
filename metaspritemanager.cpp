@@ -45,9 +45,30 @@ void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
 
 void MetaspriteManager::keyPressEvent(QKeyEvent *e)
 {
+    QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
     switch(e->key()) {
     case Qt::Key_Delete:
         this->deleteSelectedTiles();
+        break;
+
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+        foreach(QGraphicsItem *i, sel) {
+            i->moveBy(0,(e->key()==Qt::Key_Down)?MSM_SCALE:(-MSM_SCALE));
+        }
+        break;
+    case Qt::Key_Left:
+    case Qt::Key_Right:
+        foreach(QGraphicsItem *i, sel) {
+            i->moveBy((e->key()==Qt::Key_Right)?MSM_SCALE:(-MSM_SCALE),0);
+        }
+        break;
+
+    case Qt::Key_1:
+    case Qt::Key_2:
+    case Qt::Key_3:
+    case Qt::Key_4:
+        emit(requestPaletteUpdate(e->key()-Qt::Key_1));
         break;
     }
 }
@@ -86,14 +107,17 @@ void MetaspriteManager::drawGridLines()
 void MetaspriteManager::setNewSpriteColours(QVector<QRgb> c, quint8 p)
 {
     this->gsMetasprite->setBackgroundBrush(QBrush(QColor(c.at(0))));
-    foreach(MetaspriteTileItem *j, this->vItems) {
+
+    QList<QGraphicsItem*> items = this->gsMetasprite->items();
+    foreach(QGraphicsItem *ms, items) {
+        if(ms->type()!=MetaspriteTileItem::Type)   continue;
         for(int i=0; i<4; i++) {
-            if(j->palette()==i)
-                j->setNewColours(c.at((4*i)+1),c.at((4*i)+2),c.at((4*i)+3),i);
+            if(qgraphicsitem_cast<MetaspriteTileItem*>(ms)->palette()==i)
+                qgraphicsitem_cast<MetaspriteTileItem*>(ms)->setNewColours(c.at((4*i)+1),c.at((4*i)+2),c.at((4*i)+3),i);
         }
     }
 
-    QList<QGraphicsItem*>items = this->gsMetasprite->selectedItems();
+    items = this->gsMetasprite->selectedItems();
     foreach(QGraphicsItem *i, items) {
         ((MetaspriteTileItem*)i)->setNewColours(c.at((4*p)+1),
                                                 c.at((4*p)+2),
@@ -102,14 +126,14 @@ void MetaspriteManager::setNewSpriteColours(QVector<QRgb> c, quint8 p)
     }
 }
 
-void MetaspriteManager::addTile(QPointF p, QImage t)
+void MetaspriteManager::addTile(QPointF p, QImage t, quint8 c)
 {
     MetaspriteTileItem *pi = new MetaspriteTileItem(t);
     pi->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
     pi->setScale(MSM_SCALE);
     pi->setPos((qRound(p.x()/MSM_SCALE)*MSM_SCALE),(qRound(p.y()/MSM_SCALE)*MSM_SCALE));
+    pi->setPalette(c);
     this->gsMetasprite->addItem(pi);
-    this->vItems.append(pi);
 }
 
 void MetaspriteManager::deleteSelectedTiles()
@@ -117,7 +141,6 @@ void MetaspriteManager::deleteSelectedTiles()
     QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
     foreach(QGraphicsItem *s, sel) {
         this->gsMetasprite->removeItem(s);
-        this->vItems.removeAll(((MetaspriteTileItem*)s));
     }
 }
 

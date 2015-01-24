@@ -35,7 +35,9 @@ public slots:
     void setSpritePaletteScene(QObject*);
 
     void spritePaletteSelected(QString, quint8);
+    QVector<QRgb> createPaletteColours();
     void generateNewSpritePalettes();
+    void sendRequestedPaletteUpdate(quint8);
 
 protected:
     void dragMoveEvent(QDragMoveEvent*e){e->accept();}

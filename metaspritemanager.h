@@ -28,10 +28,11 @@ public:
 
 signals:
     void requestTile(QPointF);
+    void requestPaletteUpdate(quint8);
 
 public slots:
     void setNewSpriteColours(QVector<QRgb>,quint8);
-    void addTile(QPointF,QImage);
+    void addTile(QPointF,QImage,quint8);
     void deleteSelectedTiles();
     void flipHorizontal();
     void flipVertical();

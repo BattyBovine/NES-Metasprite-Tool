@@ -172,6 +172,17 @@ void PaletteManager::spritePaletteSelected(QString s, quint8 i)
     for(int i=0; i<4; i++)  newspritecolours.append(this->vPaletteColours.at(this->iSpritePaletteIndices[pindex][i]));
 }
 
+QVector<QRgb> PaletteManager::createPaletteColours()
+{
+    QVector<QRgb> p;
+    for(int i=0; i<4; i++) {
+        for(int j=0; j<4; j++) {
+            p.append(this->vPaletteColours.at(this->iSpritePaletteIndices[i][j]).rgb());
+        }
+    }
+    return p;
+}
+
 void PaletteManager::generateNewSpritePalettes()
 {
     for(int spritepal=0; spritepal<4; spritepal++) {
@@ -190,12 +201,10 @@ void PaletteManager::generateNewSpritePalettes()
     emit(newSpritePalette2(this->gsSpritePaletteScene[2]));
     emit(newSpritePalette3(this->gsSpritePaletteScene[3]));
 
-    QVector<QRgb> palettecolours;
-    for(int i=0; i<4; i++) {
-        for(int j=0; j<4; j++) {
-            palettecolours.append(this->vPaletteColours.at(this->iSpritePaletteIndices[i][j]).rgb());
-        }
-    }
+    emit(newSpriteColours(this->createPaletteColours(), this->iSpritePaletteSelected));
+}
 
-    emit(newSpriteColours(palettecolours, this->iSpritePaletteSelected));
+void PaletteManager::sendRequestedPaletteUpdate(quint8 p)
+{
+    emit(newSpriteColours(this->createPaletteColours(), p));
 }

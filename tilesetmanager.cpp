@@ -17,6 +17,7 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
     this->gpiTileset->setScale(TSM_SCALE);
     this->gsTileset->addItem(this->gpiTileset);
     this->griSelection[0] = this->griSelection[1] = NULL;
+    this->iPalette = 0;
 
     this->pSelection = QPointF(0,0);
     this->drawSelectionBox();
@@ -139,11 +140,12 @@ void TilesetManager::setNewSpriteColours(QVector<QRgb> c, quint8 i)
     this->imgTileset.setColor(1,c.at((4*i)+1));
     this->imgTileset.setColor(2,c.at((4*i)+2));
     this->imgTileset.setColor(3,c.at((4*i)+3));
+    this->iPalette = i;
 
     this->redrawTileset();
 }
 
 void TilesetManager::createTile(QPointF p)
 {
-    emit(sendTile(p,this->imgTileset.copy(this->pSelection.x()/TSM_SCALE,this->pSelection.y()/TSM_SCALE,8,8)));
+    emit(sendTile(p,this->imgTileset.copy(this->pSelection.x()/TSM_SCALE,this->pSelection.y()/TSM_SCALE,8,8),this->iPalette));
 }

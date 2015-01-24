@@ -669,6 +669,7 @@
     <signal>newSpritePalette3(QGraphicsScene*)</signal>
     <signal>newSpriteColours(QVector,quint8)</signal>
     <slot>spritePaletteSelected(QString,quint8)</slot>
+    <slot>sendRequestedPaletteUpdate(quint8)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -686,7 +687,7 @@
    <extends>QGraphicsView</extends>
    <header>tilesetmanager.h</header>
    <slots>
-    <signal>sendTile(QPointF,QImage)</signal>
+    <signal>sendTile(QPointF,QImage,quint8)</signal>
     <slot>loadCHRBank(QString)</slot>
     <slot>setNewSpriteColours(QVector,quint8)</slot>
     <slot>createTile(QPointF)</slot>
@@ -698,8 +699,9 @@
    <header>metaspritemanager.h</header>
    <slots>
     <signal>requestTile(QPointF)</signal>
+    <signal>requestPaletteUpdate(quint8)</signal>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
-    <slot>addTile(QPointF,QImage)</slot>
+    <slot>addTile(QPointF,QImage,quint8)</slot>
     <slot>flipHorizontal()</slot>
     <slot>flipVertical()</slot>
     <slot>deleteSelectedTiles()</slot>
@@ -950,9 +952,9 @@
   </connection>
   <connection>
    <sender>gvTileset</sender>
-   <signal>sendTile(QPointF,QImage)</signal>
+   <signal>sendTile(QPointF,QImage,quint8)</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>addTile(QPointF,QImage)</slot>
+   <slot>addTile(QPointF,QImage,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>520</x>
@@ -1025,6 +1027,22 @@
     <hint type="destinationlabel">
      <x>74</x>
      <y>324</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>requestPaletteUpdate(quint8)</signal>
+   <receiver>gvPaletteManager</receiver>
+   <slot>sendRequestedPaletteUpdate(quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>265</x>
+     <y>322</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>520</x>
+     <y>410</y>
     </hint>
    </hints>
   </connection>
