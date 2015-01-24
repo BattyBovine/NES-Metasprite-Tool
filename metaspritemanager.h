@@ -37,6 +37,8 @@ public slots:
     void flipHorizontal();
     void flipVertical();
 
+    void swapMetaspriteStage(int);
+
 protected:
     void dragMoveEvent(QDragMoveEvent*e){e->accept();}
     void dragEnterEvent(QDragEnterEvent*e){e->acceptProposedAction();}
@@ -50,7 +52,8 @@ private:
     void drawGridLines();
 
     QGraphicsScene *gsMetasprite;
-    QVector<MetaspriteTileItem*> vItems;
+    QVector< QList<MetaspriteTileItem*> > vMetaspriteStages;
+    quint8 iMetaspriteStage;
 };
 
 #endif // METASPRITEMANAGER_H

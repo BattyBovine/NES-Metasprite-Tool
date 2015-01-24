@@ -6,6 +6,9 @@ MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
     this->setScene(this->gsMetasprite);
 
     this->drawGridLines();
+
+    this->vMetaspriteStages = QVector< QList<MetaspriteTileItem*> >(256);
+    this->iMetaspriteStage = 0;
 }
 
 MetaspriteManager::~MetaspriteManager()
@@ -133,6 +136,7 @@ void MetaspriteManager::addTile(QPointF p, QImage t, quint8 c)
     pi->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
     pi->setScale(MSM_SCALE);
     pi->setPos((qRound(p.x()/MSM_SCALE)*MSM_SCALE),(qRound(p.y()/MSM_SCALE)*MSM_SCALE));
+    pi->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
     pi->setPalette(c);
     this->gsMetasprite->addItem(pi);
 }
@@ -158,5 +162,25 @@ void MetaspriteManager::flipVertical()
     QList<QGraphicsItem*> sel = QList<QGraphicsItem*>(this->gsMetasprite->selectedItems());
     foreach(QGraphicsItem *s, sel) {
         ((MetaspriteTileItem*)s)->flipVertical(!((MetaspriteTileItem*)s)->flippedVertical());
+    }
+}
+
+
+
+void MetaspriteManager::swapMetaspriteStage(int s)
+{
+    QList<QGraphicsItem*> items = this->gsMetasprite->items();
+    QList<MetaspriteTileItem*> store;
+    foreach(QGraphicsItem *ms, items) {
+        if(ms->type()!=MetaspriteTileItem::Type)   continue;
+        store.append(qgraphicsitem_cast<MetaspriteTileItem*>(ms));
+        this->gsMetasprite->removeItem(qgraphicsitem_cast<MetaspriteTileItem*>(ms));
+    }
+    this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
+
+    this->iMetaspriteStage = s;
+    store = this->vMetaspriteStages.at(s);
+    foreach(MetaspriteTileItem *ms, store) {
+        this->gsMetasprite->addItem(ms);
     }
 }
