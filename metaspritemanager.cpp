@@ -111,10 +111,11 @@ void MetaspriteManager::setNewSpriteColours(QVector<QRgb> c, quint8 p)
     QList<QGraphicsItem*> items = this->gsMetasprite->items();
     foreach(QGraphicsItem *ms, items) {
         if(ms->type()!=MetaspriteTileItem::Type)   continue;
-        for(int i=0; i<4; i++) {
-            if(qgraphicsitem_cast<MetaspriteTileItem*>(ms)->palette()==i)
-                qgraphicsitem_cast<MetaspriteTileItem*>(ms)->setNewColours(c.at((4*i)+1),c.at((4*i)+2),c.at((4*i)+3),i);
-        }
+        quint8 currentpal = qgraphicsitem_cast<MetaspriteTileItem*>(ms)->palette();
+        qgraphicsitem_cast<MetaspriteTileItem*>(ms)->setNewColours(c.at((4*currentpal)+1),
+                                                                   c.at((4*currentpal)+2),
+                                                                   c.at((4*currentpal)+3),
+                                                                   currentpal);
     }
 
     items = this->gsMetasprite->selectedItems();

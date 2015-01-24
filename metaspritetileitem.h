@@ -19,12 +19,13 @@ public:
 
     void flipHorizontal(bool);
     void flipVertical(bool);
-    bool flippedHorizontal();
-    bool flippedVertical();
-    quint8 palette(){return this->iPalette;}
-    void setPalette(quint8 p){this->iPalette=p;}
 
     void setNewColours(QRgb,QRgb,QRgb,quint8);
+
+    bool flippedHorizontal(){return this->bHFlip;}
+    bool flippedVertical(){return this->bVFlip;}
+    quint8 palette(){return this->iPalette;}
+    void setPalette(quint8 p){this->iPalette=p;}
 
 protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
@@ -32,7 +33,6 @@ protected:
 
 private:
     QImage imgTile;
-
     quint8 iPalette;
     bool bHFlip,bVFlip;
 };

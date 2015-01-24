@@ -5,6 +5,7 @@ MetaspriteTileItem::MetaspriteTileItem(QImage img, QGraphicsItem *parent) : QGra
     this->bHFlip = this->bVFlip = false;
     this->imgTile = img;
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(img));
+    this->iPalette = 0;
 }
 
 
@@ -50,15 +51,7 @@ void MetaspriteTileItem::flipVertical(bool f)
     this->setTransform(QTransform().translate(0,t).scale(1,-1).translate(0,-t),true);
 }
 
-bool MetaspriteTileItem::flippedHorizontal()
-{
-    return this->bHFlip;
-}
 
-bool MetaspriteTileItem::flippedVertical()
-{
-    return this->bVFlip;
-}
 
 void MetaspriteTileItem::setNewColours(QRgb a, QRgb b, QRgb c, quint8 p)
 {
