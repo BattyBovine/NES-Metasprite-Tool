@@ -27,16 +27,19 @@ public:
     ~MetaspriteManager();
 
 signals:
-    void requestTile(QPointF);
-    void requestPaletteUpdate(quint8);
+    void requestNewTile(QPointF);
+    void getTileUpdate(MetaspriteTileItem*);
+    void getPaletteUpdate(MetaspriteTileItem*);
+    void requestPaletteUpdates(quint8);
 
 public slots:
     void setNewSpriteColours(QVector<QRgb>,quint8);
-    void addTile(QPointF,QImage,quint8);
+    void addNewTile(QPointF,QImage,quint8,quint8);
     void deleteSelectedTiles();
     void flipHorizontal();
     void flipVertical();
 
+    void updateTiles();
     void swapMetaspriteStage(int);
 
 protected:

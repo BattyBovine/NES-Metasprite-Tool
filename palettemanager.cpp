@@ -204,6 +204,16 @@ void PaletteManager::generateNewSpritePalettes()
     emit(newSpriteColours(this->createPaletteColours(), this->iSpritePaletteSelected));
 }
 
+void PaletteManager::setNewSpritePalette(MetaspriteTileItem *t)
+{
+    QVector<QRgb> c = this->createPaletteColours();
+    quint8 p = t->palette();
+    t->setNewColours(c.at((p*4)+1),
+                     c.at((p*4)+2),
+                     c.at((p*4)+3),
+                     p);
+}
+
 void PaletteManager::sendRequestedPaletteUpdate(quint8 p)
 {
     emit(newSpriteColours(this->createPaletteColours(), p));

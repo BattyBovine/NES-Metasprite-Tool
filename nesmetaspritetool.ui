@@ -670,6 +670,7 @@
     <signal>newSpriteColours(QVector,quint8)</signal>
     <slot>spritePaletteSelected(QString,quint8)</slot>
     <slot>sendRequestedPaletteUpdate(quint8)</slot>
+    <slot>setNewSpritePalette(MetaspriteTileItem*)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -687,10 +688,12 @@
    <extends>QGraphicsView</extends>
    <header>tilesetmanager.h</header>
    <slots>
-    <signal>sendTile(QPointF,QImage,quint8)</signal>
+    <signal>sendNewTile(QPointF,QImage,quint8,quint8)</signal>
+    <signal>tilesetChanged()</signal>
     <slot>loadCHRBank(QString)</slot>
     <slot>setNewSpriteColours(QVector,quint8)</slot>
-    <slot>createTile(QPointF)</slot>
+    <slot>createNewTile(QPointF)</slot>
+    <slot>updateSpriteTile(MetaspriteTileItem*)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -698,14 +701,17 @@
    <extends>QGraphicsView</extends>
    <header>metaspritemanager.h</header>
    <slots>
-    <signal>requestTile(QPointF)</signal>
-    <signal>requestPaletteUpdate(quint8)</signal>
+    <signal>requestNewTile(QPointF)</signal>
+    <signal>requestPaletteUpdates(quint8)</signal>
+    <signal>getTileUpdate(MetaspriteTileItem*)</signal>
+    <signal>getPaletteUpdate(MetaspriteTileItem*)</signal>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
-    <slot>addTile(QPointF,QImage,quint8)</slot>
+    <slot>addNewTile(QPointF,QImage,quint8,quint8)</slot>
     <slot>flipHorizontal()</slot>
     <slot>flipVertical()</slot>
     <slot>deleteSelectedTiles()</slot>
     <slot>swapMetaspriteStage(int)</slot>
+    <slot>updateTiles()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -953,9 +959,9 @@
   </connection>
   <connection>
    <sender>gvTileset</sender>
-   <signal>sendTile(QPointF,QImage,quint8)</signal>
+   <signal>sendNewTile(QPointF,QImage,quint8,quint8)</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>addTile(QPointF,QImage,quint8)</slot>
+   <slot>addNewTile(QPointF,QImage,quint8,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>520</x>
@@ -969,9 +975,9 @@
   </connection>
   <connection>
    <sender>gvMetasprite</sender>
-   <signal>requestTile(QPointF)</signal>
+   <signal>requestNewTile(QPointF)</signal>
    <receiver>gvTileset</receiver>
-   <slot>createTile(QPointF)</slot>
+   <slot>createNewTile(QPointF)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>261</x>
@@ -1033,7 +1039,7 @@
   </connection>
   <connection>
    <sender>gvMetasprite</sender>
-   <signal>requestPaletteUpdate(quint8)</signal>
+   <signal>requestPaletteUpdates(quint8)</signal>
    <receiver>gvPaletteManager</receiver>
    <slot>sendRequestedPaletteUpdate(quint8)</slot>
    <hints>
@@ -1060,6 +1066,54 @@
     <hint type="destinationlabel">
      <x>250</x>
      <y>300</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>getTileUpdate(MetaspriteTileItem*)</signal>
+   <receiver>gvTileset</receiver>
+   <slot>updateSpriteTile(MetaspriteTileItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>270</x>
+     <y>86</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>518</x>
+     <y>93</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvTileset</sender>
+   <signal>tilesetChanged()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>updateTiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>502</x>
+     <y>104</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>251</x>
+     <y>109</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>getPaletteUpdate(MetaspriteTileItem*)</signal>
+   <receiver>gvPaletteManager</receiver>
+   <slot>setNewSpritePalette(MetaspriteTileItem*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>224</x>
+     <y>316</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>555</x>
+     <y>425</y>
     </hint>
    </hints>
   </connection>

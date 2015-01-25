@@ -17,6 +17,7 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
     this->gpiTileset->setScale(TSM_SCALE);
     this->gsTileset->addItem(this->gpiTileset);
     this->griSelection[0] = this->griSelection[1] = NULL;
+    this->iSelectedTile = 0;
     this->iPalette = 0;
 
     this->pSelection = QPointF(0,0);
@@ -65,6 +66,7 @@ bool TilesetManager::drawSelectionBox()
     quint8 xorigin = qFloor(this->pSelection.x())-(qFloor(this->pSelection.x())%TSM_TILESIZE);
     quint8 yorigin = qFloor(this->pSelection.y())-(qFloor(this->pSelection.y())%TSM_TILESIZE);
     this->pSelection = QPointF(xorigin,yorigin);
+    this->iSelectedTile = (qFloor((yorigin/TSM_TILESIZE)<<4)|qFloor(xorigin/TSM_TILESIZE));
 
     QPen dashes(Qt::black,1,Qt::DashLine);
     QVector<qreal> dp;
@@ -131,6 +133,8 @@ bool TilesetManager::loadCHRBank(QString filename)
 
     this->redrawTileset();
 
+    emit(this->tilesetChanged());
+
     return true;
 }
 
@@ -145,7 +149,12 @@ void TilesetManager::setNewSpriteColours(QVector<QRgb> c, quint8 i)
     this->redrawTileset();
 }
 
-void TilesetManager::createTile(QPointF p)
+void TilesetManager::createNewTile(QPointF p)
 {
-    emit(sendTile(p,this->imgTileset.copy(this->pSelection.x()/TSM_SCALE,this->pSelection.y()/TSM_SCALE,8,8),this->iPalette));
+    emit(sendNewTile(p,this->imgTileset.copy(this->pSelection.x()/TSM_SCALE,this->pSelection.y()/TSM_SCALE,8,8),this->iSelectedTile,this->iPalette));
+}
+
+void TilesetManager::updateSpriteTile(MetaspriteTileItem *t)
+{
+    t->setPixmap(QPixmap::fromImage(this->imgTileset.copy((t->tile()&0x0F)*8,((t->tile()&0xF0)>>4)*8,8,8)));
 }

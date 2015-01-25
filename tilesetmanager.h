@@ -18,6 +18,8 @@
 
 #include <QtMath>
 
+#include "metaspritetileitem.h"
+
 #define TSM_SCALE 2
 #define TSM_TILESIZE (8*TSM_SCALE)
 
@@ -29,13 +31,15 @@ public:
     ~TilesetManager();
 
 signals:
-    void sendTile(QPointF,QImage,quint8);
+    void tilesetChanged();
+    void sendNewTile(QPointF,QImage,quint8,quint8);
 
 public slots:
     bool loadCHRBank(QString);
     void setNewSpriteColours(QVector<QRgb>,quint8);
 
-    void createTile(QPointF);
+    void createNewTile(QPointF);
+    void updateSpriteTile(MetaspriteTileItem*);
 
 protected:
     void dragMoveEvent(QDragMoveEvent*e){e->accept();}
@@ -49,6 +53,7 @@ private:
     QImage imgTileset;
     QByteArray baTilesetData;
     QGraphicsPixmapItem *gpiTileset;
+    quint8 iSelectedTile;
     quint8 iPalette;
 
     QGraphicsRectItem *griSelection[2];

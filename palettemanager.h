@@ -9,6 +9,8 @@
 
 #include <QtMath>
 
+#include "metaspritetileitem.h"
+
 class PaletteManager : public QGraphicsView
 {
     Q_OBJECT
@@ -37,6 +39,7 @@ public slots:
     void spritePaletteSelected(QString, quint8);
     QVector<QRgb> createPaletteColours();
     void generateNewSpritePalettes();
+    void setNewSpritePalette(MetaspriteTileItem*);
     void sendRequestedPaletteUpdate(quint8);
 
 protected:
