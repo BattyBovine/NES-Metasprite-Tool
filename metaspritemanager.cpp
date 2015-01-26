@@ -182,10 +182,11 @@ void MetaspriteManager::swapMetaspriteStage(int s)
 {
     QList<QGraphicsItem*> items = this->gsMetasprite->items();
     QList<MetaspriteTileItem*> store;
-    foreach(QGraphicsItem *ms, items) {
-        if(ms->type()!=MetaspriteTileItem::Type)   continue;
-        store.append(qgraphicsitem_cast<MetaspriteTileItem*>(ms));
-        this->gsMetasprite->removeItem(qgraphicsitem_cast<MetaspriteTileItem*>(ms));
+    for(int i=items.size()-1; i>=0; i--) {
+        if(items.at(i)->type()!=MetaspriteTileItem::Type)   continue;
+        MetaspriteTileItem *ms = qgraphicsitem_cast<MetaspriteTileItem*>(items.at(i));
+        store.append(ms);
+        this->gsMetasprite->removeItem(ms);
     }
     this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
 
@@ -196,4 +197,32 @@ void MetaspriteManager::swapMetaspriteStage(int s)
         emit(this->getPaletteUpdate(ms));
         this->gsMetasprite->addItem(ms);
     }
+}
+
+
+
+QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
+{
+    this->swapMetaspriteStage(this->iMetaspriteStage);
+
+    QVector<QByteArray> bindata = QVector<QByteArray>(256);
+    for(int i=0; i<256; i++) {
+        QList<MetaspriteTileItem*> mslist = this->vMetaspriteStages.at(i);
+        QByteArray bin;
+        if(!mslist.isEmpty()) {
+            bin.append(quint8(mslist.length()));
+            foreach(MetaspriteTileItem *ms, mslist) {
+                quint8 oamx = ms->realX();
+                quint8 oamy = ms->realY();
+                quint8 oamindex = ms->tile();
+                quint8 oamattr = ms->palette()|(ms->flippedHorizontal()?0x40:0x00)|(ms->flippedVertical()?0x80:0x00);
+                bin.append(oamy);
+                bin.append(oamindex);
+                bin.append(oamattr);
+                bin.append(oamx);
+            }
+            bindata.replace(i,bin);
+        }
+    }
+    return bindata;
 }

@@ -42,6 +42,8 @@ public slots:
     void updateTiles();
     void swapMetaspriteStage(int);
 
+    QVector<QByteArray> createMetaspriteBinaryData();
+
 protected:
     void dragMoveEvent(QDragMoveEvent*e){e->accept();}
     void dragEnterEvent(QDragEnterEvent*e){e->acceptProposedAction();}

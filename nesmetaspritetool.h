@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDirIterator>
+#include <QTextStream>
 
 #include "palettemanager.h"
 
@@ -29,6 +30,7 @@ private slots:
     void openCHR();
     void openPalette();
     void savePalette();
+    void saveMetaspriteBank();
 
 private:
     Ui::NESMetaspriteTool *ui;

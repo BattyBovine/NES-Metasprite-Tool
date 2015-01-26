@@ -45,10 +45,10 @@ void NESMetaspriteTool::openCHR()
 void NESMetaspriteTool::openPalette()
 {
     QString filename = QFileDialog::getOpenFileName(this, ui->actionLoadPalette->text(), "", "*.pal");
-    if(filename.isEmpty()) return;
     QFile file(filename);
     if(!file.open(QIODevice::ReadOnly)) {
         QMessageBox::warning(this,tr("Error opening file"),tr("Could not open file. Please make sure you have the necessary permissions to access files in this location."),QMessageBox::NoButton);
+        return;
     }
     QByteArray pal = file.readAll();
     file.close();
@@ -58,12 +58,40 @@ void NESMetaspriteTool::openPalette()
 void NESMetaspriteTool::savePalette()
 {
     QString filename = QFileDialog::getSaveFileName(this, ui->actionSavePalette->text(), "", "*.pal");
-    if(filename.isEmpty()) return;
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
         QMessageBox::warning(this,tr("Error saving file"),tr("Could not save file. Please make sure you have the necessary permissions to save files to this location."),QMessageBox::NoButton);
+        return;
     }
     QByteArray pal = ui->gvPaletteManager->paletteData();
     file.write(pal);
+    file.close();
+}
+
+void NESMetaspriteTool::saveMetaspriteBank()
+{
+    QString filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBank->text(), "", "*.spr");
+    QFile file(filename);
+    if(!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::warning(this,tr("Error saving file"),tr("Could not save file. Please make sure you have the necessary permissions to save files to this location."),QMessageBox::NoButton);
+        return;
+    }
+    QVector<QByteArray> bindata = ui->gvMetasprite->createMetaspriteBinaryData();
+    for(int i=0; i<bindata.size(); i++) {
+        QByteArray bin = bindata.at(i);
+        if(!bin.isEmpty()) {
+            QString label(ui->lineASMLabel->text().isEmpty()?"emptylabel":ui->lineASMLabel->text()+"_");
+            label += QString::number(i).append(":\n.byte ");
+            QByteArray labelstream = label.toLocal8Bit();
+            file.write(labelstream);
+            QString hexbyte = QString("%1").arg(quint8(bin.at(0)),2,16,QChar('0')).toUpper().prepend("0x");
+            file.write(hexbyte.toLocal8Bit());
+            for(int i=1; i<bin.length(); i++) {
+                hexbyte = QString("%1").arg(quint8(bin.at(i)),2,16,QChar('0')).toUpper().prepend(",0x");
+                file.write(hexbyte.toLocal8Bit());
+            }
+            file.write("\n\n");
+        }
+    }
     file.close();
 }

@@ -51,7 +51,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="lineEdit"/>
+            <widget class="QLineEdit" name="lineASMLabel"/>
            </item>
           </layout>
          </item>
@@ -628,8 +628,11 @@
      <string>File</string>
     </property>
     <addaction name="actionOpenCHR"/>
+    <addaction name="separator"/>
     <addaction name="actionLoadPalette"/>
     <addaction name="actionSavePalette"/>
+    <addaction name="separator"/>
+    <addaction name="actionSaveMetaspriteBank"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -653,6 +656,11 @@
   <action name="actionOpenCHR">
    <property name="text">
     <string>Open CHR</string>
+   </property>
+  </action>
+  <action name="actionSaveMetaspriteBank">
+   <property name="text">
+    <string>Save Metasprite Bank</string>
    </property>
   </action>
  </widget>
@@ -1117,6 +1125,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionSaveMetaspriteBank</sender>
+   <signal>triggered()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>saveMetaspriteBank()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>389</x>
+     <y>260</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -1124,5 +1148,6 @@
   <slot>openPalette()</slot>
   <slot>openCHR()</slot>
   <slot>setNewPaletteFile(QString)</slot>
+  <slot>saveMetaspriteBank()</slot>
  </slots>
 </ui>
