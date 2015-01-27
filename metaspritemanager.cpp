@@ -211,7 +211,9 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
         QByteArray bin;
         if(!mslist.isEmpty()) {
             bin.append(quint8(mslist.length()));
-            foreach(MetaspriteTileItem *ms, mslist) {
+            for(int j=mslist.size()-1; j>=0; j--) {
+                MetaspriteTileItem *ms = mslist.at(j);
+//            foreach(MetaspriteTileItem *ms, mslist) {
                 quint8 oamx = ms->realX();
                 quint8 oamy = ms->realY();
                 quint8 oamindex = ms->tile();
