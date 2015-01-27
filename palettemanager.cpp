@@ -79,6 +79,10 @@ bool PaletteManager::drawSelectionBox(QGraphicsScene *s, QPointF p)
 
 bool PaletteManager::setPaletteData(QByteArray in)
 {
+    if(in.size()<16) {
+        QMessageBox::critical(this,tr("Error reading palette data"),tr("The file is too short to be palette data."),QMessageBox::NoButton);
+        return false;
+    }
     for(int i=0; i<4; i++) {
         for(int j=0; j<4; j++) {
             this->iSpritePaletteIndices[i][j] = (in.at(j+(4*i))&0x3F);
@@ -110,6 +114,7 @@ void PaletteManager::dropEvent(QDropEvent *e)
             QFile file(url.toLocalFile());
             if(!file.open(QIODevice::ReadOnly)) {
                 QMessageBox::critical(this,tr("Error opening file"),tr("The file could not be opened."),QMessageBox::NoButton);
+                return;
             }
             if(file.size() != 0x10) {
                 QMessageBox::warning(this,
