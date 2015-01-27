@@ -12,6 +12,7 @@
 class MetaspriteTileItem : public QGraphicsPixmapItem
 {
 public:
+    MetaspriteTileItem(QGraphicsItem *parent = 0);
     MetaspriteTileItem(QImage,QGraphicsItem *parent = 0);
 
     enum { Type = UserType+1 };
@@ -21,7 +22,10 @@ public:
     void flipVertical(bool);
     int realX(){return qRound(this->x()/this->scale());}
     int realY(){return qRound(this->y()/this->scale());}
+    void setRealX(quint8 x){this->setX(x*this->scale());}
+    void setRealY(quint8 y){this->setY(y*this->scale());}
 
+    void setTile(QImage);
     void setNewColours(QRgb,QRgb,QRgb,quint8);
 
     bool flippedHorizontal(){return this->bHFlip;}

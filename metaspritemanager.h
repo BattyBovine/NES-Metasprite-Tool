@@ -43,6 +43,7 @@ public slots:
     void swapMetaspriteStage(int);
 
     QVector<QByteArray> createMetaspriteBinaryData();
+    void importMetaspriteBinaryData(QVector<QByteArray>);
 
 protected:
     void dragMoveEvent(QDragMoveEvent*e){e->accept();}

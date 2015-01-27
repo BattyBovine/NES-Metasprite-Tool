@@ -156,5 +156,5 @@ void TilesetManager::createNewTile(QPointF p)
 
 void TilesetManager::updateSpriteTile(MetaspriteTileItem *t)
 {
-    t->setPixmap(QPixmap::fromImage(this->imgTileset.copy((t->tile()&0x0F)*8,((t->tile()&0xF0)>>4)*8,8,8)));
+    t->setTile(this->imgTileset.copy((t->tile()&0x0F)*8,((t->tile()&0xF0)>>4)*8,8,8));
 }

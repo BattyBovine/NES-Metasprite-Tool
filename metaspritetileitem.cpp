@@ -1,11 +1,17 @@
 #include "metaspritetileitem.h"
 
+MetaspriteTileItem::MetaspriteTileItem(QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
+{
+    this->bHFlip = this->bVFlip = false;
+    this->iPalette = 0;
+}
+
 MetaspriteTileItem::MetaspriteTileItem(QImage img, QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
 {
     this->bHFlip = this->bVFlip = false;
+    this->iPalette = 0;
     this->imgTile = img;
     QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(img));
-    this->iPalette = 0;
 }
 
 
@@ -52,6 +58,12 @@ void MetaspriteTileItem::flipVertical(bool f)
 }
 
 
+
+void MetaspriteTileItem::setTile(QImage img)
+{
+    this->imgTile = img;
+    this->setPixmap(QPixmap::fromImage(this->imgTile));
+}
 
 void MetaspriteTileItem::setNewColours(QRgb a, QRgb b, QRgb c, quint8 p)
 {

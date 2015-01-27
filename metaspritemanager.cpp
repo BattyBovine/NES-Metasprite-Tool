@@ -175,6 +175,7 @@ void::MetaspriteManager::updateTiles()
     foreach(QGraphicsItem *ms, items) {
         if(ms->type()!=MetaspriteTileItem::Type)   continue;
         emit(this->getTileUpdate(qgraphicsitem_cast<MetaspriteTileItem*>(ms)));
+        emit(this->getPaletteUpdate(qgraphicsitem_cast<MetaspriteTileItem*>(ms)));
     }
 }
 
@@ -213,7 +214,6 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
             bin.append(quint8(mslist.length()));
             for(int j=mslist.size()-1; j>=0; j--) {
                 MetaspriteTileItem *ms = mslist.at(j);
-//            foreach(MetaspriteTileItem *ms, mslist) {
                 quint8 oamx = ms->realX();
                 quint8 oamy = ms->realY();
                 quint8 oamindex = ms->tile();
@@ -227,4 +227,26 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
         }
     }
     return bindata;
+}
+
+void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
+{
+    for(int j=0; j<256; j++) {
+        QByteArray bin = bindata.at(j);
+        quint8 count = bin.at(0);
+        QList<MetaspriteTileItem*> mslist = this->vMetaspriteStages.at(j);
+        for(int i=0; i<count; i++) {
+            MetaspriteTileItem *ms = new MetaspriteTileItem();
+            ms->setScale(MSM_SCALE);
+            ms->setRealX(bin.at((4*i)+3));
+            ms->setRealY(bin.at(4*i));
+            ms->setTile(bin.at((4*i)+1));
+            ms->setPalette(bin.at((4*i)+2)&0x03);
+            ms->flipHorizontal((bin.at((4*i)+2)&0x40)?true:false);
+            ms->flipVertical((bin.at((4*i)+2)&0x80)?true:false);
+            emit(this->getTileUpdate(ms));
+            emit(this->getPaletteUpdate(ms));
+            mslist.append(ms);
+        }
+    }
 }
