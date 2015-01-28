@@ -632,9 +632,8 @@
     <addaction name="actionLoadPalette"/>
     <addaction name="actionSavePalette"/>
     <addaction name="separator"/>
-    <addaction name="actionLoadMetaspriteBankASM"/>
+    <addaction name="actionLoadMetaspriteBank"/>
     <addaction name="actionSaveMetaspriteBankASM"/>
-    <addaction name="actionLoadMetaspriteBankBinary"/>
     <addaction name="actionSaveMetaspriteBankBinary"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -671,9 +670,9 @@
     <string>Save Metasprite Bank (Binary)</string>
    </property>
   </action>
-  <action name="actionLoadMetaspriteBankASM">
+  <action name="actionLoadMetaspriteBank">
    <property name="text">
-    <string>Open Metasprite Bank (ASM)</string>
+    <string>Open Metasprite Bank</string>
    </property>
   </action>
   <action name="actionLoadMetaspriteBankBinary">
@@ -731,6 +730,7 @@
     <signal>requestPaletteUpdates(quint8)</signal>
     <signal>getTileUpdate(MetaspriteTileItem*)</signal>
     <signal>getPaletteUpdate(MetaspriteTileItem*)</signal>
+    <signal>setMetaspriteLabel(QString)</signal>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
     <slot>addNewTile(QPointF,QImage,quint8,quint8)</slot>
     <slot>flipHorizontal()</slot>
@@ -738,6 +738,7 @@
     <slot>deleteSelectedTiles()</slot>
     <slot>swapMetaspriteStage(int)</slot>
     <slot>updateTiles()</slot>
+    <slot>openMetaspriteFile(QString)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -1176,10 +1177,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionLoadMetaspriteBankASM</sender>
+   <sender>actionLoadMetaspriteBank</sender>
    <signal>triggered()</signal>
    <receiver>NESMetaspriteTool</receiver>
-   <slot>openASMMetaspriteBank()</slot>
+   <slot>openMetaspriteBank()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1192,31 +1193,47 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionLoadMetaspriteBankBinary</sender>
-   <signal>triggered()</signal>
-   <receiver>NESMetaspriteTool</receiver>
-   <slot>openBinaryMetaspriteBank()</slot>
+   <sender>NESMetaspriteTool</sender>
+   <signal>metaspriteFileOpened(QString)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>openMetaspriteFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
+     <x>4</x>
+     <y>102</y>
     </hint>
     <hint type="destinationlabel">
-     <x>389</x>
-     <y>260</y>
+     <x>42</x>
+     <y>102</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>setMetaspriteLabel(QString)</signal>
+   <receiver>lineASMLabel</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>65</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>69</x>
+     <y>58</y>
     </hint>
    </hints>
   </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
+  <signal>metaspriteFileOpened(QString)</signal>
   <slot>savePalette()</slot>
   <slot>openPalette()</slot>
   <slot>openCHR()</slot>
   <slot>setNewPaletteFile(QString)</slot>
   <slot>saveASMMetaspriteBank()</slot>
   <slot>saveBinaryMetaspriteBank()</slot>
-  <slot>openASMMetaspriteBank()</slot>
-  <slot>openBinaryMetaspriteBank()</slot>
+  <slot>openMetaspriteBank()</slot>
  </slots>
 </ui>

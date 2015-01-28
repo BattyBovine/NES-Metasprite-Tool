@@ -11,6 +11,11 @@
 
 #include "palettemanager.h"
 
+#define FILE_OPEN_ERROR_TITLE   "Error opening file"
+#define FILE_OPEN_ERROR_BODY    "Could not open file. Please make sure you have the necessary permissions to access files in this location."
+#define FILE_SAVE_ERROR_TITLE   "Error saving file"
+#define FILE_SAVE_ERROR_BODY    "Could not save file. Please make sure you have the necessary permissions to save files to this location."
+
 namespace Ui {
 class NESMetaspriteTool;
 }
@@ -25,13 +30,14 @@ public:
 
 signals:
     void chrFileOpened(QString);
+    void metaspriteFileOpened(QString);
 
 private slots:
     void setNewPaletteFile(QString);
     void openCHR();
     void openPalette();
     void savePalette();
-    void openASMMetaspriteBank();
+    void openMetaspriteBank();
     void saveASMMetaspriteBank();
     void saveBinaryMetaspriteBank();
 

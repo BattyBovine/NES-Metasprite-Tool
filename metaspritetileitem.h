@@ -9,6 +9,9 @@
 
 #include <QMessageBox>
 
+#define MSTI_TILEWIDTH 8
+#define MSTI_TILEHEIGHT MSTI_TILEWIDTH
+
 class MetaspriteTileItem : public QGraphicsPixmapItem
 {
 public:
@@ -22,8 +25,8 @@ public:
     void flipVertical(bool);
     int realX(){return qRound(this->x()/this->scale());}
     int realY(){return qRound(this->y()/this->scale());}
-    void setRealX(quint8 x){this->setX(x*this->scale());}
-    void setRealY(quint8 y){this->setY(y*this->scale());}
+    void setRealX(int x){this->setX(x*this->scale());this->iX=x;}
+    void setRealY(int y){this->setY(y*this->scale());this->iY=y;}
 
     void setTile(QImage);
     void setNewColours(QRgb,QRgb,QRgb,quint8);
@@ -43,6 +46,8 @@ private:
     QImage imgTile;
     quint8 iPalette;
     quint8 iTile;
+    int iX;
+    int iY;
     bool bHFlip,bVFlip;
 };
 

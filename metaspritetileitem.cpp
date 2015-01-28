@@ -4,6 +4,10 @@ MetaspriteTileItem::MetaspriteTileItem(QGraphicsItem *parent) : QGraphicsPixmapI
 {
     this->bHFlip = this->bVFlip = false;
     this->iPalette = 0;
+    this->iX = this->iY = 0;
+    this->imgTile = QImage(8,8,QImage::Format_Indexed8);
+    this->imgTile.fill(0);
+    this->imgTile.setColor(0,qRgba(0x00,0x00,0x00,0x00));
 }
 
 MetaspriteTileItem::MetaspriteTileItem(QImage img, QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
@@ -45,7 +49,7 @@ void MetaspriteTileItem::flipHorizontal(bool f)
 {
     if(f==this->bHFlip)  return;
     this->bHFlip = f;
-    qreal t = qRound(((this->boundingRect().width()-1)/2)*this->scale());
+    qreal t = qRound((MSTI_TILEWIDTH/2)*this->scale());
     this->setTransform(QTransform().translate(t,0).scale(-1,1).translate(-t,0),true);
 }
 
@@ -53,7 +57,7 @@ void MetaspriteTileItem::flipVertical(bool f)
 {
     if(f==this->bVFlip)  return;
     this->bVFlip = f;
-    qreal t = qRound(((this->boundingRect().height()-1)/2)*this->scale());
+    qreal t = qRound((MSTI_TILEHEIGHT/2)*this->scale());
     this->setTransform(QTransform().translate(0,t).scale(1,-1).translate(0,-t),true);
 }
 

@@ -7,6 +7,8 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->installEventFilter(this);
+
     connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8)),ui->gvTileset,SLOT(setNewSpriteColours(QVector<QRgb>,quint8)));
     connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8)),ui->gvMetasprite,SLOT(setNewSpriteColours(QVector<QRgb>,quint8)));
 
@@ -45,9 +47,10 @@ void NESMetaspriteTool::openCHR()
 void NESMetaspriteTool::openPalette()
 {
     QString filename = QFileDialog::getOpenFileName(this, ui->actionLoadPalette->text(), "", "*.pal");
+    if(filename.isEmpty())  return;
     QFile file(filename);
     if(!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(this,tr("Error opening file"),tr("Could not open file. Please make sure you have the necessary permissions to access files in this location."),QMessageBox::NoButton);
+        QMessageBox::warning(this,tr(FILE_OPEN_ERROR_TITLE),tr(FILE_OPEN_ERROR_BODY),QMessageBox::NoButton);
         return;
     }
     QByteArray pal = file.readAll();
@@ -60,7 +63,7 @@ void NESMetaspriteTool::savePalette()
     QString filename = QFileDialog::getSaveFileName(this, ui->actionSavePalette->text(), "", "*.pal");
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
-        QMessageBox::warning(this,tr("Error saving file"),tr("Could not save file. Please make sure you have the necessary permissions to save files to this location."),QMessageBox::NoButton);
+        QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
         return;
     }
     QByteArray pal = ui->gvPaletteManager->paletteData();
@@ -68,35 +71,11 @@ void NESMetaspriteTool::savePalette()
     file.close();
 }
 
-void NESMetaspriteTool::openASMMetaspriteBank()
+void NESMetaspriteTool::openMetaspriteBank()
 {
-    QString filename = QFileDialog::getOpenFileName(this, ui->actionLoadMetaspriteBankASM->text(), "", "*.*");
-    QFile file(filename);
-    if(!file.open(QIODevice::ReadOnly|QIODevice::Text)) {
-        QMessageBox::warning(this,tr("Error opening file"),tr("Could not open file. Please make sure you have the necessary permissions to access files in this location."),QMessageBox::NoButton);
-        return;
-    }
-    quint8 labelnum = 0;
-    QVector<QByteArray> inputbytes(256);
-    while(!file.atEnd()) {
-        QString line = file.readLine();
-        QRegularExpression label("^(.*?)_(\\d+?):$");
-        QRegularExpressionMatch labelmatch = label.match(line);
-        if(labelmatch.hasMatch()) {
-            if(ui->lineASMLabel->text().isEmpty())    ui->lineASMLabel->setText(labelmatch.captured(1));
-            labelnum = labelmatch.captured(2).toInt();
-        }
-        QRegularExpression bytes(",?0x([0-9a-fA-F]+)");
-        QRegularExpressionMatchIterator bytesiter = bytes.globalMatch(line);
-        QByteArray bytesin;
-        while(bytesiter.hasNext()) {
-            QRegularExpressionMatch bytesmatch = bytesiter.next();
-            bytesin.append(quint8(bytesmatch.captured(1).toUInt(new bool(),16)));
-        }
-        inputbytes.replace(labelnum,bytesin);
-    }
-//    ui->gvMetasprite->importMetaspriteBinaryData(inputbytes);
-    file.close();
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionLoadMetaspriteBank->text(), "", "*.*");
+    if(filename.isEmpty())  return;
+    emit(metaspriteFileOpened(filename));
 }
 
 void NESMetaspriteTool::saveASMMetaspriteBank()
@@ -104,7 +83,7 @@ void NESMetaspriteTool::saveASMMetaspriteBank()
     QString filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBankASM->text(), "", "*.*");
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
-        QMessageBox::warning(this,tr("Error saving file"),tr("Could not save file. Please make sure you have the necessary permissions to save files to this location."),QMessageBox::NoButton);
+        QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
         return;
     }
     QVector<QByteArray> bindata = ui->gvMetasprite->createMetaspriteBinaryData();
@@ -132,7 +111,7 @@ void NESMetaspriteTool::saveBinaryMetaspriteBank()
     QString filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBankBinary->text(), "", "*.*");
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
-        QMessageBox::warning(this,tr("Error saving file"),tr("Could not save file. Please make sure you have the necessary permissions to save files to this location."),QMessageBox::NoButton);
+        QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
         return;
     }
     QVector<QByteArray> bindata = ui->gvMetasprite->createMetaspriteBinaryData();

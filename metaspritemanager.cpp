@@ -19,11 +19,11 @@ MetaspriteManager::~MetaspriteManager()
 
 
 
-//void MetaspriteManager::dropEvent(QDropEvent *e)
-//{
-//    e->acceptProposedAction();
-//    QMessageBox::information(this,"Dropped","Dropped.",QMessageBox::NoButton);
-//}
+void MetaspriteManager::dropEvent(QDropEvent *e)
+{
+    e->acceptProposedAction();
+    this->openMetaspriteFile(e->mimeData()->urls()[0].toLocalFile());
+}
 
 void MetaspriteManager::mousePressEvent(QMouseEvent *e)
 {
@@ -37,7 +37,9 @@ void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
 {
     QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
     foreach(QGraphicsItem *i, sel) {
-        i->setPos((qRound(i->pos().x()/MSM_SCALE)*MSM_SCALE),(qRound(i->pos().y()/MSM_SCALE)*MSM_SCALE));
+//        i->setPos((qRound(i->pos().x()/MSM_SCALE)*MSM_SCALE),(qRound(i->pos().y()/MSM_SCALE)*MSM_SCALE));
+        qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealX(qRound(i->pos().x()/MSM_SCALE));
+        qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealY(qRound(i->pos().y()/MSM_SCALE));
     }
 
     if(e->button()==Qt::MiddleButton)
@@ -136,7 +138,9 @@ void MetaspriteManager::addNewTile(QPointF p, QImage t, quint8 i, quint8 c)
     MetaspriteTileItem *pi = new MetaspriteTileItem(t);
     pi->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
     pi->setScale(MSM_SCALE);
-    pi->setPos((qRound(p.x()/MSM_SCALE)*MSM_SCALE),(qRound(p.y()/MSM_SCALE)*MSM_SCALE));
+//    pi->setPos((qRound(p.x()/MSM_SCALE)*MSM_SCALE),(qRound(p.y()/MSM_SCALE)*MSM_SCALE));
+    pi->setRealX(qRound(p.x()/MSM_SCALE));
+    pi->setRealY(qRound(p.y()/MSM_SCALE));
     pi->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
     pi->setTile(i);
     pi->setPalette(c);
@@ -229,24 +233,98 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
     return bindata;
 }
 
+
+
+void MetaspriteManager::openMetaspriteFile(QString filename)
+{
+    QFile file(filename);
+    if(!file.open(QIODevice::ReadOnly|QIODevice::Text)) {
+        QMessageBox::warning(this,tr(MSM_FILE_OPEN_ERROR_TITLE),tr(MSM_FILE_OPEN_ERROR_BODY),QMessageBox::NoButton);
+        return;
+    }
+    quint8 labelnum = 0;
+    QVector<QByteArray> inputbytes(256);
+    QString labelname;
+    while(!file.atEnd()) {
+        QString line = file.readLine();
+        QRegularExpression label("^(.*?)_(\\d+?):$");
+        QRegularExpressionMatch labelmatch = label.match(line);
+        if(labelmatch.hasMatch()) {
+            if(labelname.isEmpty()) {
+                labelname = labelmatch.captured(1);
+                emit(this->setMetaspriteLabel(labelname));
+            }
+            labelnum = labelmatch.captured(2).toInt();
+        }
+        QRegularExpression bytes(",?0x([0-9a-fA-F]+)");
+        QRegularExpressionMatchIterator bytesiter = bytes.globalMatch(line);
+        QByteArray bytesin;
+        while(bytesiter.hasNext()) {
+            QRegularExpressionMatch bytesmatch = bytesiter.next();
+            bytesin.append(quint8(bytesmatch.captured(1).toUInt(NULL,16)));
+        }
+        inputbytes.replace(labelnum,bytesin);
+    }
+    if(!labelname.isEmpty()) {
+        foreach(QByteArray test, inputbytes) {
+            if(!test.isEmpty()) {
+                this->importMetaspriteBinaryData(inputbytes);
+                file.close();
+                return;
+            }
+        }
+    }
+
+    file.reset();
+    QByteArray byteblob = file.readAll(), bytesin;
+    QByteArray::iterator i = byteblob.begin();
+    int loopcount = 0;
+    while(i!=byteblob.end()) {
+        bytesin.append(*i);
+        for(int count=*(i++); count>0; count--) {
+            for(int j=0; j<4; j++) {
+                bytesin.append(*(i++));
+            }
+        }
+        inputbytes.replace(loopcount++,bytesin);
+    }
+    this->importMetaspriteBinaryData(inputbytes);
+    file.close();
+}
+
 void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
 {
     for(int j=0; j<256; j++) {
         QByteArray bin = bindata.at(j);
-        quint8 count = bin.at(0);
         QList<MetaspriteTileItem*> mslist = this->vMetaspriteStages.at(j);
-        for(int i=0; i<count; i++) {
+        mslist.clear();
+        QByteArray::iterator biniter = bin.begin();
+        for(int count = *biniter; count>0; count--) {
+            int oamy = *(++biniter);
+            quint8 oamindex = *(++biniter);
+            quint8 oamattr = *(++biniter);
+            int oamx = *(++biniter);
             MetaspriteTileItem *ms = new MetaspriteTileItem();
+            ms->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+            ms->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
             ms->setScale(MSM_SCALE);
-            ms->setRealX(bin.at((4*i)+3));
-            ms->setRealY(bin.at(4*i));
-            ms->setTile(bin.at((4*i)+1));
-            ms->setPalette(bin.at((4*i)+2)&0x03);
-            ms->flipHorizontal((bin.at((4*i)+2)&0x40)?true:false);
-            ms->flipVertical((bin.at((4*i)+2)&0x80)?true:false);
+            ms->setRealX(oamx);
+            ms->setRealY(oamy);
+            ms->setTile(oamindex);
+            ms->setPalette(oamattr&0x03);
+            ms->flipHorizontal((oamattr&0x40)?true:false);
+            ms->flipVertical((oamattr&0x80)?true:false);
             emit(this->getTileUpdate(ms));
             emit(this->getPaletteUpdate(ms));
             mslist.append(ms);
         }
+        this->vMetaspriteStages.replace(j,mslist);
+    }
+
+    QList<MetaspriteTileItem*> store = this->vMetaspriteStages.at(this->iMetaspriteStage);
+    this->gsMetasprite->clear();
+    this->drawGridLines();
+    foreach(MetaspriteTileItem *ms, store) {
+        this->gsMetasprite->addItem(ms);
     }
 }
