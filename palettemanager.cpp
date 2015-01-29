@@ -57,7 +57,7 @@ bool PaletteManager::drawFullPaletteColours(QString palfile)
         }
     }
 
-    this->generateNewSpritePalettes();
+    this->generateNewSpritePalettes(true);
 
     return true;
 }
@@ -88,7 +88,7 @@ bool PaletteManager::setPaletteData(QByteArray in)
             this->iSpritePaletteIndices[i][j] = (in.at(j+(4*i))&0x3F);
         }
     }
-    this->generateNewSpritePalettes();
+    this->generateNewSpritePalettes(false);
     return true;
 }
 
@@ -188,7 +188,7 @@ QVector<QRgb> PaletteManager::createPaletteColours()
     return p;
 }
 
-void PaletteManager::generateNewSpritePalettes()
+void PaletteManager::generateNewSpritePalettes(bool changeselected)
 {
     for(int spritepal=0; spritepal<4; spritepal++) {
         this->gsSpritePaletteScene[spritepal]->clear();
@@ -206,7 +206,7 @@ void PaletteManager::generateNewSpritePalettes()
     emit(newSpritePalette2(this->gsSpritePaletteScene[2]));
     emit(newSpritePalette3(this->gsSpritePaletteScene[3]));
 
-    emit(newSpriteColours(this->createPaletteColours(), this->iSpritePaletteSelected));
+    emit(newSpriteColours(this->createPaletteColours(), this->iSpritePaletteSelected, changeselected));
 }
 
 void PaletteManager::setNewSpritePalette(MetaspriteTileItem *t)
@@ -221,5 +221,5 @@ void PaletteManager::setNewSpritePalette(MetaspriteTileItem *t)
 
 void PaletteManager::sendRequestedPaletteUpdate(quint8 p)
 {
-    emit(newSpriteColours(this->createPaletteColours(), p));
+    emit(newSpriteColours(this->createPaletteColours(), p, true));
 }

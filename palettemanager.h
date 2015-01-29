@@ -30,7 +30,7 @@ signals:
     void newSpritePalette1(QGraphicsScene*);
     void newSpritePalette2(QGraphicsScene*);
     void newSpritePalette3(QGraphicsScene*);
-    void newSpriteColours(QVector<QRgb>,quint8);
+    void newSpriteColours(QVector<QRgb>,quint8,bool);
 
 public slots:
     void setPaletteFile(QString);
@@ -38,7 +38,7 @@ public slots:
 
     void spritePaletteSelected(QString, quint8);
     QVector<QRgb> createPaletteColours();
-    void generateNewSpritePalettes();
+    void generateNewSpritePalettes(bool changeselected = false);
     void setNewSpritePalette(MetaspriteTileItem*);
     void sendRequestedPaletteUpdate(quint8);
 

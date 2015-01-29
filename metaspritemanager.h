@@ -38,7 +38,7 @@ signals:
     void setMetaspriteLabel(QString);
 
 public slots:
-    void setNewSpriteColours(QVector<QRgb>,quint8);
+    void setNewSpriteColours(QVector<QRgb>,quint8,bool);
     void addNewTile(QPointF,QImage,quint8,quint8);
     void deleteSelectedTiles();
     void flipHorizontal();

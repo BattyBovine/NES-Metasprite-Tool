@@ -9,8 +9,8 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 
     this->installEventFilter(this);
 
-    connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8)),ui->gvTileset,SLOT(setNewSpriteColours(QVector<QRgb>,quint8)));
-    connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8)),ui->gvMetasprite,SLOT(setNewSpriteColours(QVector<QRgb>,quint8)));
+    connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8,bool)),ui->gvTileset,SLOT(setNewSpriteColours(QVector<QRgb>,quint8)));
+    connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8,bool)),ui->gvMetasprite,SLOT(setNewSpriteColours(QVector<QRgb>,quint8,bool)));
 
     QStringList palettes;
     QDirIterator it(":", QDirIterator::Subdirectories);

@@ -110,7 +110,7 @@ void MetaspriteManager::drawGridLines()
     this->gsMetasprite->addLine(0,-128,0,128,thickdashes);
 }
 
-void MetaspriteManager::setNewSpriteColours(QVector<QRgb> c, quint8 p)
+void MetaspriteManager::setNewSpriteColours(QVector<QRgb> c, quint8 p, bool s)
 {
     this->gsMetasprite->setBackgroundBrush(QBrush(QColor(c.at(0))));
 
@@ -124,12 +124,14 @@ void MetaspriteManager::setNewSpriteColours(QVector<QRgb> c, quint8 p)
                                                                    currentpal);
     }
 
-    items = this->gsMetasprite->selectedItems();
-    foreach(QGraphicsItem *i, items) {
-        ((MetaspriteTileItem*)i)->setNewColours(c.at((4*p)+1),
-                                                c.at((4*p)+2),
-                                                c.at((4*p)+3),
-                                                p);
+    if(s) {
+        items = this->gsMetasprite->selectedItems();
+        foreach(QGraphicsItem *i, items) {
+            ((MetaspriteTileItem*)i)->setNewColours(c.at((4*p)+1),
+                                                    c.at((4*p)+2),
+                                                    c.at((4*p)+3),
+                                                    p);
+        }
     }
 }
 
