@@ -759,6 +759,8 @@
    <header>spritelistwidget.h</header>
    <slots>
     <signal>deleteSelectedItems()</signal>
+    <signal>moveSelectedUp()</signal>
+    <signal>moveSelectedDown()</signal>
    </slots>
   </customwidget>
  </customwidgets>
@@ -1289,6 +1291,38 @@
     <hint type="destinationlabel">
      <x>111</x>
      <y>310</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listSprites</sender>
+   <signal>moveSelectedUp()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>moveSelectedUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>295</x>
+     <y>193</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>235</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listSprites</sender>
+   <signal>moveSelectedDown()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>moveSelectedDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>293</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>216</x>
+     <y>210</y>
     </hint>
    </hints>
   </connection>

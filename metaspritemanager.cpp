@@ -77,6 +77,14 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
     case Qt::Key_4:
         emit(requestPaletteUpdates(e->key()-Qt::Key_1));
         break;
+    case Qt::Key_PageUp:
+        this->moveSelectedUp();
+        break;
+    case Qt::Key_PageDown:
+        this->moveSelectedDown();
+        break;
+    default:
+        QGraphicsView::keyPressEvent(e);
     }
 
     emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));

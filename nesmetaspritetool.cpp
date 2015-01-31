@@ -55,6 +55,7 @@ void NESMetaspriteTool::openPalette()
 void NESMetaspriteTool::savePalette()
 {
     QString filename = QFileDialog::getSaveFileName(this, ui->actionSavePalette->text(), "", "*.pal");
+    if(filename.isEmpty())  return;
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
         QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
@@ -75,6 +76,7 @@ void NESMetaspriteTool::openMetaspriteBank()
 void NESMetaspriteTool::saveASMMetaspriteBank()
 {
     QString filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBankASM->text(), "", "*.*");
+    if(filename.isEmpty())  return;
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
         QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
@@ -103,6 +105,7 @@ void NESMetaspriteTool::saveASMMetaspriteBank()
 void NESMetaspriteTool::saveBinaryMetaspriteBank()
 {
     QString filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBankBinary->text(), "", "*.*");
+    if(filename.isEmpty())  return;
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
         QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);

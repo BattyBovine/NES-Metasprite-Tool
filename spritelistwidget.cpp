@@ -13,16 +13,23 @@ SpriteListWidget::~SpriteListWidget()
 
 void SpriteListWidget::keyPressEvent(QKeyEvent *e)
 {
+    QList<QListWidgetItem*> items = this->selectedItems();
     switch(e->key()) {
     case Qt::Key_Delete:
-        QList<QListWidgetItem*> items = this->selectedItems();
         foreach(QListWidgetItem* i, items) {
             this->removeItemWidget(i);
         }
         emit(this->deleteSelectedItems());
         break;
+    case Qt::Key_PageUp:
+        emit(this->moveSelectedUp());
+        break;
+    case Qt::Key_PageDown:
+        emit(this->moveSelectedDown());
+        break;
+    default:
+        QListWidget::keyPressEvent(e);
     }
-    QListWidget::keyPressEvent(e);
 }
 
 

@@ -15,6 +15,8 @@ public:
     ~SpriteListWidget();
 
 signals:
+    void moveSelectedUp();
+    void moveSelectedDown();
     void deleteSelectedItems();
 
 public slots:
