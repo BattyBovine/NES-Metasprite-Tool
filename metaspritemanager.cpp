@@ -347,6 +347,8 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
         }
     }
 
+    QFileInfo fileinfo(filename);
+    emit(this->setMetaspriteLabel(fileinfo.baseName()));
     file.reset();
     QByteArray byteblob = file.readAll(), bytesin;
     QByteArray::iterator i = byteblob.begin();
