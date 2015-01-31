@@ -20,7 +20,7 @@
 #define MSM_FILE_OPEN_ERROR_BODY    "Could not open metasprite file. Please make sure you have the necessary permissions to access files in this location."
 
 #define MSM_SCALE 3
-#define MSM_TILESIZE (8*MSM_SCALE)
+#define MSM_TILESIZE (MSTI_TILEWIDTH*MSM_SCALE)
 
 class MetaspriteManager : public QGraphicsView
 {
@@ -37,12 +37,16 @@ signals:
 
     void setMetaspriteLabel(QString);
 
+    void updateList(QList<QGraphicsItem*>,QList<QGraphicsItem*>);
+
 public slots:
     void setNewSpriteColours(QVector<QRgb>,quint8,bool);
     void addNewTile(QPointF,QImage,quint8,quint8);
-    void deleteSelectedTiles();
+    void moveSelectedUp();
+    void moveSelectedDown();
     void flipHorizontal();
     void flipVertical();
+    void deleteSelectedTiles();
 
     void updateTiles();
     void swapMetaspriteStage(int);

@@ -77,15 +77,23 @@ bool PaletteManager::drawSelectionBox(QGraphicsScene *s, QPointF p)
     return true;
 }
 
-bool PaletteManager::setPaletteData(QByteArray in)
+bool PaletteManager::setPaletteData(QString filename)
 {
-    if(in.size()<16) {
-        QMessageBox::critical(this,tr("Error reading palette data"),tr("The file is too short to be palette data."),QMessageBox::NoButton);
+    QFile file(filename);
+    if(!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::warning(this,tr(PM_FILE_OPEN_ERROR_TITLE),tr(PM_FILE_OPEN_ERROR_BODY),QMessageBox::NoButton);
+        return false;
+    }
+    QByteArray pal = file.readAll();
+    file.close();
+
+    if(pal.size()!=16) {
+        QMessageBox::critical(this,tr(PM_FILE_OPEN_ERROR_TITLE),tr("The file is too ")+((pal.size()<16)?tr("short"):tr("long"))+tr(" to be palette data."),QMessageBox::NoButton);
         return false;
     }
     for(int i=0; i<4; i++) {
         for(int j=0; j<4; j++) {
-            this->iSpritePaletteIndices[i][j] = (in.at(j+(4*i))&0x3F);
+            this->iSpritePaletteIndices[i][j] = (pal.at(j+(4*i))&0x3F);
         }
     }
     this->generateNewSpritePalettes(false);
@@ -111,21 +119,7 @@ void PaletteManager::dropEvent(QDropEvent *e)
 
     foreach(QUrl url, e->mimeData()->urls()) {
         if(url.toLocalFile().endsWith(".pal",Qt::CaseInsensitive)) {
-            QFile file(url.toLocalFile());
-            if(!file.open(QIODevice::ReadOnly)) {
-                QMessageBox::critical(this,tr("Error opening file"),tr("The file could not be opened."),QMessageBox::NoButton);
-                return;
-            }
-            if(file.size() != 0x10) {
-                QMessageBox::warning(this,
-                                     tr("File too ")+(file.size()<0x10?tr("small"):tr("large")),
-                                     tr("The selected file is too ") + (file.size()<0x10?tr("small"):tr("large")) + tr(" to be a palette file."),
-                                     QMessageBox::NoButton);
-                return;
-            }
-            QByteArray pal = file.readAll();
-            file.close();
-            this->setPaletteData(pal);
+            this->setPaletteData(url.toLocalFile());
             return;
         }
     }

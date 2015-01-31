@@ -122,7 +122,17 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QListWidget" name="listSprites"/>
+          <widget class="SpriteListWidget" name="listSprites">
+           <property name="font">
+            <font>
+             <family>Courier</family>
+             <kerning>false</kerning>
+            </font>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::ExtendedSelection</enum>
+           </property>
+          </widget>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -739,6 +749,16 @@
     <slot>swapMetaspriteStage(int)</slot>
     <slot>updateTiles()</slot>
     <slot>openMetaspriteFile(QString)</slot>
+    <slot>moveSelectedUp()</slot>
+    <slot>moveSelectedDown()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>SpriteListWidget</class>
+   <extends>QListWidget</extends>
+   <header>spritelistwidget.h</header>
+   <slots>
+    <signal>deleteSelectedItems()</signal>
    </slots>
   </customwidget>
  </customwidgets>
@@ -1221,6 +1241,54 @@
     <hint type="destinationlabel">
      <x>69</x>
      <y>58</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listSprites</sender>
+   <signal>deleteSelectedItems()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>deleteSelectedTiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>306</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>257</x>
+     <y>134</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnMoveUp</sender>
+   <signal>clicked()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>moveSelectedUp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>289</x>
+     <y>492</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>92</x>
+     <y>326</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnMoveDown</sender>
+   <signal>clicked()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>moveSelectedDown()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>319</x>
+     <y>481</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>111</x>
+     <y>310</y>
     </hint>
    </hints>
   </connection>

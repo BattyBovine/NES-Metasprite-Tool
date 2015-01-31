@@ -11,6 +11,7 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 
     connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8,bool)),ui->gvTileset,SLOT(setNewSpriteColours(QVector<QRgb>,quint8)));
     connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8,bool)),ui->gvMetasprite,SLOT(setNewSpriteColours(QVector<QRgb>,quint8,bool)));
+    connect(ui->gvMetasprite,SIGNAL(updateList(QList<QGraphicsItem*>,QList<QGraphicsItem*>)),ui->listSprites,SLOT(updateItems(QList<QGraphicsItem*>,QList<QGraphicsItem*>)));
 
     QStringList palettes;
     QDirIterator it(":", QDirIterator::Subdirectories);
@@ -48,14 +49,7 @@ void NESMetaspriteTool::openPalette()
 {
     QString filename = QFileDialog::getOpenFileName(this, ui->actionLoadPalette->text(), "", "*.pal");
     if(filename.isEmpty())  return;
-    QFile file(filename);
-    if(!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::warning(this,tr(FILE_OPEN_ERROR_TITLE),tr(FILE_OPEN_ERROR_BODY),QMessageBox::NoButton);
-        return;
-    }
-    QByteArray pal = file.readAll();
-    file.close();
-    ui->gvPaletteManager->setPaletteData(pal);
+    ui->gvPaletteManager->setPaletteData(filename);
 }
 
 void NESMetaspriteTool::savePalette()
