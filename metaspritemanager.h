@@ -8,6 +8,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QDragLeaveEvent>
+#include <QFileInfo>
 #include <QMouseEvent>
 #include <QMimeData>
 #include <QMessageBox>
