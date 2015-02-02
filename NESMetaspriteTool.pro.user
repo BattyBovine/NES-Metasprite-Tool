@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.3.0, 2015-01-31T18:00:33. -->
+<!-- Written by QtCreator 3.3.0, 2015-02-01T15:31:16. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -131,6 +131,15 @@
     <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">../build/MinGW</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">false</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.Arguments">-f *.rc</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.Command">rm</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.WorkingDirectory">%{buildDir}</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Custom Process Step</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.ProcessStep</value>
+     </valuemap>
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">qmake</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
@@ -141,7 +150,7 @@
       <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
       <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">false</value>
      </valuemap>
-     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.2">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Make</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
@@ -151,7 +160,7 @@
       <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
       <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
      </valuemap>
-     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">3</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Build</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Build</value>
@@ -168,7 +177,7 @@
       <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
-      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">false</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.Arguments">-f Makefile* *.rc ui_* object_script.*</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.Command">rm</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.WorkingDirectory">%{buildDir}</value>

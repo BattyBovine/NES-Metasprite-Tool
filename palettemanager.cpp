@@ -15,7 +15,7 @@ PaletteManager::PaletteManager(QWidget *parent) : QGraphicsView(parent)
         this->iSpritePaletteIndices[i][0] = 0x0F;
         this->iSpritePaletteIndices[i][1] = 0x00;
         this->iSpritePaletteIndices[i][2] = 0x10;
-        this->iSpritePaletteIndices[i][3] = 0x20;
+        this->iSpritePaletteIndices[i][3] = 0x30;
     }
     this->iSpritePaletteSelected = this->iSpritePaletteSelectedIndex = 0;
 
