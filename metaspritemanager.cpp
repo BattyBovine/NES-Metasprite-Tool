@@ -354,7 +354,7 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
     while(i!=byteblob.end()) {
         bytesin.append(*i);
         if((i+((*i)*4))>=byteblob.end()) {
-            QMessageBox::critical(this,"Invalid Data","Error reading metasprite data: Unexpected end of file",QMessageBox::NoButton);
+            QMessageBox::critical(this,tr(MSM_EOF_ERROR_TITLE),tr(MSM_EOF_ERROR_BODY),QMessageBox::NoButton);
             return;
         }
         for(int count=*(i++); count>0; count--) {
@@ -379,6 +379,10 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
         mslist.clear();
         QByteArray::iterator biniter = bin.begin();
         for(int count = *biniter; count>0; count--) {
+            if((biniter+(count*4))>=bin.end()) {
+                QMessageBox::critical(this,tr(MSM_COUNT_ERROR_TITLE),tr(MSM_COUNT_ERROR_BODY),QMessageBox::NoButton);
+                return;
+            }
             int oamy = *(++biniter);
             quint8 oamindex = *(++biniter);
             quint8 oamattr = *(++biniter);

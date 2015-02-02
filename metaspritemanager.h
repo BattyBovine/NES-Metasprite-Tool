@@ -19,6 +19,10 @@
 
 #define MSM_FILE_OPEN_ERROR_TITLE   "Error opening metasprite file"
 #define MSM_FILE_OPEN_ERROR_BODY    "Could not open metasprite file. Please make sure you have the necessary permissions to access files in this location."
+#define MSM_EOF_ERROR_TITLE         "Invalid data"
+#define MSM_EOF_ERROR_BODY          "Error reading metasprite data: Unexpected end of file."
+#define MSM_COUNT_ERROR_TITLE       "Invalid data"
+#define MSM_COUNT_ERROR_BODY        "Error reading metasprite data: Sprite counts do not match length of data."
 
 #define MSM_SCALE 3
 #define MSM_TILESIZE (MSTI_TILEWIDTH*MSM_SCALE)
