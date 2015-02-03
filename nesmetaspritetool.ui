@@ -637,14 +637,15 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNewMetaspriteBank"/>
+    <addaction name="actionLoadMetaspriteBank"/>
+    <addaction name="actionSaveMetaspriteBankASM"/>
+    <addaction name="actionSaveMetaspriteBankBinary"/>
+    <addaction name="separator"/>
     <addaction name="actionOpenCHR"/>
     <addaction name="separator"/>
     <addaction name="actionLoadPalette"/>
     <addaction name="actionSavePalette"/>
-    <addaction name="separator"/>
-    <addaction name="actionLoadMetaspriteBank"/>
-    <addaction name="actionSaveMetaspriteBankASM"/>
-    <addaction name="actionSaveMetaspriteBankBinary"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -688,6 +689,11 @@
   <action name="actionLoadMetaspriteBankBinary">
    <property name="text">
     <string>Open Metasprite Bank (Binary)</string>
+   </property>
+  </action>
+  <action name="actionNewMetaspriteBank">
+   <property name="text">
+    <string>New Metasprite Bank</string>
    </property>
   </action>
  </widget>
@@ -1326,6 +1332,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionNewMetaspriteBank</sender>
+   <signal>triggered()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>newMetaspriteBank()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>389</x>
+     <y>260</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -1337,5 +1359,6 @@
   <slot>saveASMMetaspriteBank()</slot>
   <slot>saveBinaryMetaspriteBank()</slot>
   <slot>openMetaspriteBank()</slot>
+  <slot>newMetaspriteBank()</slot>
  </slots>
 </ui>

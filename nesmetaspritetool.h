@@ -31,13 +31,15 @@ signals:
     void metaspriteFileOpened(QString);
 
 private slots:
-    void setNewPaletteFile(QString);
-    void openCHR();
-    void openPalette();
-    void savePalette();
+    void newMetaspriteBank();
     void openMetaspriteBank();
     void saveASMMetaspriteBank();
     void saveBinaryMetaspriteBank();
+    void openCHR();
+    void openPalette();
+    void savePalette();
+
+    void setNewPaletteFile(QString);
 
 private:
     Ui::NESMetaspriteTool *ui;

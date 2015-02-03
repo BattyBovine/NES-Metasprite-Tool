@@ -413,3 +413,14 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
 
     emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
 }
+
+void MetaspriteManager::clearAllMetaspriteData()
+{
+    for(int i=0; i<this->vMetaspriteStages.size(); i++) {
+        this->vMetaspriteStages.replace(i,QList<MetaspriteTileItem*>());
+    }
+    this->gsMetasprite->clear();
+    this->drawGridLines();
+
+    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+}

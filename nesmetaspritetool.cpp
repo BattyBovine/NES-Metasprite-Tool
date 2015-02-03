@@ -33,37 +33,20 @@ NESMetaspriteTool::~NESMetaspriteTool()
 
 
 
-void NESMetaspriteTool::setNewPaletteFile(QString pal)
+void NESMetaspriteTool::newMetaspriteBank()
 {
-    ui->gvPaletteManager->drawFullPaletteColours(pal);
-}
-
-void NESMetaspriteTool::openCHR()
-{
-    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenCHR->text(), "", "*.chr");
-    if(filename.isEmpty()) return;
-    emit chrFileOpened(filename);
-}
-
-void NESMetaspriteTool::openPalette()
-{
-    QString filename = QFileDialog::getOpenFileName(this, ui->actionLoadPalette->text(), "", "*.pal");
-    if(filename.isEmpty())  return;
-    ui->gvPaletteManager->setPaletteData(filename);
-}
-
-void NESMetaspriteTool::savePalette()
-{
-    QString filename = QFileDialog::getSaveFileName(this, ui->actionSavePalette->text(), "", "*.pal");
-    if(filename.isEmpty())  return;
-    QFile file(filename);
-    if(!file.open(QIODevice::WriteOnly)) {
-        QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
-        return;
+    int retval = QMessageBox::warning(this,"Clear current metasprite data?",
+                                      "All unsaved metasprite data will be lost. Are you sure you wish to create a new metasprite bank?",
+                                      QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
+                                      QMessageBox::Cancel);
+    switch(retval) {
+    case QMessageBox::Save:
+        this->saveASMMetaspriteBank();
+        this->saveBinaryMetaspriteBank();
+    case QMessageBox::Discard:
+        ui->gvMetasprite->clearAllMetaspriteData();
+        break;
     }
-    QByteArray pal = ui->gvPaletteManager->paletteData();
-    file.write(pal);
-    file.close();
 }
 
 void NESMetaspriteTool::openMetaspriteBank()
@@ -132,4 +115,39 @@ void NESMetaspriteTool::saveBinaryMetaspriteBank()
         if(!bin.isEmpty())  file.write(bin);
     }
     file.close();
+}
+
+void NESMetaspriteTool::openCHR()
+{
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenCHR->text(), "", "*.chr");
+    if(filename.isEmpty()) return;
+    emit chrFileOpened(filename);
+}
+
+void NESMetaspriteTool::openPalette()
+{
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionLoadPalette->text(), "", "*.pal");
+    if(filename.isEmpty())  return;
+    ui->gvPaletteManager->setPaletteData(filename);
+}
+
+void NESMetaspriteTool::savePalette()
+{
+    QString filename = QFileDialog::getSaveFileName(this, ui->actionSavePalette->text(), "", "*.pal");
+    if(filename.isEmpty())  return;
+    QFile file(filename);
+    if(!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
+        return;
+    }
+    QByteArray pal = ui->gvPaletteManager->paletteData();
+    file.write(pal);
+    file.close();
+}
+
+
+
+void NESMetaspriteTool::setNewPaletteFile(QString pal)
+{
+    ui->gvPaletteManager->drawFullPaletteColours(pal);
 }

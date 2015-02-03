@@ -59,6 +59,7 @@ public slots:
     QVector<QByteArray> createMetaspriteBinaryData();
     void openMetaspriteFile(QString);
     void importMetaspriteBinaryData(QVector<QByteArray>);
+    void clearAllMetaspriteData();
 
 protected:
     void dragMoveEvent(QDragMoveEvent*e){e->accept();}
