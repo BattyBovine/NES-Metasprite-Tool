@@ -335,7 +335,7 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
             QRegularExpressionMatch bytesmatch = bytesiter.next();
             bytesin.append(quint8(bytesmatch.captured(1).toUInt(NULL,16)));
         }
-        inputbytes.replace(labelnum,bytesin);
+        if(!bytesin.isEmpty())  inputbytes.replace(labelnum,bytesin);
     }
     if(!labelname.isEmpty()) {
         foreach(QByteArray test, inputbytes) {
