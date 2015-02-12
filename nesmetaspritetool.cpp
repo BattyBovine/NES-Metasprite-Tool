@@ -82,9 +82,9 @@ void NESMetaspriteTool::saveASMMetaspriteBank()
 
             databytes += "\n";
             databytes += countedlabel+":\n\t.byte ";
-            databytes += QString("%1").arg(quint8(bin.at(0)),2,16,QChar('0')).toUpper().prepend("0x");
+            databytes += QString("%1").arg(quint8(bin.at(0)),2,16,QChar('0')).toUpper().prepend("$");
             for(int i=1; i<bin.length(); i++) {
-                databytes += QString("%1").arg(quint8(bin.at(i)),2,16,QChar('0')).toUpper().prepend(",0x");
+                databytes += QString("%1").arg(quint8(bin.at(i)),2,16,QChar('0')).toUpper().prepend(",$");
             }
         }
     }

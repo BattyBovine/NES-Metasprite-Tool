@@ -328,7 +328,7 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
             }
             labelnum = labelmatch.captured(2).toInt();
         }
-        QRegularExpression bytes(",?0x([0-9a-fA-F]+)");
+        QRegularExpression bytes(",?\\$([0-9a-fA-F]+)");
         QRegularExpressionMatchIterator bytesiter = bytes.globalMatch(line);
         QByteArray bytesin;
         while(bytesiter.hasNext()) {
