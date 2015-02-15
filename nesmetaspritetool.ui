@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>779</width>
-    <height>522</height>
+    <width>715</width>
+    <height>528</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>779</width>
-    <height>522</height>
-   </size>
   </property>
   <property name="maximumSize">
    <size>
@@ -29,7 +23,7 @@
    <string>NES Metasprite Tool</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <layout class="QHBoxLayout" name="horizontalLayout_8">
     <item>
      <widget class="QGroupBox" name="groupBox">
       <property name="title">
@@ -59,14 +53,14 @@
           <widget class="MetaspriteManager" name="gvMetasprite">
            <property name="minimumSize">
             <size>
-             <width>256</width>
-             <height>256</height>
+             <width>192</width>
+             <height>192</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>256</width>
-             <height>256</height>
+             <width>192</width>
+             <height>192</height>
             </size>
            </property>
            <property name="frameShape">
@@ -78,19 +72,40 @@
            <property name="horizontalScrollBarPolicy">
             <enum>Qt::ScrollBarAlwaysOff</enum>
            </property>
+           <property name="sizeAdjustPolicy">
+            <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+           </property>
           </widget>
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
-            <widget class="QLabel" name="labelMetaspriteSlider">
-             <property name="text">
-              <string>0</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <item>
+              <widget class="QPushButton" name="btnPrevMetasprite">
+               <property name="text">
+                <string>&lt;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="labelMetaspriteSlider">
+               <property name="text">
+                <string>0</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnNextMetasprite">
+               <property name="text">
+                <string>&gt;</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <widget class="QSlider" name="hsMetaspriteSlider">
@@ -629,7 +644,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>779</width>
+     <width>715</width>
      <height>18</height>
     </rect>
    </property>
@@ -779,12 +794,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>170</x>
-     <y>377</y>
+     <x>192</x>
+     <y>325</y>
     </hint>
     <hint type="destinationlabel">
-     <x>170</x>
-     <y>355</y>
+     <x>129</x>
+     <y>302</y>
     </hint>
    </hints>
   </connection>
@@ -879,8 +894,8 @@
      <y>411</y>
     </hint>
     <hint type="destinationlabel">
-     <x>563</x>
-     <y>355</y>
+     <x>554</x>
+     <y>375</y>
     </hint>
    </hints>
   </connection>
@@ -891,12 +906,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>732</x>
-     <y>419</y>
+     <x>670</x>
+     <y>473</y>
     </hint>
     <hint type="destinationlabel">
-     <x>696</x>
-     <y>369</y>
+     <x>642</x>
+     <y>375</y>
     </hint>
    </hints>
   </connection>
@@ -911,8 +926,8 @@
      <y>415</y>
     </hint>
     <hint type="destinationlabel">
-     <x>555</x>
-     <y>394</y>
+     <x>554</x>
+     <y>400</y>
     </hint>
    </hints>
   </connection>
@@ -923,12 +938,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>721</x>
-     <y>412</y>
+     <x>670</x>
+     <y>473</y>
     </hint>
     <hint type="destinationlabel">
-     <x>699</x>
-     <y>379</y>
+     <x>642</x>
+     <y>400</y>
     </hint>
    </hints>
   </connection>
@@ -939,8 +954,8 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>557</x>
-     <y>358</y>
+     <x>554</x>
+     <y>375</y>
     </hint>
     <hint type="destinationlabel">
      <x>517</x>
@@ -955,12 +970,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>697</x>
-     <y>354</y>
+     <x>642</x>
+     <y>375</y>
     </hint>
     <hint type="destinationlabel">
-     <x>734</x>
-     <y>417</y>
+     <x>670</x>
+     <y>473</y>
     </hint>
    </hints>
   </connection>
@@ -971,8 +986,8 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>557</x>
-     <y>384</y>
+     <x>554</x>
+     <y>400</y>
     </hint>
     <hint type="destinationlabel">
      <x>524</x>
@@ -987,12 +1002,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>690</x>
-     <y>387</y>
+     <x>642</x>
+     <y>400</y>
     </hint>
     <hint type="destinationlabel">
-     <x>712</x>
-     <y>431</y>
+     <x>670</x>
+     <y>473</y>
     </hint>
    </hints>
   </connection>
@@ -1035,8 +1050,8 @@
    <slot>createNewTile(QPointF)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>261</x>
-     <y>148</y>
+     <x>212</x>
+     <y>228</y>
     </hint>
     <hint type="destinationlabel">
      <x>543</x>
@@ -1051,12 +1066,12 @@
    <slot>flipHorizontal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>360</x>
-     <y>488</y>
+     <x>312</x>
+     <y>505</y>
     </hint>
     <hint type="destinationlabel">
-     <x>39</x>
-     <y>318</y>
+     <x>60</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
@@ -1067,12 +1082,12 @@
    <slot>flipVertical()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>403</x>
-     <y>483</y>
+     <x>349</x>
+     <y>505</y>
     </hint>
     <hint type="destinationlabel">
-     <x>57</x>
-     <y>323</y>
+     <x>78</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
@@ -1083,12 +1098,12 @@
    <slot>deleteSelectedTiles()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>429</x>
-     <y>478</y>
+     <x>392</x>
+     <y>505</y>
     </hint>
     <hint type="destinationlabel">
-     <x>74</x>
-     <y>324</y>
+     <x>95</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
@@ -1099,8 +1114,8 @@
    <slot>sendRequestedPaletteUpdate(quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>265</x>
-     <y>322</y>
+     <x>212</x>
+     <y>271</y>
     </hint>
     <hint type="destinationlabel">
      <x>520</x>
@@ -1115,12 +1130,12 @@
    <slot>swapMetaspriteStage(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>250</x>
-     <y>368</y>
+     <x>211</x>
+     <y>325</y>
     </hint>
     <hint type="destinationlabel">
-     <x>250</x>
-     <y>300</y>
+     <x>212</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
@@ -1131,8 +1146,8 @@
    <slot>updateSpriteTile(MetaspriteTileItem*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>270</x>
-     <y>86</y>
+     <x>212</x>
+     <y>166</y>
     </hint>
     <hint type="destinationlabel">
      <x>518</x>
@@ -1151,8 +1166,8 @@
      <y>104</y>
     </hint>
     <hint type="destinationlabel">
-     <x>251</x>
-     <y>109</y>
+     <x>212</x>
+     <y>189</y>
     </hint>
    </hints>
   </connection>
@@ -1163,8 +1178,8 @@
    <slot>setNewSpritePalette(MetaspriteTileItem*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>224</x>
-     <y>316</y>
+     <x>212</x>
+     <y>271</y>
     </hint>
     <hint type="destinationlabel">
      <x>555</x>
@@ -1263,8 +1278,8 @@
      <y>132</y>
     </hint>
     <hint type="destinationlabel">
-     <x>257</x>
-     <y>134</y>
+     <x>212</x>
+     <y>214</y>
     </hint>
    </hints>
   </connection>
@@ -1275,12 +1290,12 @@
    <slot>moveSelectedUp()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>289</x>
-     <y>492</y>
+     <x>242</x>
+     <y>505</y>
     </hint>
     <hint type="destinationlabel">
-     <x>92</x>
-     <y>326</y>
+     <x>113</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
@@ -1291,12 +1306,12 @@
    <slot>moveSelectedDown()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>481</y>
+     <x>269</x>
+     <y>505</y>
     </hint>
     <hint type="destinationlabel">
-     <x>111</x>
-     <y>310</y>
+     <x>132</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
@@ -1311,8 +1326,8 @@
      <y>193</y>
     </hint>
     <hint type="destinationlabel">
-     <x>235</x>
-     <y>193</y>
+     <x>212</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
@@ -1327,8 +1342,8 @@
      <y>207</y>
     </hint>
     <hint type="destinationlabel">
-     <x>216</x>
-     <y>210</y>
+     <x>212</x>
+     <y>271</y>
     </hint>
    </hints>
   </connection>
@@ -1348,6 +1363,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btnPrevMetasprite</sender>
+   <signal>clicked()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>prevMetasprite()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>28</x>
+     <y>281</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>280</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnNextMetasprite</sender>
+   <signal>clicked()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>nextMetasprite()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>308</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -1360,5 +1407,7 @@
   <slot>saveBinaryMetaspriteBank()</slot>
   <slot>openMetaspriteBank()</slot>
   <slot>newMetaspriteBank()</slot>
+  <slot>nextMetasprite()</slot>
+  <slot>prevMetasprite()</slot>
  </slots>
 </ui>

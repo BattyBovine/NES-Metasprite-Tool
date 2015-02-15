@@ -41,6 +41,9 @@ private slots:
 
     void setNewPaletteFile(QString);
 
+    void prevMetasprite();
+    void nextMetasprite();
+
 private:
     Ui::NESMetaspriteTool *ui;
 };

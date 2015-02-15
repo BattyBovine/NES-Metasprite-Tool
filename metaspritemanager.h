@@ -24,7 +24,7 @@
 #define MSM_COUNT_ERROR_TITLE       "Invalid data"
 #define MSM_COUNT_ERROR_BODY        "Error reading metasprite data: Sprite counts do not match length of data."
 
-#define MSM_SCALE 3
+#define MSM_SCALE 2
 #define MSM_TILESIZE (MSTI_TILEWIDTH*MSM_SCALE)
 
 class MetaspriteManager : public QGraphicsView
