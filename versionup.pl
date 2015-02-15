@@ -3,7 +3,7 @@ use strict;
 
 my $major = 0;
 my $minor = 0;
-my $revision = `git rev-list --count HEAD`;
+my $revision = 0;
 my $build = 0;
 
 $revision=~s/^\s+|\s+$//g;
@@ -16,6 +16,9 @@ if(fileno(VERSION_H_READ)) {
 		}
 		if($row=~m|MINOR\s+=\s+(\d+);|) {
 			$minor = $1;
+		}
+		if($row=~m|REVISION\s+=\s+(\d+);|) {
+			$revision = $1;
 		}
 		if($row=~m|BUILD\s+=\s+(\d+);|) {
 			$build = $1;
@@ -31,6 +34,7 @@ foreach my $arg (@ARGV) {
 	}
 }
 
+$revision = `git rev-list --count HEAD`;
 $build++;
 
 open VERSION_H_WRITE, ">version.h" or die $!;
