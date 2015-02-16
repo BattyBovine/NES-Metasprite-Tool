@@ -7,12 +7,6 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    this->installEventFilter(this);
-
-    connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8,bool)),ui->gvTileset,SLOT(setNewSpriteColours(QVector<QRgb>,quint8)));
-    connect(ui->gvPaletteManager,SIGNAL(newSpriteColours(QVector<QRgb>,quint8,bool)),ui->gvMetasprite,SLOT(setNewSpriteColours(QVector<QRgb>,quint8,bool)));
-    connect(ui->gvMetasprite,SIGNAL(updateList(QList<QGraphicsItem*>,QList<QGraphicsItem*>)),ui->listSprites,SLOT(updateItems(QList<QGraphicsItem*>,QList<QGraphicsItem*>)));
-
     QStringList palettes;
     QDirIterator it(":", QDirIterator::Subdirectories);
     while (it.hasNext()) {
@@ -162,4 +156,9 @@ void NESMetaspriteTool::prevMetasprite()
 void NESMetaspriteTool::nextMetasprite()
 {
     ui->hsMetaspriteSlider->setValue(ui->hsMetaspriteSlider->value()+1);
+}
+
+void NESMetaspriteTool::setAnimationLabel(QString s)
+{
+    ui->labelMetaspriteName->setText((!s.isEmpty())?s:"emptylabel");
 }
