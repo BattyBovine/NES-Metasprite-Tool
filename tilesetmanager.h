@@ -18,6 +18,7 @@
 
 #include <QtMath>
 
+#include "nesmetaspritetool.h"
 #include "metaspritetileitem.h"
 
 #define TSM_SCALE 2
@@ -36,7 +37,7 @@ signals:
 
 public slots:
     bool loadCHRBank(QString);
-    void setNewSpriteColours(QVector<QRgb>,quint8);
+    void setNewSpriteColours(PaletteVector,quint8);
 
     void createNewTile(QPointF);
     void updateSpriteTile(MetaspriteTileItem*);

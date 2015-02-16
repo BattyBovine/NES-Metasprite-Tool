@@ -15,6 +15,7 @@
 
 #include <QtMath>
 
+#include "nesmetaspritetool.h"
 #include "metaspritetileitem.h"
 
 #define MSM_FILE_OPEN_ERROR_TITLE   "Error opening metasprite file"
@@ -42,10 +43,10 @@ signals:
 
     void setMetaspriteLabel(QString);
 
-    void updateList(QList<QGraphicsItem*>,QList<QGraphicsItem*>);
+    void updateList(GraphicsItemList,GraphicsItemList);
 
 public slots:
-    void setNewSpriteColours(QVector<QRgb>,quint8,bool);
+    void setNewSpriteColours(PaletteVector,quint8,bool);
     void addNewTile(QPointF,QImage,quint8,quint8);
     void moveSelectedUp();
     void moveSelectedDown();

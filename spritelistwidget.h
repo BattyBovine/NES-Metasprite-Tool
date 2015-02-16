@@ -5,6 +5,7 @@
 #include <QListWidget>
 #include <QKeyEvent>
 
+#include "nesmetaspritetool.h"
 #include "metaspritetileitem.h"
 
 class SpriteListWidget : public QListWidget
@@ -20,7 +21,7 @@ signals:
     void deleteSelectedItems();
 
 public slots:
-    void updateItems(QList<QGraphicsItem*>,QList<QGraphicsItem*>);
+    void updateItems(GraphicsItemList,GraphicsItemList);
 
 private slots:
     void updateListSelection();

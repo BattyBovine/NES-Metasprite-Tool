@@ -138,7 +138,7 @@ bool TilesetManager::loadCHRBank(QString filename)
     return true;
 }
 
-void TilesetManager::setNewSpriteColours(QVector<QRgb> c, quint8 i)
+void TilesetManager::setNewSpriteColours(PaletteVector c, quint8 i)
 {
     this->gsTileset->setBackgroundBrush(QBrush(QColor(c.at(4*i))));
     this->imgTileset.setColor(1,c.at((4*i)+1));

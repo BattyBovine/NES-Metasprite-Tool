@@ -34,7 +34,7 @@ void SpriteListWidget::keyPressEvent(QKeyEvent *e)
 
 
 
-void SpriteListWidget::updateItems(QList<QGraphicsItem*> l, QList<QGraphicsItem*> sl)
+void SpriteListWidget::updateItems(GraphicsItemList l, GraphicsItemList sl)
 {
     this->lItems.clear();
     foreach(QGraphicsItem *i, l) {

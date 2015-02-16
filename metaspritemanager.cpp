@@ -121,7 +121,7 @@ void MetaspriteManager::drawGridLines()
     this->gsMetasprite->addLine(0,-128,0,128,thickdashes);
 }
 
-void MetaspriteManager::setNewSpriteColours(QVector<QRgb> c, quint8 p, bool s)
+void MetaspriteManager::setNewSpriteColours(PaletteVector c, quint8 p, bool s)
 {
     this->gsMetasprite->setBackgroundBrush(QBrush(QColor(c.at(0))));
 

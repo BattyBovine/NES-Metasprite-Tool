@@ -9,6 +9,7 @@
 
 #include <QtMath>
 
+#include "nesmetaspritetool.h"
 #include "metaspritetileitem.h"
 
 #define PM_FILE_OPEN_ERROR_TITLE    "Error opening palette file"
@@ -33,7 +34,7 @@ signals:
     void newSpritePalette1(QGraphicsScene*);
     void newSpritePalette2(QGraphicsScene*);
     void newSpritePalette3(QGraphicsScene*);
-    void newSpriteColours(QVector<QRgb>,quint8,bool);
+    void newSpriteColours(PaletteVector,quint8,bool);
 
 public slots:
     void setPaletteFile(QString);
