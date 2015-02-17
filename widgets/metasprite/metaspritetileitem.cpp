@@ -15,7 +15,7 @@ MetaspriteTileItem::MetaspriteTileItem(QImage img, QGraphicsItem *parent) : QGra
     this->bHFlip = this->bVFlip = false;
     this->iPalette = 0;
     this->imgTile = img;
-    QGraphicsPixmapItem::setPixmap(QPixmap::fromImage(img));
+    this->setPixmap(QPixmap::fromImage(img));
 }
 
 

@@ -1,5 +1,5 @@
-#include "nesmetaspritetool.h"
 #include <QApplication>
+#include "nesmetaspritetool.h"
 
 int main(int argc, char *argv[])
 {

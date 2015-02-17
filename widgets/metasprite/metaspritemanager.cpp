@@ -2,14 +2,14 @@
 
 MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
 {
-    this->gsMetasprite = new QGraphicsScene();
+    this->gsMetasprite = new QGraphicsScene(this);
     this->setScene(this->gsMetasprite);
     this->setScale(2);
     this->setTallSprites(false);
 
     this->drawGridLines();
 
-    this->vMetaspriteStages = QVector< QList<MetaspriteTileItem*> >(256);
+    this->vMetaspriteStages = MetaspriteStageList(256);
     this->iMetaspriteStage = 0;
 }
 
@@ -49,7 +49,7 @@ void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
 //        QMessageBox::information(this,"Position",QString::number(qgraphicsitem_cast<MetaspriteTileItem*>(sel.at(0))->realX())+","+
 //                                 QString::number(qgraphicsitem_cast<MetaspriteTileItem*>(sel.at(0))->realY()),QMessageBox::NoButton);
 
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 void MetaspriteManager::keyPressEvent(QKeyEvent *e)
@@ -89,7 +89,7 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
         QGraphicsView::keyPressEvent(e);
     }
 
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 
@@ -146,7 +146,7 @@ void MetaspriteManager::setNewSpriteColours(PaletteVector c, quint8 p, bool s)
                                                     p);
         }
     }
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 void MetaspriteManager::addNewTile(QPointF p, QImage i, quint8 t, quint8 c)
@@ -161,7 +161,7 @@ void MetaspriteManager::addNewTile(QPointF p, QImage i, quint8 t, quint8 c)
     pi->setPalette(c);
     this->gsMetasprite->addItem(pi);
 
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 void MetaspriteManager::moveSelectedUp()
@@ -183,7 +183,7 @@ void MetaspriteManager::moveSelectedUp()
         this->gsMetasprite->removeItem(i);
         this->gsMetasprite->addItem(i);
     }
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 void MetaspriteManager::moveSelectedDown()
@@ -211,7 +211,7 @@ void MetaspriteManager::moveSelectedDown()
         this->gsMetasprite->removeItem(i);
         this->gsMetasprite->addItem(i);
     }
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 void MetaspriteManager::flipHorizontal()
@@ -221,7 +221,7 @@ void MetaspriteManager::flipHorizontal()
         if(s->type()!=MetaspriteTileItem::Type)    continue;
         ((MetaspriteTileItem*)s)->flipHorizontal(!((MetaspriteTileItem*)s)->flippedHorizontal());
     }
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 void MetaspriteManager::flipVertical()
@@ -231,7 +231,7 @@ void MetaspriteManager::flipVertical()
         if(s->type()!=MetaspriteTileItem::Type)    continue;
         ((MetaspriteTileItem*)s)->flipVertical(!((MetaspriteTileItem*)s)->flippedVertical());
     }
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 void MetaspriteManager::deleteSelectedTiles()
@@ -240,7 +240,7 @@ void MetaspriteManager::deleteSelectedTiles()
     foreach(QGraphicsItem *s, sel) {
         this->gsMetasprite->removeItem(s);
     }
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 
@@ -253,7 +253,7 @@ void::MetaspriteManager::updateTiles()
         emit(this->getTileUpdate(qgraphicsitem_cast<MetaspriteTileItem*>(ms)));
         emit(this->getPaletteUpdate(qgraphicsitem_cast<MetaspriteTileItem*>(ms)));
     }
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 void MetaspriteManager::swapMetaspriteStage(int s)
@@ -275,7 +275,26 @@ void MetaspriteManager::swapMetaspriteStage(int s)
         emit(this->getPaletteUpdate(ms));
         this->gsMetasprite->addItem(ms);
     }
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
+}
+
+void MetaspriteManager::createFrameData(int frame)
+{
+    MetaspriteTileList list;
+    foreach(MetaspriteTileItem *i, this->vMetaspriteStages.at(frame)) {
+        MetaspriteTileItem *newitem = new MetaspriteTileItem();
+        newitem->setScale(i->scale());
+        newitem->setRealX(i->realX());
+        newitem->setRealY(i->realY());
+        newitem->flipHorizontal(i->flippedHorizontal());
+        newitem->flipVertical(i->flippedVertical());
+        newitem->setPalette(i->palette());
+        newitem->setTile(i->tile());
+        emit(this->getTileUpdate(newitem));
+        emit(this->getPaletteUpdate(newitem));
+        list.append(newitem);
+    }
+    emit(this->sendFrameData(list));
 }
 
 
@@ -413,7 +432,7 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
         this->gsMetasprite->addItem(ms);
     }
 
-    emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    this->sendTileUpdates();
 }
 
 void MetaspriteManager::clearAllMetaspriteData()
@@ -424,5 +443,13 @@ void MetaspriteManager::clearAllMetaspriteData()
     this->gsMetasprite->clear();
     this->drawGridLines();
 
+    this->sendTileUpdates();
+}
+
+
+
+void MetaspriteManager::sendTileUpdates()
+{
     emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
+    emit(this->updateAnimationFrame());
 }
