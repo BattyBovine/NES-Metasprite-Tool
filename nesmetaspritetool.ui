@@ -46,7 +46,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineASMLabel"/>
+                <widget class="LineEditASM" name="lineASMLabel"/>
                </item>
               </layout>
              </item>
@@ -694,7 +694,7 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_14">
                <property name="spacing">
-                <number>1</number>
+                <number>0</number>
                </property>
                <item>
                 <widget class="QLabel" name="labelMetaspriteName">
@@ -711,7 +711,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineASMLabel_2"/>
+                <widget class="LineEditASM" name="lineASMAnimationLabel"/>
                </item>
               </layout>
              </item>
@@ -1257,6 +1257,11 @@
     <signal>moveSelectedDown()</signal>
     <slot>updateItems(GraphicsItemList,GraphicsItemList)</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>LineEditASM</class>
+   <extends>QLineEdit</extends>
+   <header>lineeditasm.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

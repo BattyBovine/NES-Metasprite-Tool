@@ -11,23 +11,31 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = NESMetaspriteTool
 TEMPLATE = app
 
+INCLUDEPATH += widgets/lineedit/ \
+	widgets/metasprite/ \
+	widgets/palette/ \
+	widgets/sprite/ \
+	widgets/tileset/
+
 
 SOURCES += main.cpp \
         nesmetaspritetool.cpp \
-    palettemanager.cpp \
-    spritepaletteview.cpp \
-    tilesetmanager.cpp \
-    metaspritemanager.cpp \
-    metaspritetileitem.cpp \
-    spritelistwidget.cpp
+	widgets/palette/palettemanager.cpp \
+	widgets/sprite/spritepaletteview.cpp \
+	widgets/tileset/tilesetmanager.cpp \
+	widgets/metasprite/metaspritemanager.cpp \
+	widgets/metasprite/metaspritetileitem.cpp \
+	widgets/sprite/spritelistwidget.cpp \
+    widgets/lineedit/lineeditasm.cpp
 
 HEADERS  += nesmetaspritetool.h \
-    palettemanager.h \
-    spritepaletteview.h \
-    tilesetmanager.h \
-    metaspritemanager.h \
-    metaspritetileitem.h \
-    spritelistwidget.h
+	widgets/palette/palettemanager.h \
+	widgets/sprite/spritepaletteview.h \
+	widgets/tileset/tilesetmanager.h \
+	widgets/metasprite/metaspritemanager.h \
+	widgets/metasprite/metaspritetileitem.h \
+	widgets/sprite/spritelistwidget.h \
+    widgets/lineedit/lineeditasm.h
 
 FORMS    += nesmetaspritetool.ui
 
