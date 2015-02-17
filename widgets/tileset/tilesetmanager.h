@@ -18,11 +18,7 @@
 
 #include <QtMath>
 
-#include "nesmetaspritetool.h"
-#include "metaspritetileitem.h"
-
-#define TSM_SCALE 2
-#define TSM_TILESIZE (8*TSM_SCALE)
+#include "common.h"
 
 class TilesetManager : public QGraphicsView
 {

@@ -148,16 +148,6 @@ void NESMetaspriteTool::setNewPaletteFile(QString pal)
 
 
 
-void NESMetaspriteTool::prevMetasprite()
-{
-    ui->hsMetaspriteSlider->setValue(ui->hsMetaspriteSlider->value()-1);
-}
-
-void NESMetaspriteTool::nextMetasprite()
-{
-    ui->hsMetaspriteSlider->setValue(ui->hsMetaspriteSlider->value()+1);
-}
-
 void NESMetaspriteTool::setAnimationLabel(QString s)
 {
     ui->labelMetaspriteName->setText((!s.isEmpty())?s:"emptylabel");

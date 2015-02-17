@@ -9,11 +9,8 @@
 
 #include <QtMath>
 
-#include "nesmetaspritetool.h"
-#include "metaspritetileitem.h"
-
-#define PM_FILE_OPEN_ERROR_TITLE    "Error opening palette file"
-#define PM_FILE_OPEN_ERROR_BODY     "Could not open palette file. Please make sure you have the necessary permissions to access files in this location."
+#include "common.h"
+#include "spritepaletteview.h"
 
 class PaletteManager : public QGraphicsView
 {

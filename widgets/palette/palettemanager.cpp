@@ -1,5 +1,4 @@
 #include "palettemanager.h"
-#include "spritepaletteview.h"
 
 PaletteManager::PaletteManager(QWidget *parent) : QGraphicsView(parent)
 {

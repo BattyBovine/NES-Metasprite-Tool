@@ -15,15 +15,8 @@
 
 #include <QtMath>
 
-#include "nesmetaspritetool.h"
+#include "common.h"
 #include "metaspritetileitem.h"
-
-#define MSM_FILE_OPEN_ERROR_TITLE   "Error opening metasprite file"
-#define MSM_FILE_OPEN_ERROR_BODY    "Could not open metasprite file. Please make sure you have the necessary permissions to access files in this location."
-#define MSM_EOF_ERROR_TITLE         "Invalid data"
-#define MSM_EOF_ERROR_BODY          "Error reading metasprite data: Unexpected end of file."
-#define MSM_COUNT_ERROR_TITLE       "Invalid data"
-#define MSM_COUNT_ERROR_BODY        "Error reading metasprite data: Sprite counts do not match length of data."
 
 class MetaspriteManager : public QGraphicsView
 {
@@ -39,10 +32,12 @@ signals:
     void getTileUpdate(MetaspriteTileItem*);
     void getPaletteUpdate(MetaspriteTileItem*);
     void requestPaletteUpdates(quint8);
+    void sendFrameData(MetaspriteTileList);
 
     void setMetaspriteLabel(QString);
 
     void updateList(GraphicsItemList,GraphicsItemList);
+    void updateAnimationFrame();
 
 public slots:
     void setScale(qreal s){this->iScale=s;}
@@ -58,6 +53,7 @@ public slots:
 
     void updateTiles();
     void swapMetaspriteStage(int);
+    void createFrameData(int);
 
     QVector<QByteArray> createMetaspriteBinaryData();
     void openMetaspriteFile(QString);
@@ -75,11 +71,12 @@ protected:
 
 private:
     void drawGridLines();
+    void sendTileUpdates();
 
     qreal iScale;
     bool bTallSprites;
     QGraphicsScene *gsMetasprite;
-    QVector< QList<MetaspriteTileItem*> > vMetaspriteStages;
+    MetaspriteStageList vMetaspriteStages;
     quint8 iMetaspriteStage;
 };
 

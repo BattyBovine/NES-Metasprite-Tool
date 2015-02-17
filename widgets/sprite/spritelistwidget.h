@@ -5,8 +5,7 @@
 #include <QListWidget>
 #include <QKeyEvent>
 
-#include "nesmetaspritetool.h"
-#include "metaspritetileitem.h"
+#include "common.h"
 
 class SpriteListWidget : public QListWidget
 {
