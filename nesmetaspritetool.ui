@@ -17,7 +17,7 @@
    <string>NES Metasprite Tool</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_13">
+   <layout class="QHBoxLayout" name="horizontalLayout_23">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
@@ -122,6 +122,12 @@
                </item>
                <item>
                 <widget class="QLabel" name="labelMetaspriteSlider">
+                 <property name="maximumSize">
+                  <size>
+                   <width>64</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="text">
                   <string>0</string>
                  </property>
@@ -205,7 +211,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>^</string>
+                  <string>▲</string>
                  </property>
                 </widget>
                </item>
@@ -224,7 +230,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>v</string>
+                  <string>▼</string>
                  </property>
                 </widget>
                </item>
@@ -734,7 +740,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="MetaspriteManager" name="gvFrames_2">
+                <widget class="AnimationManager" name="gvAnimation">
                  <property name="minimumSize">
                   <size>
                    <width>256</width>
@@ -747,6 +753,9 @@
                    <height>256</height>
                   </size>
                  </property>
+                 <property name="acceptDrops">
+                  <bool>false</bool>
+                 </property>
                  <property name="frameShape">
                   <enum>QFrame::NoFrame</enum>
                  </property>
@@ -755,9 +764,6 @@
                  </property>
                  <property name="horizontalScrollBarPolicy">
                   <enum>Qt::ScrollBarAlwaysOff</enum>
-                 </property>
-                 <property name="sizeAdjustPolicy">
-                  <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
                  </property>
                  <property name="interactive">
                   <bool>false</bool>
@@ -790,6 +796,12 @@
                </item>
                <item>
                 <widget class="QLabel" name="labelAnimationSlider">
+                 <property name="maximumSize">
+                  <size>
+                   <width>128</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="text">
                   <string>0</string>
                  </property>
@@ -818,6 +830,62 @@
               </widget>
              </item>
              <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_22">
+               <item>
+                <widget class="QPushButton" name="pushButton_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>24</width>
+                   <height>24</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>►</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_17">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radioNTSC">
+                 <property name="text">
+                  <string>NTSC</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radioPAL">
+                 <property name="text">
+                  <string>PAL</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
               <spacer name="verticalSpacer_5">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
@@ -835,21 +903,12 @@
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_9">
              <item>
-              <widget class="SpriteListWidget" name="listFrames">
-               <property name="minimumSize">
-                <size>
-                 <width>177</width>
-                 <height>0</height>
-                </size>
-               </property>
+              <widget class="FrameListWidget" name="listFrames">
                <property name="font">
                 <font>
                  <family>Courier</family>
                  <kerning>false</kerning>
                 </font>
-               </property>
-               <property name="selectionMode">
-                <enum>QAbstractItemView::ExtendedSelection</enum>
                </property>
               </widget>
              </item>
@@ -873,7 +932,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>^</string>
+                  <string>▲</string>
                  </property>
                 </widget>
                </item>
@@ -892,7 +951,7 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>v</string>
+                  <string>▼</string>
                  </property>
                 </widget>
                </item>
@@ -908,25 +967,6 @@
                   </size>
                  </property>
                 </spacer>
-               </item>
-               <item>
-                <widget class="QPushButton" name="pushButton">
-                 <property name="minimumSize">
-                  <size>
-                   <width>21</width>
-                   <height>23</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>21</width>
-                   <height>23</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>+</string>
-                 </property>
-                </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="btnFrameDel">
@@ -964,6 +1004,9 @@
                 <widget class="QCheckBox" name="checkBox">
                  <property name="text">
                   <string>Loop</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
@@ -1014,6 +1057,9 @@
                    <height>192</height>
                   </size>
                  </property>
+                 <property name="acceptDrops">
+                  <bool>false</bool>
+                 </property>
                  <property name="frameShape">
                   <enum>QFrame::NoFrame</enum>
                  </property>
@@ -1057,6 +1103,12 @@
                </item>
                <item>
                 <widget class="QLabel" name="labelFrameSlider">
+                 <property name="maximumSize">
+                  <size>
+                   <width>64</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
                  <property name="text">
                   <string>0</string>
                  </property>
@@ -1081,6 +1133,40 @@
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_13">
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Delay:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinBox">
+                 <property name="minimum">
+                  <number>1</number>
+                 </property>
+                 <property name="maximum">
+                  <number>255</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnAddFrame">
+               <property name="text">
+                <string>Add Frame</string>
                </property>
               </widget>
              </item>
@@ -1235,6 +1321,7 @@
     <signal>updateList(GraphicsItemList,GraphicsItemList)</signal>
     <signal>sendFrameData(MetaspriteTileList)</signal>
     <signal>updateAnimationFrame()</signal>
+    <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
     <slot>addNewTile(QPointF,QImage,quint8,quint8)</slot>
     <slot>flipHorizontal()</slot>
@@ -1246,7 +1333,8 @@
     <slot>moveSelectedUp()</slot>
     <slot>moveSelectedDown()</slot>
     <slot>setNewSpriteColours(PaletteVector,quint8,bool)</slot>
-    <slot>createFrameData(int)</slot>
+    <slot>createFrameData(quint8)</slot>
+    <slot>createAnimationFrameData(quint8)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1270,11 +1358,14 @@
    <extends>QGraphicsView</extends>
    <header>animationframemanager.h</header>
    <slots>
-    <signal>requestFrameData(int)</signal>
+    <signal>requestFrameData(quint8)</signal>
+    <signal>addAnimationFrame(quint8,quint8)</signal>
     <slot>setBackgroundColour(PaletteVector)</slot>
     <slot>getFrameData(MetaspriteTileList)</slot>
     <slot>setNewFrame(int)</slot>
     <slot>updateCurrentFrame()</slot>
+    <slot>setDelay(int)</slot>
+    <slot>addFrame()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1284,6 +1375,29 @@
    <slots>
     <slot>nextValue()</slot>
     <slot>prevValue()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>FrameListWidget</class>
+   <extends>QListWidget</extends>
+   <header>framelistwidget.h</header>
+   <slots>
+    <slot>updateItems(AnimationFrameList)</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>AnimationManager</class>
+   <extends>QGraphicsView</extends>
+   <header>animationmanager.h</header>
+   <slots>
+    <signal>requestFrameData(quint8)</signal>
+    <signal>framesUpdated(AnimationFrameList)</signal>
+    <slot>setBackgroundColour(PaletteVector)</slot>
+    <slot>addAnimationFrame(quint8,quint8)</slot>
+    <slot>drawAnimationFrameData(MetaspriteTileList)</slot>
+    <slot>setNewAnimation(int)</slot>
+    <slot>setAnimationFrame(int)</slot>
+    <slot>updateCurrentFrame()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -1979,9 +2093,9 @@
   </connection>
   <connection>
    <sender>gvFrames</sender>
-   <signal>requestFrameData(int)</signal>
+   <signal>requestFrameData(quint8)</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>createFrameData(int)</slot>
+   <slot>createFrameData(quint8)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>601</x>
@@ -2085,7 +2199,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>506</x>
-     <y>331</y>
+     <y>326</y>
     </hint>
    </hints>
   </connection>
@@ -2101,7 +2215,7 @@
     </hint>
     <hint type="destinationlabel">
      <x>697</x>
-     <y>330</y>
+     <y>325</y>
     </hint>
    </hints>
   </connection>
@@ -2118,6 +2232,182 @@
     <hint type="destinationlabel">
      <x>601</x>
      <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvPaletteManager</sender>
+   <signal>newSpriteColours(PaletteVector,quint8,bool)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>setBackgroundColour(PaletteVector)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>569</x>
+     <y>472</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>160</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gvFrames</receiver>
+   <slot>setDelay(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>567</x>
+     <y>341</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>584</x>
+     <y>216</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvFrames</sender>
+   <signal>addAnimationFrame(quint8,quint8)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>addAnimationFrame(quint8,quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>516</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>256</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnAddFrame</sender>
+   <signal>clicked()</signal>
+   <receiver>gvFrames</receiver>
+   <slot>addFrame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>690</x>
+     <y>379</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>664</x>
+     <y>207</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hsAnimationSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>labelAnimationSlider</receiver>
+   <slot>setNum(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>147</x>
+     <y>411</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>141</x>
+     <y>388</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>drawAnimationFrameData(MetaspriteTileList)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>128</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>160</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hsAnimationSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>setNewAnimation(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>413</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>204</x>
+     <y>334</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvAnimation</sender>
+   <signal>requestFrameData(quint8)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>createAnimationFrameData(quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>128</x>
+     <y>206</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvAnimation</sender>
+   <signal>framesUpdated(AnimationFrameList)</signal>
+   <receiver>listFrames</receiver>
+   <slot>updateItems(AnimationFrameList)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>262</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>359</x>
+     <y>129</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listFrames</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>setAnimationFrame(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>386</x>
+     <y>294</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>160</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>updateAnimationFrame()</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>updateCurrentFrame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>128</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>160</x>
+     <y>238</y>
     </hint>
    </hints>
   </connection>

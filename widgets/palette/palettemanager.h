@@ -10,6 +10,7 @@
 #include <QtMath>
 
 #include "common.h"
+#include "metaspritetileitem.h"
 #include "spritepaletteview.h"
 
 class PaletteManager : public QGraphicsView

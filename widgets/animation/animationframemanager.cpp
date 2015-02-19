@@ -3,9 +3,9 @@
 AnimationFrameManager::AnimationFrameManager(QWidget *parent) : QGraphicsView(parent)
 {
     this->gsFrame = new QGraphicsScene(this);
-    this->gsFrame->setSceneRect(-127,-127,256,256);
     this->setScene(this->gsFrame);
     this->iFrame = 0;
+    this->iDelay = 1;
 }
 
 AnimationFrameManager::~AnimationFrameManager()
@@ -34,8 +34,16 @@ void AnimationFrameManager::setNewFrame(int f)
 
 void AnimationFrameManager::getFrameData(MetaspriteTileList l)
 {
+    this->mtlFrameData = l;
     this->gsFrame->clear();
-    foreach(MetaspriteTileItem *i, l) {
+    foreach(MetaspriteTileItem *i, this->mtlFrameData) {
         this->gsFrame->addItem(i);
     }
+}
+
+
+
+void AnimationFrameManager::addFrame()
+{
+    emit(this->addAnimationFrame(this->iFrame, this->iDelay));
 }

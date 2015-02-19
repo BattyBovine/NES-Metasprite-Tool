@@ -51,4 +51,7 @@ private:
     bool bHFlip,bVFlip;
 };
 
+typedef QList<MetaspriteTileItem*> MetaspriteTileList;
+typedef QVector<MetaspriteTileList> MetaspriteStageList;
+
 #endif // METASPRITETILEITEM_H

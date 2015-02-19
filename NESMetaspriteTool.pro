@@ -11,42 +11,47 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = NESMetaspriteTool
 TEMPLATE = app
 
-INCLUDEPATH += widgets/ui/ \
-	widgets/metasprite/ \
-	widgets/palette/ \
-	widgets/sprite/ \
-	widgets/tileset/ \
-	widgets/animation/
+INCLUDEPATH += widgets/ui \
+	widgets/metasprite \
+	widgets/palette \
+	widgets/sprite \
+	widgets/tileset \
+	widgets/animation
 
 
 SOURCES += main.cpp \
 	nesmetaspritetool.cpp \
 	widgets/ui/lineeditasm.cpp \
 	widgets/ui/graphicsviewslider.cpp \
+	widgets/ui/spritelistwidget.cpp \
+	widgets/ui/framelistwidget.cpp \
 	widgets/palette/palettemanager.cpp \
 	widgets/sprite/spritepaletteview.cpp \
 	widgets/tileset/tilesetmanager.cpp \
 	widgets/metasprite/metaspritemanager.cpp \
 	widgets/metasprite/metaspritetileitem.cpp \
-	widgets/sprite/spritelistwidget.cpp \
-	widgets/animation/animationframemanager.cpp
+	widgets/animation/animationmanager.cpp \
+	widgets/animation/animationframemanager.cpp \
+	widgets/animation/animationframeitem.cpp
 
 HEADERS  += nesmetaspritetool.h \
 	common.h \
 	widgets/ui/lineeditasm.h \
 	widgets/ui/graphicsviewslider.h \
+	widgets/ui/spritelistwidget.h \
+	widgets/ui/framelistwidget.h \
 	widgets/palette/palettemanager.h \
 	widgets/sprite/spritepaletteview.h \
 	widgets/tileset/tilesetmanager.h \
 	widgets/metasprite/metaspritemanager.h \
 	widgets/metasprite/metaspritetileitem.h \
-	widgets/sprite/spritelistwidget.h \
-	widgets/animation/animationframemanager.h
+	widgets/animation/animationmanager.h \
+	widgets/animation/animationframemanager.h \
+	widgets/animation/animationframeitem.h
 
 FORMS    += nesmetaspritetool.ui
 
-RESOURCES += \
-    palettes.qrc
+RESOURCES += palettes.qrc
 
 
 win32:RC_ICONS += res/icon.ico

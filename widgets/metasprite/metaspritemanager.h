@@ -17,6 +17,7 @@
 
 #include "common.h"
 #include "metaspritetileitem.h"
+#include "animationframeitem.h"
 
 class MetaspriteManager : public QGraphicsView
 {
@@ -33,6 +34,7 @@ signals:
     void getPaletteUpdate(MetaspriteTileItem*);
     void requestPaletteUpdates(quint8);
     void sendFrameData(MetaspriteTileList);
+    void sendAnimationFrameData(MetaspriteTileList);
 
     void setMetaspriteLabel(QString);
 
@@ -53,7 +55,8 @@ public slots:
 
     void updateTiles();
     void swapMetaspriteStage(int);
-    void createFrameData(int);
+    void createFrameData(quint8);
+    void createAnimationFrameData(quint8);
 
     QVector<QByteArray> createMetaspriteBinaryData();
     void openMetaspriteFile(QString);
@@ -72,6 +75,7 @@ protected:
 private:
     void drawGridLines();
     void sendTileUpdates();
+    MetaspriteTileList createFrame(quint8,quint8 s=0);
 
     qreal iScale;
     bool bTallSprites;

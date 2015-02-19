@@ -5,7 +5,6 @@
 #include <QList>
 #include <QRgb>
 #include <QGraphicsItem>
-#include "metaspritetileitem.h"
 
 #define FILE_OPEN_ERROR_TITLE       "Error opening file"
 #define FILE_OPEN_ERROR_BODY        "Could not open file. Please make sure you have the necessary permissions to access files in this location."
@@ -14,9 +13,6 @@
 
 #define PM_FILE_OPEN_ERROR_TITLE    "Error opening palette file"
 #define PM_FILE_OPEN_ERROR_BODY     "Could not open palette file. Please make sure you have the necessary permissions to access files in this location."
-
-#define TSM_SCALE 2
-#define TSM_TILESIZE (8*TSM_SCALE)
 
 #define MSM_FILE_OPEN_ERROR_TITLE   "Error opening metasprite file"
 #define MSM_FILE_OPEN_ERROR_BODY    "Could not open metasprite file. Please make sure you have the necessary permissions to access files in this location."
@@ -27,8 +23,6 @@
 
 typedef QVector<QRgb> PaletteVector;
 typedef QList<QGraphicsItem*> GraphicsItemList;
-typedef QList<MetaspriteTileItem*> MetaspriteTileList;
-typedef QVector<MetaspriteTileList> MetaspriteStageList;
 
 #endif // COMMON_H
 

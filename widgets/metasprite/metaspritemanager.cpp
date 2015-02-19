@@ -161,6 +161,15 @@ void MetaspriteManager::addNewTile(QPointF p, QImage i, quint8 t, quint8 c)
     pi->setPalette(c);
     this->gsMetasprite->addItem(pi);
 
+    QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder);
+    QList<MetaspriteTileItem*> store;
+    foreach(QGraphicsItem *i, items) {
+        if(i->type()!=MetaspriteTileItem::Type)   continue;
+        MetaspriteTileItem *ms = qgraphicsitem_cast<MetaspriteTileItem*>(i);
+        store.append(ms);
+    }
+    this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
+
     this->sendTileUpdates();
 }
 
@@ -240,6 +249,16 @@ void MetaspriteManager::deleteSelectedTiles()
     foreach(QGraphicsItem *s, sel) {
         this->gsMetasprite->removeItem(s);
     }
+
+    QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder);
+    QList<MetaspriteTileItem*> store;
+    foreach(QGraphicsItem *i, items) {
+        if(i->type()!=MetaspriteTileItem::Type)   continue;
+        MetaspriteTileItem *ms = qgraphicsitem_cast<MetaspriteTileItem*>(i);
+        store.append(ms);
+    }
+    this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
+
     this->sendTileUpdates();
 }
 
@@ -278,23 +297,16 @@ void MetaspriteManager::swapMetaspriteStage(int s)
     this->sendTileUpdates();
 }
 
-void MetaspriteManager::createFrameData(int frame)
+void MetaspriteManager::createFrameData(quint8 frame)
 {
-    MetaspriteTileList list;
-    foreach(MetaspriteTileItem *i, this->vMetaspriteStages.at(frame)) {
-        MetaspriteTileItem *newitem = new MetaspriteTileItem();
-        newitem->setScale(i->scale());
-        newitem->setRealX(i->realX());
-        newitem->setRealY(i->realY());
-        newitem->flipHorizontal(i->flippedHorizontal());
-        newitem->flipVertical(i->flippedVertical());
-        newitem->setPalette(i->palette());
-        newitem->setTile(i->tile());
-        emit(this->getTileUpdate(newitem));
-        emit(this->getPaletteUpdate(newitem));
-        list.append(newitem);
-    }
+    MetaspriteTileList list = this->createFrame(frame);
     emit(this->sendFrameData(list));
+}
+
+void MetaspriteManager::createAnimationFrameData(quint8 frame)
+{
+    MetaspriteTileList list = this->createFrame(frame,3);
+    emit(this->sendAnimationFrameData(list));
 }
 
 
@@ -452,4 +464,24 @@ void MetaspriteManager::sendTileUpdates()
 {
     emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
     emit(this->updateAnimationFrame());
+}
+
+MetaspriteTileList MetaspriteManager::createFrame(quint8 f, quint8 s)
+{
+    MetaspriteTileList list = this->vMetaspriteStages.at(f);
+    MetaspriteTileList listcopy;
+    foreach(MetaspriteTileItem *i, list) {
+        MetaspriteTileItem *newitem = new MetaspriteTileItem();
+        newitem->setScale((s==0)?i->scale():s);
+        newitem->setRealX(i->realX());
+        newitem->setRealY(i->realY());
+        newitem->flipHorizontal(i->flippedHorizontal());
+        newitem->flipVertical(i->flippedVertical());
+        newitem->setPalette(i->palette());
+        newitem->setTile(i->tile());
+        emit(this->getTileUpdate(newitem));
+        emit(this->getPaletteUpdate(newitem));
+        listcopy.append(newitem);
+    }
+    return listcopy;
 }

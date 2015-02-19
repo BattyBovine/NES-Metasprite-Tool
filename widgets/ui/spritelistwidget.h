@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 
 #include "common.h"
+#include "metaspritetileitem.h"
 
 class SpriteListWidget : public QListWidget
 {
