@@ -15,18 +15,21 @@ public:
     ~FrameListWidget();
 
 signals:
-    void moveSelectedUp();
-    void moveSelectedDown();
-    void deleteSelectedItems();
+    void moveUp(int);
+    void moveDown(int);
+    void deleteItem(int);
 
 public slots:
-    void updateItems(AnimationFrameList);
+    void updateItems(AnimationFrameList,quint8);
+    void moveUpSelected(){emit(this->moveUp(this->currentRow()));}
+    void moveDownSelected(){emit(this->moveDown(this->currentRow()));}
+    void deleteSelected(){emit(this->deleteItem(this->currentRow()));}
 
 protected:
     void keyPressEvent(QKeyEvent*);
 
 private:
-    void generateListDisplay();
+    void generateListDisplay(quint8);
 
     AnimationFrameList lItems;
 };

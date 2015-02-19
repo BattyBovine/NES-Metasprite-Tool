@@ -3,6 +3,7 @@
 AnimationFrameManager::AnimationFrameManager(QWidget *parent) : QGraphicsView(parent)
 {
     this->gsFrame = new QGraphicsScene(this);
+    this->gsFrame->setSceneRect(-96,-96,192,192);
     this->setScene(this->gsFrame);
     this->iFrame = 0;
     this->iDelay = 1;

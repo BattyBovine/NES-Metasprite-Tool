@@ -197,7 +197,7 @@
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPushButton" name="btnMoveUp">
+                <widget class="QPushButton" name="btnMetaspriteMoveUp">
                  <property name="minimumSize">
                   <size>
                    <width>21</width>
@@ -216,7 +216,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="btnMoveDown">
+                <widget class="QPushButton" name="btnMetaspriteMoveDown">
                  <property name="minimumSize">
                   <size>
                    <width>21</width>
@@ -248,7 +248,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="btnHFlip">
+                <widget class="QPushButton" name="btnMetaspriteHFlip">
                  <property name="minimumSize">
                   <size>
                    <width>21</width>
@@ -267,7 +267,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="btnVFlip">
+                <widget class="QPushButton" name="btnMetaspriteVFlip">
                  <property name="minimumSize">
                   <size>
                    <width>21</width>
@@ -299,7 +299,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QPushButton" name="btnDel">
+                <widget class="QPushButton" name="btnMetaspriteDel">
                  <property name="minimumSize">
                   <size>
                    <width>21</width>
@@ -1382,7 +1382,13 @@
    <extends>QListWidget</extends>
    <header>framelistwidget.h</header>
    <slots>
-    <slot>updateItems(AnimationFrameList)</slot>
+    <signal>moveUp(int)</signal>
+    <signal>moveDown(int)</signal>
+    <signal>deleteItem(int)</signal>
+    <slot>updateItems(AnimationFrameList,quint8)</slot>
+    <slot>deleteSelected()</slot>
+    <slot>moveUpSelected()</slot>
+    <slot>moveDownSelected()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1391,13 +1397,18 @@
    <header>animationmanager.h</header>
    <slots>
     <signal>requestFrameData(quint8)</signal>
-    <signal>framesUpdated(AnimationFrameList)</signal>
+    <signal>framesUpdated(AnimationFrameList,quint8)</signal>
     <slot>setBackgroundColour(PaletteVector)</slot>
     <slot>addAnimationFrame(quint8,quint8)</slot>
     <slot>drawAnimationFrameData(MetaspriteTileList)</slot>
     <slot>setNewAnimation(int)</slot>
     <slot>setAnimationFrame(int)</slot>
     <slot>updateCurrentFrame()</slot>
+    <slot>setNTSCTiming()</slot>
+    <slot>setPALTiming()</slot>
+    <slot>moveFrameUp(int)</slot>
+    <slot>moveFrameDown(int)</slot>
+    <slot>deleteFrame(int)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -1676,7 +1687,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>btnHFlip</sender>
+   <sender>btnMetaspriteHFlip</sender>
    <signal>clicked()</signal>
    <receiver>gvMetasprite</receiver>
    <slot>flipHorizontal()</slot>
@@ -1692,7 +1703,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>btnVFlip</sender>
+   <sender>btnMetaspriteVFlip</sender>
    <signal>clicked()</signal>
    <receiver>gvMetasprite</receiver>
    <slot>flipVertical()</slot>
@@ -1708,7 +1719,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>btnDel</sender>
+   <sender>btnMetaspriteDel</sender>
    <signal>clicked()</signal>
    <receiver>gvMetasprite</receiver>
    <slot>deleteSelectedTiles()</slot>
@@ -1884,23 +1895,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>listSprites</sender>
-   <signal>deleteSelectedItems()</signal>
-   <receiver>gvMetasprite</receiver>
-   <slot>deleteSelectedTiles()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>306</x>
-     <y>132</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>212</x>
-     <y>214</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnMoveUp</sender>
+   <sender>btnMetaspriteMoveUp</sender>
    <signal>clicked()</signal>
    <receiver>gvMetasprite</receiver>
    <slot>moveSelectedUp()</slot>
@@ -1916,7 +1911,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>btnMoveDown</sender>
+   <sender>btnMetaspriteMoveDown</sender>
    <signal>clicked()</signal>
    <receiver>gvMetasprite</receiver>
    <slot>moveSelectedDown()</slot>
@@ -1927,22 +1922,6 @@
     </hint>
     <hint type="destinationlabel">
      <x>132</x>
-     <y>271</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>listSprites</sender>
-   <signal>moveSelectedUp()</signal>
-   <receiver>gvMetasprite</receiver>
-   <slot>moveSelectedUp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>295</x>
-     <y>193</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>212</x>
      <y>271</y>
     </hint>
    </hints>
@@ -2365,9 +2344,9 @@
   </connection>
   <connection>
    <sender>gvAnimation</sender>
-   <signal>framesUpdated(AnimationFrameList)</signal>
+   <signal>framesUpdated(AnimationFrameList,quint8)</signal>
    <receiver>listFrames</receiver>
-   <slot>updateItems(AnimationFrameList)</slot>
+   <slot>updateItems(AnimationFrameList,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>262</x>
@@ -2376,6 +2355,54 @@
     <hint type="destinationlabel">
      <x>359</x>
      <y>129</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>updateAnimationFrame()</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>updateCurrentFrame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>128</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>160</x>
+     <y>238</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioNTSC</sender>
+   <signal>clicked()</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>setNTSCTiming()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>223</x>
+     <y>435</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>241</x>
+     <y>344</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioPAL</sender>
+   <signal>clicked()</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>setPALTiming()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>436</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>256</x>
+     <y>334</y>
     </hint>
    </hints>
   </connection>
@@ -2396,18 +2423,130 @@
    </hints>
   </connection>
   <connection>
-   <sender>gvMetasprite</sender>
-   <signal>updateAnimationFrame()</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>updateCurrentFrame()</slot>
+   <sender>listSprites</sender>
+   <signal>moveSelectedUp()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>moveSelectedUp()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>128</x>
-     <y>206</y>
+     <x>295</x>
+     <y>193</y>
     </hint>
     <hint type="destinationlabel">
-     <x>160</x>
-     <y>238</y>
+     <x>212</x>
+     <y>271</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listSprites</sender>
+   <signal>deleteSelectedItems()</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>deleteSelectedTiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>306</x>
+     <y>132</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>212</x>
+     <y>214</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnFrameMoveUp</sender>
+   <signal>clicked()</signal>
+   <receiver>listFrames</receiver>
+   <slot>moveUpSelected()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>305</x>
+     <y>526</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>310</x>
+     <y>480</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnFrameMoveDown</sender>
+   <signal>clicked()</signal>
+   <receiver>listFrames</receiver>
+   <slot>moveDownSelected()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>330</x>
+     <y>523</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>330</x>
+     <y>475</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnFrameDel</sender>
+   <signal>clicked()</signal>
+   <receiver>listFrames</receiver>
+   <slot>deleteSelected()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>382</x>
+     <y>524</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>383</x>
+     <y>445</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listFrames</sender>
+   <signal>deleteItem(int)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>deleteFrame(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>327</x>
+     <y>159</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>227</x>
+     <y>161</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listFrames</sender>
+   <signal>moveUp(int)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>moveFrameUp(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>321</x>
+     <y>174</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>213</x>
+     <y>177</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listFrames</sender>
+   <signal>moveDown(int)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>moveFrameDown(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>326</x>
+     <y>192</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>193</y>
     </hint>
    </hints>
   </connection>

@@ -3,6 +3,7 @@
 MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
 {
     this->gsMetasprite = new QGraphicsScene(this);
+    this->gsMetasprite->setSceneRect(-96,-96,192,192);
     this->setScene(this->gsMetasprite);
     this->setScale(2);
     this->setTallSprites(false);

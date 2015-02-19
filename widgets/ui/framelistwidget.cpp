@@ -18,13 +18,13 @@ void FrameListWidget::keyPressEvent(QKeyEvent *e)
         foreach(QListWidgetItem* i, items) {
             this->removeItemWidget(i);
         }
-        emit(this->deleteSelectedItems());
+        emit(this->deleteItem(this->currentRow()));
         break;
     case Qt::Key_PageUp:
-        emit(this->moveSelectedUp());
+        emit(this->moveUp(this->currentRow()));
         break;
     case Qt::Key_PageDown:
-        emit(this->moveSelectedDown());
+        emit(this->moveDown(this->currentRow()));
         break;
     default:
         QListWidget::keyPressEvent(e);
@@ -33,23 +33,23 @@ void FrameListWidget::keyPressEvent(QKeyEvent *e)
 
 
 
-void FrameListWidget::updateItems(AnimationFrameList l)
+void FrameListWidget::updateItems(AnimationFrameList l, quint8 s)
 {
     this->lItems = l;
-    this->generateListDisplay();
+    this->generateListDisplay(s);
 }
 
 
 
-void FrameListWidget::generateListDisplay()
+void FrameListWidget::generateListDisplay(quint8 s)
 {
     this->clear();
 
     for(int i=0; i<this->lItems.size(); i++) {
-//    foreach(AnimationFrameItem i, this->lItems) {
         QString lineitem = QString("%1").arg(i,3,10,QChar('0'))+
                 QString(": MS=%1").arg(this->lItems[i].frame(),3,10,QChar('0'))+
                 QString(",Delay=")+QString("%1").arg(this->lItems[i].delay(),3,10,QChar('0'));
         this->addItem(lineitem);
     }
+    this->setCurrentRow(s);
 }
