@@ -6,10 +6,13 @@ AnimationManager::AnimationManager(QWidget *parent) : QGraphicsView(parent)
     this->gsAnimation->setSceneRect(-128,-128,256,256);
     this->setScene(this->gsAnimation);
     this->iAnimation = 0;
-    this->iFrame = 0;
+    this->iSelectedFrame = this->iPlayingFrame = 0;
     this->iFrameTiming = AnimationManager::NTSC;
+    this->isPlaying = false;
 
     this->alAnimations = AnimationList(256);
+
+    connect(&this->tFrameCounter,SIGNAL(timeout()),this,SLOT(playNextFrame()));
 }
 
 AnimationManager::~AnimationManager()
@@ -24,9 +27,25 @@ void AnimationManager::addAnimationFrame(quint8 f, quint8 d)
 {
     AnimationFrameItem frame(f,d);
     this->alAnimations[this->iAnimation].append(frame);
-    this->setAnimationFrame(this->alAnimations[this->iAnimation].size()-1);
+    this->setSelectedFrame(this->alAnimations[this->iAnimation].size()-1);
 
-    this->updateList(this->iFrame);
+    this->updateList(this->iSelectedFrame);
+}
+
+void AnimationManager::insertAnimationFrame(quint8 f, quint8 d)
+{
+    AnimationFrameItem frame(f,d);
+    this->alAnimations[this->iAnimation].insert(this->iSelectedFrame,frame);
+
+    this->updateList(this->iSelectedFrame);
+}
+
+void AnimationManager::replaceAnimationFrame(quint8 f, quint8 d)
+{
+    AnimationFrameItem frame(f,d);
+    this->alAnimations[this->iAnimation].replace(this->iSelectedFrame,frame);
+
+    this->updateList(this->iSelectedFrame);
 }
 
 void AnimationManager::setBackgroundColour(PaletteVector c)
@@ -38,25 +57,36 @@ void AnimationManager::setBackgroundColour(PaletteVector c)
 
 void AnimationManager::setNewAnimation(int f)
 {
+    this->tFrameCounter.stop();
     this->gsAnimation->clear();
     this->iAnimation = f;
-    this->setAnimationFrame(0);
+    this->setSelectedFrame(0);
 
-    this->updateList(this->iFrame);
+    this->updateList(this->iSelectedFrame);
 }
 
-void AnimationManager::setAnimationFrame(int f)
+void AnimationManager::setSelectedFrame(int f)
 {
-    this->iFrame = f;
-    if(!this->alAnimations[this->iAnimation].isEmpty() && this->iFrame < this->alAnimations[this->iAnimation].size()) {
+    this->stopAnimation();
+    this->iSelectedFrame = f;
+    if(this->iSelectedFrame < this->alAnimations[this->iAnimation].size()) {
         this->updateCurrentFrame();
+    }
+}
+
+void AnimationManager::setPlayingFrame(int f)
+{
+    this->iPlayingFrame = f;
+    if(!this->alAnimations[this->iAnimation].isEmpty() && this->iPlayingFrame < this->alAnimations[this->iAnimation].size()) {
+        emit(this->requestFrameData(this->alAnimations[this->iAnimation][this->iPlayingFrame].frame()));
     }
 }
 
 void AnimationManager::updateCurrentFrame()
 {
-    if(!this->alAnimations[this->iAnimation].isEmpty())
-        emit(this->requestFrameData(this->alAnimations[this->iAnimation][this->iFrame].frame()));
+    if(!this->alAnimations[this->iAnimation].isEmpty() && this->iSelectedFrame < this->alAnimations[this->iAnimation].size()) {
+        emit(this->requestFrameData(this->alAnimations[this->iAnimation][this->iSelectedFrame].frame()));
+    }
 }
 
 void AnimationManager::moveFrameUp(int i)
@@ -87,6 +117,46 @@ void AnimationManager::deleteFrame(int i)
 
 
 
+void AnimationManager::playAnimationToggle(bool p)
+{
+    if(p) {
+        this->playAnimation();
+    } else {
+        this->stopAnimation();
+    }
+}
+
+void AnimationManager::playAnimation()
+{
+    if(!this->isPlaying) {
+        this->isPlaying = true;
+        if(this->alAnimations[this->iAnimation].isEmpty())  return;
+        this->setPlayingFrame(0);
+        this->playNextFrame(false);
+        emit(this->animationStarted());
+    }
+}
+
+void AnimationManager::playNextFrame(bool inc)
+{
+    if(inc) this->iPlayingFrame++;
+    if(this->iPlayingFrame>=this->alAnimations[this->iAnimation].size()) this->iPlayingFrame=0;
+    this->setPlayingFrame(this->iPlayingFrame);
+    this->tFrameCounter.start(qRound((qreal(this->alAnimations[this->iAnimation][this->iPlayingFrame].delay())/qreal(this->iFrameTiming))*1000));
+}
+
+void AnimationManager::stopAnimation()
+{
+    if(this->isPlaying) {
+        this->tFrameCounter.stop();
+        emit(this->animationStopped());
+        this->isPlaying = false;
+    }
+    this->setPlayingFrame(this->iSelectedFrame);
+}
+
+
+
 void AnimationManager::drawAnimationFrameData(MetaspriteTileList f)
 {
     this->gsAnimation->clear();
@@ -98,5 +168,5 @@ void AnimationManager::drawAnimationFrameData(MetaspriteTileList f)
 void AnimationManager::updateList(quint8 s)
 {
     this->gsAnimation->clear();
-    emit(this->framesUpdated(this->alAnimations[this->iAnimation],s));
+    emit(this->framesUpdated(this->alAnimations[this->iAnimation].frames(),s));
 }

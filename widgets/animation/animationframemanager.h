@@ -17,6 +17,8 @@ public:
 signals:
     void requestFrameData(quint8);
     void addAnimationFrame(quint8,quint8);
+    void insertAnimationFrame(quint8,quint8);
+    void replaceAnimationFrame(quint8,quint8);
 
 public slots:
     void setBackgroundColour(PaletteVector);
@@ -26,6 +28,8 @@ public slots:
     void setDelay(int d){this->iDelay=d;}
 
     void addFrame();
+    void insertFrame();
+    void replaceFrame();
 
 private:
     QGraphicsScene *gsFrame;

@@ -152,3 +152,15 @@ void NESMetaspriteTool::setAnimationLabel(QString s)
 {
     ui->labelMetaspriteName->setText((!s.isEmpty())?s:"emptylabel");
 }
+
+void NESMetaspriteTool::setPlayButtonText()
+{
+    ui->btnPlayAnimation->setText("►");
+    ui->btnPlayAnimation->setChecked(false);
+}
+
+void NESMetaspriteTool::setPauseButtonText()
+{
+    ui->btnPlayAnimation->setText("▮▮");
+    ui->btnPlayAnimation->setChecked(true);
+}

@@ -5,8 +5,41 @@
 #include <QGraphicsView>
 #include <QTimer>
 
+#include <QtMath>
+
 #include "common.h"
 #include "animationframeitem.h"
+
+class AnimationPackage {
+public:
+    AnimationPackage(){bLoop = true;}
+
+    QString label(){return sLabel;}
+    void setLabel(QString s){sLabel=s;}
+    AnimationFrameList frames(){return aflFrames;}
+    void setFrames(AnimationFrameList f){aflFrames=f;}
+    bool loop(){return bLoop;}
+    void setLoop(bool l){bLoop=l;}
+
+    AnimationFrameItem operator[](int i){return aflFrames[i];}
+    bool isEmpty(){return aflFrames.isEmpty();}
+    int size(){return aflFrames.size();}
+    int length(){return aflFrames.length();}
+    int count(){return aflFrames.count();}
+    void append(AnimationFrameItem l){aflFrames.append(l);}
+    void insert(int i, AnimationFrameItem l){aflFrames.insert(i,l);}
+    void replace(int i, AnimationFrameItem l){aflFrames.replace(i,l);}
+    AnimationFrameItem takeAt(int i){return aflFrames.takeAt(i);}
+    void remove(int i){aflFrames.remove(i);}
+
+private:
+    QString sLabel;
+    AnimationFrameList aflFrames;
+    bool bLoop;
+};
+typedef QVector<AnimationPackage> AnimationList;
+
+
 
 class AnimationManager : public QGraphicsView
 {
@@ -15,34 +48,49 @@ public:
     explicit AnimationManager(QWidget *parent = 0);
     ~AnimationManager();
 
-    enum {NTSC,PAL};
+    enum {PAL=50,NTSC=60};
 
 signals:
     void requestFrameData(quint8);
     void framesUpdated(AnimationFrameList,quint8);
+
+    void animationStarted();
+    void animationStopped();
 
 public slots:
     void setNTSCTiming(){this->iFrameTiming=AnimationManager::NTSC;}
     void setPALTiming(){this->iFrameTiming=AnimationManager::PAL;}
 
     void addAnimationFrame(quint8,quint8);
+    void insertAnimationFrame(quint8,quint8);
+    void replaceAnimationFrame(quint8,quint8);
     void setBackgroundColour(PaletteVector);
 
     void setNewAnimation(int);
-    void setAnimationFrame(int);
+    void setSelectedFrame(int);
+    void setPlayingFrame(int);
     void updateCurrentFrame();
 
     void moveFrameUp(int);
     void moveFrameDown(int);
     void deleteFrame(int);
 
+    void playAnimationToggle(bool);
+
     void drawAnimationFrameData(MetaspriteTileList);
+
+private slots:
+    void playAnimation();
+    void playNextFrame(bool inc=true);
+    void stopAnimation();
 
 private:
     QGraphicsScene *gsAnimation;
     quint8 iAnimation;
     AnimationList alAnimations;
-    quint8 iFrame;
+    quint8 iSelectedFrame;
+    quint8 iPlayingFrame;
+    bool isPlaying;
 
     QTimer tFrameCounter;
     int iFrameTiming;

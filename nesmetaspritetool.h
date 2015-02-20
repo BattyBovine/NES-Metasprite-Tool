@@ -40,6 +40,9 @@ private slots:
 
     void setAnimationLabel(QString);
 
+    void setPlayButtonText();
+    void setPauseButtonText();
+
 private:
     Ui::NESMetaspriteTool *ui;
 };

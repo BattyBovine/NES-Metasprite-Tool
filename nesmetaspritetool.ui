@@ -17,7 +17,7 @@
    <string>NES Metasprite Tool</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_23">
+   <layout class="QHBoxLayout" name="horizontalLayout_24">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
@@ -832,7 +832,7 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_22">
                <item>
-                <widget class="QPushButton" name="pushButton_2">
+                <widget class="QPushButton" name="btnPlayAnimation">
                  <property name="minimumSize">
                   <size>
                    <width>24</width>
@@ -1161,14 +1161,89 @@
                  </property>
                 </widget>
                </item>
+               <item>
+                <widget class="QLabel" name="label_8">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>frames</string>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
              <item>
-              <widget class="QPushButton" name="btnAddFrame">
-               <property name="text">
-                <string>Add Frame</string>
-               </property>
-              </widget>
+              <layout class="QHBoxLayout" name="horizontalLayout_23">
+               <item>
+                <widget class="QPushButton" name="btnAddFrame">
+                 <property name="maximumSize">
+                  <size>
+                   <width>48</width>
+                   <height>23</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_18">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnInsertFrame">
+                 <property name="maximumSize">
+                  <size>
+                   <width>48</width>
+                   <height>23</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Ins</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_19">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnReplaceFrame">
+                 <property name="maximumSize">
+                  <size>
+                   <width>48</width>
+                   <height>23</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Rpl</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item>
               <spacer name="verticalSpacer_4">
@@ -1360,12 +1435,16 @@
    <slots>
     <signal>requestFrameData(quint8)</signal>
     <signal>addAnimationFrame(quint8,quint8)</signal>
+    <signal>insertAnimationFrame(quint8,quint8)</signal>
+    <signal>replaceAnimationFrame(quint8,quint8)</signal>
     <slot>setBackgroundColour(PaletteVector)</slot>
     <slot>getFrameData(MetaspriteTileList)</slot>
     <slot>setNewFrame(int)</slot>
     <slot>updateCurrentFrame()</slot>
     <slot>setDelay(int)</slot>
     <slot>addFrame()</slot>
+    <slot>insertFrame()</slot>
+    <slot>replaceFrame()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1398,17 +1477,22 @@
    <slots>
     <signal>requestFrameData(quint8)</signal>
     <signal>framesUpdated(AnimationFrameList,quint8)</signal>
+    <signal>animationStarted()</signal>
+    <signal>animationStopped()</signal>
     <slot>setBackgroundColour(PaletteVector)</slot>
     <slot>addAnimationFrame(quint8,quint8)</slot>
     <slot>drawAnimationFrameData(MetaspriteTileList)</slot>
     <slot>setNewAnimation(int)</slot>
-    <slot>setAnimationFrame(int)</slot>
+    <slot>setSelectedFrame(int)</slot>
     <slot>updateCurrentFrame()</slot>
     <slot>setNTSCTiming()</slot>
     <slot>setPALTiming()</slot>
     <slot>moveFrameUp(int)</slot>
     <slot>moveFrameDown(int)</slot>
     <slot>deleteFrame(int)</slot>
+    <slot>playAnimationToggle(bool)</slot>
+    <slot>insertAnimationFrame(quint8,quint8)</slot>
+    <slot>replaceAnimationFrame(quint8,quint8)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -2263,22 +2347,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>btnAddFrame</sender>
-   <signal>clicked()</signal>
-   <receiver>gvFrames</receiver>
-   <slot>addFrame()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>690</x>
-     <y>379</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>664</x>
-     <y>207</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>hsAnimationSlider</sender>
    <signal>valueChanged(int)</signal>
    <receiver>labelAnimationSlider</receiver>
@@ -2410,7 +2478,7 @@
    <sender>listFrames</sender>
    <signal>currentRowChanged(int)</signal>
    <receiver>gvAnimation</receiver>
-   <slot>setAnimationFrame(int)</slot>
+   <slot>setSelectedFrame(int)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>386</x>
@@ -2550,6 +2618,134 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btnPlayAnimation</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>playAnimationToggle(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>52</x>
+     <y>436</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>117</x>
+     <y>259</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvAnimation</sender>
+   <signal>animationStarted()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>setPauseButtonText()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>162</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvAnimation</sender>
+   <signal>animationStopped()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>setPlayButtonText()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>43</x>
+     <y>142</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>192</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnAddFrame</sender>
+   <signal>clicked()</signal>
+   <receiver>gvFrames</receiver>
+   <slot>addFrame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>521</x>
+     <y>369</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>525</x>
+     <y>239</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnInsertFrame</sender>
+   <signal>clicked()</signal>
+   <receiver>gvFrames</receiver>
+   <slot>insertFrame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>608</x>
+     <y>377</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>256</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnReplaceFrame</sender>
+   <signal>clicked()</signal>
+   <receiver>gvFrames</receiver>
+   <slot>replaceFrame()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>673</x>
+     <y>376</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>675</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvFrames</sender>
+   <signal>insertAnimationFrame(quint8,quint8)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>insertAnimationFrame(quint8,quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>521</x>
+     <y>149</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>238</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvFrames</sender>
+   <signal>replaceAnimationFrame(quint8,quint8)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>replaceAnimationFrame(quint8,quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>516</x>
+     <y>203</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>208</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -2565,5 +2761,7 @@
   <slot>nextMetasprite()</slot>
   <slot>prevMetasprite()</slot>
   <slot>setAnimationLabel(QString)</slot>
+  <slot>setPlayButtonText()</slot>
+  <slot>setPauseButtonText()</slot>
  </slots>
 </ui>

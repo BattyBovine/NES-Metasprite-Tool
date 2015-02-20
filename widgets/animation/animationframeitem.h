@@ -20,6 +20,5 @@ private:
 };
 
 typedef QVector<AnimationFrameItem> AnimationFrameList;
-typedef QVector<AnimationFrameList> AnimationList;
 
 #endif // ANIMATIONFRAMEITEM_H
