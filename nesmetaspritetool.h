@@ -38,7 +38,7 @@ private slots:
 
     void setNewPaletteFile(QString);
 
-    void setAnimationLabel(QString);
+    void setAnimationLabelPrefix(QString);
 
     void setPlayButtonText();
     void setPauseButtonText();

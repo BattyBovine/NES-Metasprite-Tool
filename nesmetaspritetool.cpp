@@ -148,7 +148,7 @@ void NESMetaspriteTool::setNewPaletteFile(QString pal)
 
 
 
-void NESMetaspriteTool::setAnimationLabel(QString s)
+void NESMetaspriteTool::setAnimationLabelPrefix(QString s)
 {
     ui->labelMetaspriteName->setText((!s.isEmpty())?s:"emptylabel");
 }

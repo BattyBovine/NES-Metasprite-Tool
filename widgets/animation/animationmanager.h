@@ -51,6 +51,8 @@ public:
     enum {PAL=50,NTSC=60};
 
 signals:
+    void loopChanged(bool);
+    void labelChanged(QString);
     void requestFrameData(quint8);
     void framesUpdated(AnimationFrameList,quint8);
 
@@ -60,6 +62,8 @@ signals:
 public slots:
     void setNTSCTiming(){this->iFrameTiming=AnimationManager::NTSC;}
     void setPALTiming(){this->iFrameTiming=AnimationManager::PAL;}
+    void setAnimationLabel(QString l){this->alAnimations[this->iAnimation].setLabel(l);}
+    void setAnimationLoop(bool l){this->alAnimations[this->iAnimation].setLoop(l);}
 
     void addAnimationFrame(quint8,quint8);
     void insertAnimationFrame(quint8,quint8);

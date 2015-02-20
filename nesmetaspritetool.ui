@@ -1001,7 +1001,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QCheckBox" name="checkBox">
+                <widget class="QCheckBox" name="chkLoop">
                  <property name="text">
                   <string>Loop</string>
                  </property>
@@ -1479,6 +1479,8 @@
     <signal>framesUpdated(AnimationFrameList,quint8)</signal>
     <signal>animationStarted()</signal>
     <signal>animationStopped()</signal>
+    <signal>loopChanged(bool)</signal>
+    <signal>labelChanged(QString)</signal>
     <slot>setBackgroundColour(PaletteVector)</slot>
     <slot>addAnimationFrame(quint8,quint8)</slot>
     <slot>drawAnimationFrameData(MetaspriteTileList)</slot>
@@ -1493,6 +1495,8 @@
     <slot>playAnimationToggle(bool)</slot>
     <slot>insertAnimationFrame(quint8,quint8)</slot>
     <slot>replaceAnimationFrame(quint8,quint8)</slot>
+    <slot>setAnimationLoop(bool)</slot>
+    <slot>setAnimationLabel(QString)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -2078,7 +2082,7 @@
    <sender>lineASMLabel</sender>
    <signal>textChanged(QString)</signal>
    <receiver>NESMetaspriteTool</receiver>
-   <slot>setAnimationLabel(QString)</slot>
+   <slot>setAnimationLabelPrefix(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>152</x>
@@ -2746,6 +2750,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>chkLoop</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>setAnimationLoop(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>469</x>
+     <y>526</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>255</x>
+     <y>256</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvAnimation</sender>
+   <signal>loopChanged(bool)</signal>
+   <receiver>chkLoop</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>277</x>
+     <y>273</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>448</x>
+     <y>524</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineASMAnimationLabel</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>setAnimationLabel(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>96</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>46</x>
+     <y>122</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvAnimation</sender>
+   <signal>labelChanged(QString)</signal>
+   <receiver>lineASMAnimationLabel</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>189</x>
+     <y>92</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -2760,7 +2828,7 @@
   <slot>newMetaspriteBank()</slot>
   <slot>nextMetasprite()</slot>
   <slot>prevMetasprite()</slot>
-  <slot>setAnimationLabel(QString)</slot>
+  <slot>setAnimationLabelPrefix(QString)</slot>
   <slot>setPlayButtonText()</slot>
   <slot>setPauseButtonText()</slot>
  </slots>

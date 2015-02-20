@@ -61,6 +61,8 @@ void AnimationManager::setNewAnimation(int f)
     this->gsAnimation->clear();
     this->iAnimation = f;
     this->setSelectedFrame(0);
+    emit(this->loopChanged(this->alAnimations[this->iAnimation].loop()));
+    emit(this->labelChanged(this->alAnimations[this->iAnimation].label()));
 
     this->updateList(this->iSelectedFrame);
 }
@@ -140,7 +142,13 @@ void AnimationManager::playAnimation()
 void AnimationManager::playNextFrame(bool inc)
 {
     if(inc) this->iPlayingFrame++;
-    if(this->iPlayingFrame>=this->alAnimations[this->iAnimation].size()) this->iPlayingFrame=0;
+    if(this->iPlayingFrame>=this->alAnimations[this->iAnimation].size()) {
+        this->iPlayingFrame=0;
+        if(!this->alAnimations[this->iAnimation].loop()) {
+            this->stopAnimation();
+            return;
+        }
+    }
     this->setPlayingFrame(this->iPlayingFrame);
     this->tFrameCounter.start(qRound((qreal(this->alAnimations[this->iAnimation][this->iPlayingFrame].delay())/qreal(this->iFrameTiming))*1000));
 }
