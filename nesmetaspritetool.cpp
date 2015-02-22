@@ -27,27 +27,27 @@ NESMetaspriteTool::~NESMetaspriteTool()
 
 
 
-void NESMetaspriteTool::newMetaspriteBank()
+void NESMetaspriteTool::newProject()
 {
-    int retval = QMessageBox::warning(this,"Clear current metasprite data?",
-                                      "All unsaved metasprite data will be lost. Are you sure you wish to create a new metasprite bank?",
-                                      QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel,
-                                      QMessageBox::Cancel);
+    int retval = QMessageBox::warning(this,"Clear current data?",
+                                      "All unsaved data will be lost. Are you sure you wish to create a new project?",
+                                      QMessageBox::Yes | QMessageBox::No,
+                                      QMessageBox::No);
     switch(retval) {
-    case QMessageBox::Save:
-        this->saveASMMetaspriteBank();
-        this->saveBinaryMetaspriteBank();
-    case QMessageBox::Discard:
+    case QMessageBox::Yes:
         ui->gvMetasprite->clearAllMetaspriteData();
+        ui->gvAnimation->clearAllAnimationData();
+        ui->lineASMLabel->setText("");
+        ui->lineASMAnimationLabel->setText("");
         break;
     }
 }
 
 void NESMetaspriteTool::openMetaspriteBank()
 {
-    QString filename = QFileDialog::getOpenFileName(this, ui->actionLoadMetaspriteBank->text(), "", "*.*");
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenMetaspriteBank->text(), "", "*.*");
     if(filename.isEmpty())  return;
-    emit(metaspriteFileOpened(filename));
+    ui->gvMetasprite->openMetaspriteFile(filename);
 }
 
 void NESMetaspriteTool::saveASMMetaspriteBank()
@@ -60,38 +60,8 @@ void NESMetaspriteTool::saveASMMetaspriteBank()
         return;
     }
 
-    QString asmlabel = ui->lineASMLabel->text();
-    if(asmlabel.isEmpty())  asmlabel = "emptylabel";
-    QString datatable_hi = asmlabel+"_hi:\n\t.byte ";
-    QString datatable_lo = asmlabel+"_lo:\n\t.byte ", databytes;
+    file.write(ui->gvMetasprite->createMetaspriteASMData(ui->lineASMLabel->text()+"_").toLocal8Bit());
 
-    QVector<QByteArray> bindata = ui->gvMetasprite->createMetaspriteBinaryData();
-    for(int i=0; i<bindata.size(); i++) {
-        QByteArray bin = bindata.at(i);
-        if(!bin.isEmpty()) {
-            QString countedlabel = asmlabel+QString("_").append(QString::number(i));
-
-            datatable_hi += QString(">").append(countedlabel).append(",");
-            datatable_lo += QString("<").append(countedlabel).append(",");
-
-            databytes += "\n";
-            databytes += countedlabel+":\n\t.byte ";
-            databytes += QString("%1").arg(quint8(bin.at(0)),2,16,QChar('0')).toUpper().prepend("$");
-            for(int i=1; i<bin.length(); i++) {
-                databytes += QString("%1").arg(quint8(bin.at(i)),2,16,QChar('0')).toUpper().prepend(",$");
-            }
-        }
-    }
-    datatable_hi.remove(datatable_hi.size()-1,1);
-    datatable_lo.remove(datatable_lo.size()-1,1);
-    datatable_hi += "\n";
-    datatable_lo += "\n";
-    databytes += "\n";
-    databytes += asmlabel+"_end:\n";
-
-    file.write(datatable_hi.toLocal8Bit());
-    file.write(datatable_lo.toLocal8Bit());
-    file.write(databytes.toLocal8Bit());
     file.close();
 }
 
@@ -120,7 +90,7 @@ void NESMetaspriteTool::openCHR()
 
 void NESMetaspriteTool::openPalette()
 {
-    QString filename = QFileDialog::getOpenFileName(this, ui->actionLoadPalette->text(), "", "*.pal");
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenPalette->text(), "", "*.pal");
     if(filename.isEmpty())  return;
     ui->gvPaletteManager->setPaletteData(filename);
 }
@@ -136,6 +106,28 @@ void NESMetaspriteTool::savePalette()
     }
     QByteArray pal = ui->gvPaletteManager->paletteData();
     file.write(pal);
+    file.close();
+}
+
+void NESMetaspriteTool::openAnimation()
+{
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenAnimation->text(), "", "*.*");
+    if(filename.isEmpty())  return;
+    ui->gvAnimation->openAnimationFile(filename);
+}
+
+void NESMetaspriteTool::saveASMAnimation()
+{
+    QString filename = QFileDialog::getSaveFileName(this, ui->actionSaveAnimationASM->text(), "", "*.*");
+    if(filename.isEmpty())  return;
+    QFile file(filename);
+    if(!file.open(QIODevice::WriteOnly)) {
+        QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
+        return;
+    }
+
+    file.write(ui->gvAnimation->createAnimationASMData(ui->labelMetaspriteName->text()+"_").toLocal8Bit());
+
     file.close();
 }
 

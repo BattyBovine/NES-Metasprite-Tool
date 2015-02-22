@@ -27,6 +27,9 @@ public:
     ~MetaspriteManager();
 
     qreal scale(){return this->iScale;}
+    void openMetaspriteFile(QString);
+    void importMetaspriteBinaryData(QVector<QByteArray>);
+    void clearAllMetaspriteData();
 
 signals:
     void requestNewTile(QPointF);
@@ -59,9 +62,7 @@ public slots:
     void createAnimationFrameData(quint8);
 
     QVector<QByteArray> createMetaspriteBinaryData();
-    void openMetaspriteFile(QString);
-    void importMetaspriteBinaryData(QVector<QByteArray>);
-    void clearAllMetaspriteData();
+    QString createMetaspriteASMData(QString);
 
 protected:
     void dragMoveEvent(QDragMoveEvent*e){e->accept();}

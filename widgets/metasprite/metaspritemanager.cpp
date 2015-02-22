@@ -318,7 +318,7 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
 
     QVector<QByteArray> bindata = QVector<QByteArray>(256);
     for(int i=0; i<256; i++) {
-        QList<MetaspriteTileItem*> mslist = this->vMetaspriteStages.at(i);
+        MetaspriteTileList mslist = this->vMetaspriteStages[i];
         QByteArray bin;
         if(!mslist.isEmpty()) {
             bin.append(quint8(mslist.length()));
@@ -337,6 +337,46 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
         }
     }
     return bindata;
+}
+
+QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
+{
+    QString asmlabel = labelprefix.isEmpty()?"emptylabel_":labelprefix;
+    QString datatable_hi = asmlabel+"_hi:\n\t.byte ";
+    QString datatable_lo = asmlabel+"_lo:\n\t.byte ";
+    QString databytes;
+
+    for(int i=0; i<256; i++) {
+        MetaspriteTileList mslist = this->vMetaspriteStages[i];
+        if(mslist.isEmpty())    continue;
+        QString countedlabel = labelprefix+QString::number(i);
+
+        datatable_hi += QString(">").append(countedlabel).append(",");
+        datatable_lo += QString("<").append(countedlabel).append(",");
+
+        databytes += "\n";
+        databytes += countedlabel+":\n\t.byte ";
+        databytes += QString("$%1").arg(mslist.size(),2,16,QChar('0')).toUpper();
+        foreach(MetaspriteTileItem *mti, mslist) {
+            quint8 oamx = mti->realX();
+            quint8 oamy = mti->realY();
+            quint8 oamindex = mti->tile();
+            quint8 oamattr = mti->palette()|(mti->flippedHorizontal()?0x40:0x00)|(mti->flippedVertical()?0x80:0x00);
+            databytes += QString(",$%1").arg(oamy,2,16,QChar('0')).toUpper();
+            databytes += QString(",$%1").arg(oamindex,2,16,QChar('0')).toUpper();
+            databytes += QString(",$%1").arg(oamattr,2,16,QChar('0')).toUpper();
+            databytes += QString(",$%1").arg(oamx,2,16,QChar('0')).toUpper();
+        }
+    }
+
+    datatable_hi.remove(datatable_hi.size()-1,1);
+    datatable_lo.remove(datatable_lo.size()-1,1);
+    datatable_hi += "\n";
+    datatable_lo += "\n";
+    databytes += "\n";
+    databytes += asmlabel+"_end:\n";
+
+    return datatable_hi+datatable_lo+databytes;
 }
 
 
@@ -450,10 +490,10 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
 
 void MetaspriteManager::clearAllMetaspriteData()
 {
-    for(int i=0; i<this->vMetaspriteStages.size(); i++) {
-        this->vMetaspriteStages.replace(i,QList<MetaspriteTileItem*>());
-    }
     this->gsMetasprite->clear();
+    for(int i=0; i<this->vMetaspriteStages.size(); i++) {
+        this->vMetaspriteStages.replace(i,MetaspriteTileList());
+    }
     this->drawGridLines();
 
     this->sendTileUpdates();

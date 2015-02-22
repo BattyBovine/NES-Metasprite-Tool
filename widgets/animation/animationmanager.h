@@ -3,6 +3,14 @@
 
 #include <QWidget>
 #include <QGraphicsView>
+#include <QMimeData>
+#include <QDragMoveEvent>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QDragLeaveEvent>
+
+#include <QFile>
+#include <QByteArray>
 #include <QTimer>
 
 #include <QtMath>
@@ -48,6 +56,10 @@ public:
     explicit AnimationManager(QWidget *parent = 0);
     ~AnimationManager();
 
+    QString createAnimationASMData(QString);
+    void openAnimationFile(QString);
+    void clearAllAnimationData();
+
     enum {PAL=50,NTSC=60};
 
 signals:
@@ -83,6 +95,12 @@ public slots:
 
     void drawAnimationFrameData(MetaspriteTileList);
 
+protected:
+    void dragMoveEvent(QDragMoveEvent*e){e->accept();}
+    void dragEnterEvent(QDragEnterEvent*e){e->acceptProposedAction();}
+    void dropEvent(QDropEvent*);
+    void dragLeaveEvent(QDragLeaveEvent*e){e->accept();}
+
 private slots:
     void playAnimation();
     void playNextFrame(bool inc=true);
@@ -101,7 +119,7 @@ private:
     bool bPlayAnimation;
 
     void drawAnimationFrame(quint8);
-    void updateList(quint8);
+    void updateList(quint8 s=0);
 };
 
 #endif // ANIMATIONMANAGER_H
