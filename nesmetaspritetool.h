@@ -28,13 +28,15 @@ signals:
     void metaspriteFileOpened(QString);
 
 private slots:
-    void newMetaspriteBank();
+    void newProject();
     void openMetaspriteBank();
     void saveASMMetaspriteBank();
     void saveBinaryMetaspriteBank();
     void openCHR();
     void openPalette();
     void savePalette();
+    void openAnimation();
+    void saveASMAnimation();
 
     void setNewPaletteFile(QString);
 

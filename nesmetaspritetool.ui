@@ -710,7 +710,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLabel" name="label_2">
+                <widget class="QLabel" name="labelSeparator">
                  <property name="text">
                   <string>_</string>
                  </property>
@@ -752,9 +752,6 @@
                    <width>256</width>
                    <height>256</height>
                   </size>
-                 </property>
-                 <property name="acceptDrops">
-                  <bool>false</bool>
                  </property>
                  <property name="frameShape">
                   <enum>QFrame::NoFrame</enum>
@@ -1282,26 +1279,41 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionNewMetaspriteBank"/>
-    <addaction name="actionLoadMetaspriteBank"/>
+    <addaction name="actionNewProject"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuMetasprites">
+    <property name="title">
+     <string>Metasprites</string>
+    </property>
+    <addaction name="actionOpenMetaspriteBank"/>
     <addaction name="actionSaveMetaspriteBankASM"/>
     <addaction name="actionSaveMetaspriteBankBinary"/>
     <addaction name="separator"/>
     <addaction name="actionOpenCHR"/>
     <addaction name="separator"/>
-    <addaction name="actionLoadPalette"/>
+    <addaction name="actionOpenPalette"/>
     <addaction name="actionSavePalette"/>
-    <addaction name="separator"/>
-    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuAnimation">
+    <property name="title">
+     <string>Animation</string>
+    </property>
+    <addaction name="actionOpenAnimation"/>
+    <addaction name="actionSaveAnimationASM"/>
+    <addaction name="actionSaveAnimationBinary"/>
    </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuMetasprites"/>
+   <addaction name="menuAnimation"/>
   </widget>
   <action name="actionSavePalette">
    <property name="text">
     <string>Save Palette</string>
    </property>
   </action>
-  <action name="actionLoadPalette">
+  <action name="actionOpenPalette">
    <property name="text">
     <string>Open Palette</string>
    </property>
@@ -1318,15 +1330,21 @@
   </action>
   <action name="actionSaveMetaspriteBankASM">
    <property name="text">
-    <string>Save Metasprite Bank (ASM)</string>
+    <string>Save Metasprite Bank</string>
    </property>
   </action>
   <action name="actionSaveMetaspriteBankBinary">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Save Metasprite Bank (Binary)</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
-  <action name="actionLoadMetaspriteBank">
+  <action name="actionOpenMetaspriteBank">
    <property name="text">
     <string>Open Metasprite Bank</string>
    </property>
@@ -1336,9 +1354,30 @@
     <string>Open Metasprite Bank (Binary)</string>
    </property>
   </action>
-  <action name="actionNewMetaspriteBank">
+  <action name="actionNewProject">
    <property name="text">
-    <string>New Metasprite Bank</string>
+    <string>New Project</string>
+   </property>
+  </action>
+  <action name="actionOpenAnimation">
+   <property name="text">
+    <string>Open Animation</string>
+   </property>
+  </action>
+  <action name="actionSaveAnimationASM">
+   <property name="text">
+    <string>Save Animation</string>
+   </property>
+  </action>
+  <action name="actionSaveAnimationBinary">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Save Animation (Binary)</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
  </widget>
@@ -1535,7 +1574,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionLoadPalette</sender>
+   <sender>actionOpenPalette</sender>
    <signal>triggered()</signal>
    <receiver>NESMetaspriteTool</receiver>
    <slot>openPalette()</slot>
@@ -1935,7 +1974,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionLoadMetaspriteBank</sender>
+   <sender>actionOpenMetaspriteBank</sender>
    <signal>triggered()</signal>
    <receiver>NESMetaspriteTool</receiver>
    <slot>openMetaspriteBank()</slot>
@@ -1947,22 +1986,6 @@
     <hint type="destinationlabel">
      <x>389</x>
      <y>260</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>NESMetaspriteTool</sender>
-   <signal>metaspriteFileOpened(QString)</signal>
-   <receiver>gvMetasprite</receiver>
-   <slot>openMetaspriteFile(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>4</x>
-     <y>102</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>60</x>
-     <y>133</y>
     </hint>
    </hints>
   </connection>
@@ -2031,10 +2054,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionNewMetaspriteBank</sender>
+   <sender>actionNewProject</sender>
    <signal>triggered()</signal>
    <receiver>NESMetaspriteTool</receiver>
-   <slot>newMetaspriteBank()</slot>
+   <slot>newProject()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -2814,6 +2837,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionSaveAnimationASM</sender>
+   <signal>triggered()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>saveASMAnimation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>365</x>
+     <y>285</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionOpenAnimation</sender>
+   <signal>triggered()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>openAnimation()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>365</x>
+     <y>285</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -2825,11 +2880,13 @@
   <slot>saveASMMetaspriteBank()</slot>
   <slot>saveBinaryMetaspriteBank()</slot>
   <slot>openMetaspriteBank()</slot>
-  <slot>newMetaspriteBank()</slot>
+  <slot>newProject()</slot>
   <slot>nextMetasprite()</slot>
   <slot>prevMetasprite()</slot>
   <slot>setAnimationLabelPrefix(QString)</slot>
   <slot>setPlayButtonText()</slot>
   <slot>setPauseButtonText()</slot>
+  <slot>saveASMAnimation()</slot>
+  <slot>openAnimation()</slot>
  </slots>
 </ui>
