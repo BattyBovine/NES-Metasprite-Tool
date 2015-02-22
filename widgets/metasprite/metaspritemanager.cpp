@@ -342,8 +342,8 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
 QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 {
     QString asmlabel = labelprefix.isEmpty()?"emptylabel_":labelprefix;
-    QString datatable_hi = asmlabel+"_hi:\n\t.byte ";
-    QString datatable_lo = asmlabel+"_lo:\n\t.byte ";
+    QString datatable_hi = asmlabel+"hi:\n\t.byte ";
+    QString datatable_lo = asmlabel+"lo:\n\t.byte ";
     QString databytes;
 
     for(int i=0; i<256; i++) {
@@ -374,7 +374,7 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
     datatable_hi += "\n";
     datatable_lo += "\n";
     databytes += "\n";
-    databytes += asmlabel+"_end:\n";
+    databytes += asmlabel+"end:\n";
 
     return datatable_hi+datatable_lo+databytes;
 }
