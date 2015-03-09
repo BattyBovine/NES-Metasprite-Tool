@@ -46,7 +46,6 @@ signals:
 
 public slots:
     void setScale(qreal s){this->iScale=s;}
-    void setTallSprites(bool t){this->bTallSprites=t;}
 
     void setNewSpriteColours(PaletteVector,quint8,bool);
     void addNewTile(QPointF,QImage,quint8,quint8);
@@ -56,7 +55,7 @@ public slots:
     void flipVertical();
     void deleteSelectedTiles();
 
-    void updateTiles();
+    void updateTiles(bool);
     void swapMetaspriteStage(int);
     void createFrameData(quint8);
     void createAnimationFrameData(quint8);

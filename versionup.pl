@@ -26,7 +26,10 @@ if(fileno(VERSION_H_READ)) {
 close VERSION_H_READ;
 
 foreach my $arg (@ARGV) {
-	if($arg=~m|-get|i) {
+	if($arg=~m|-getshort|i) {
+		print "$major.$minor";
+		exit;
+	} elsif($arg=~m|-get|i) {
 		print "$major.$minor.$revision.$build";
 		exit;
 	}

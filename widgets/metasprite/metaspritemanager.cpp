@@ -6,7 +6,7 @@ MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
     this->gsMetasprite->setSceneRect(-96,-96,192,192);
     this->setScene(this->gsMetasprite);
     this->setScale(2);
-    this->setTallSprites(false);
+    this->bTallSprites = false;
 
     this->drawGridLines();
 
@@ -154,11 +154,12 @@ void MetaspriteManager::addNewTile(QPointF p, QImage i, quint8 t, quint8 c)
 {
     MetaspriteTileItem *pi = new MetaspriteTileItem(i);
     pi->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+    pi->setTallSprite(this->bTallSprites);
     pi->setScale(this->iScale);
     pi->setRealX(qRound(p.x()/this->iScale));
     pi->setRealY(qRound(p.y()/this->iScale));
     pi->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
-    pi->setTile(t);
+    pi->setTile(t&(this->bTallSprites?0xFE:0xFF));
     pi->setPalette(c);
     this->gsMetasprite->addItem(pi);
 
@@ -265,11 +266,13 @@ void MetaspriteManager::deleteSelectedTiles()
 
 
 
-void::MetaspriteManager::updateTiles()
+void::MetaspriteManager::updateTiles(bool t)
 {
+    this->bTallSprites = t;
     QList<QGraphicsItem*> items = this->gsMetasprite->items();
     foreach(QGraphicsItem *ms, items) {
         if(ms->type()!=MetaspriteTileItem::Type)    continue;
+        qgraphicsitem_cast<MetaspriteTileItem*>(ms)->setTallSprite(this->bTallSprites);
         emit(this->getTileUpdate(qgraphicsitem_cast<MetaspriteTileItem*>(ms)));
         emit(this->getPaletteUpdate(qgraphicsitem_cast<MetaspriteTileItem*>(ms)));
     }
@@ -291,6 +294,7 @@ void MetaspriteManager::swapMetaspriteStage(int s)
     this->iMetaspriteStage = s;
     store = this->vMetaspriteStages.at(s);
     foreach(MetaspriteTileItem *ms, store) {
+        ms->setTallSprite(this->bTallSprites);
         emit(this->getTileUpdate(ms));
         emit(this->getPaletteUpdate(ms));
         this->gsMetasprite->addItem(ms);
@@ -465,9 +469,10 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
             ms->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
             ms->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
             ms->setScale(this->iScale);
+            ms->setTallSprite(this->bTallSprites);
             ms->setRealX(oamx);
             ms->setRealY(oamy);
-            ms->setTile(oamindex);
+            ms->setTile(oamindex&(this->bTallSprites?0xFE:0xFF));
             ms->setPalette(oamattr&0x03);
             ms->flipHorizontal((oamattr&0x40)?true:false);
             ms->flipVertical((oamattr&0x80)?true:false);
@@ -516,6 +521,7 @@ MetaspriteTileList MetaspriteManager::createFrame(quint8 f, quint8 s)
         newitem->setScale((s==0)?i->scale():s);
         newitem->setRealX(i->realX());
         newitem->setRealY(i->realY());
+        newitem->setTallSprite(this->bTallSprites);
         newitem->flipHorizontal(i->flippedHorizontal());
         newitem->flipVertical(i->flippedVertical());
         newitem->setPalette(i->palette());

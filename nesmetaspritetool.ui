@@ -17,7 +17,7 @@
    <string>NES Metasprite Tool</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QHBoxLayout" name="horizontalLayout_24">
+   <layout class="QHBoxLayout" name="horizontalLayout_25">
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
@@ -151,6 +151,40 @@
                 <enum>Qt::Horizontal</enum>
                </property>
               </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_24">
+               <item>
+                <spacer name="horizontalSpacer_20">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>58</width>
+                   <height>17</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radio8x8">
+                 <property name="text">
+                  <string>8x8</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QRadioButton" name="radio8x16">
+                 <property name="text">
+                  <string>8x16</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item>
               <spacer name="verticalSpacer">
@@ -1438,12 +1472,14 @@
    <header>tilesetmanager.h</header>
    <slots>
     <signal>sendNewTile(QPointF,QImage,quint8,quint8)</signal>
-    <signal>tilesetChanged()</signal>
+    <signal>tilesetChanged(bool)</signal>
     <slot>loadCHRBank(QString)</slot>
     <slot>setNewSpriteColours(QVector,quint8)</slot>
-    <slot>createNewTile(QPointF)</slot>
+    <slot>getNewTile(QPointF)</slot>
     <slot>updateSpriteTile(MetaspriteTileItem*)</slot>
     <slot>setNewSpriteColours(PaletteVector,quint8)</slot>
+    <slot>setStandardSprites()</slot>
+    <slot>setTallSprites()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1466,13 +1502,15 @@
     <slot>flipVertical()</slot>
     <slot>deleteSelectedTiles()</slot>
     <slot>swapMetaspriteStage(int)</slot>
-    <slot>updateTiles()</slot>
+    <slot>updateTiles(bool)</slot>
     <slot>openMetaspriteFile(QString)</slot>
     <slot>moveSelectedUp()</slot>
     <slot>moveSelectedDown()</slot>
     <slot>setNewSpriteColours(PaletteVector,quint8,bool)</slot>
     <slot>createFrameData(quint8)</slot>
     <slot>createAnimationFrameData(quint8)</slot>
+    <slot>setStandardSprites()</slot>
+    <slot>setTallSprites()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1668,12 +1706,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>565</x>
-     <y>406</y>
+     <x>562</x>
+     <y>407</y>
     </hint>
    </hints>
   </connection>
@@ -1684,12 +1722,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>653</x>
-     <y>406</y>
+     <x>652</x>
+     <y>407</y>
     </hint>
    </hints>
   </connection>
@@ -1700,12 +1738,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>565</x>
-     <y>431</y>
+     <x>562</x>
+     <y>433</y>
     </hint>
    </hints>
   </connection>
@@ -1716,12 +1754,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>653</x>
-     <y>431</y>
+     <x>652</x>
+     <y>433</y>
     </hint>
    </hints>
   </connection>
@@ -1732,12 +1770,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>565</x>
-     <y>406</y>
+     <x>562</x>
+     <y>407</y>
     </hint>
     <hint type="destinationlabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
    </hints>
   </connection>
@@ -1748,12 +1786,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>653</x>
-     <y>406</y>
+     <x>652</x>
+     <y>407</y>
     </hint>
     <hint type="destinationlabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
    </hints>
   </connection>
@@ -1764,12 +1802,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>565</x>
-     <y>431</y>
+     <x>562</x>
+     <y>433</y>
     </hint>
     <hint type="destinationlabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
    </hints>
   </connection>
@@ -1780,12 +1818,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>653</x>
-     <y>431</y>
+     <x>652</x>
+     <y>433</y>
     </hint>
     <hint type="destinationlabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
    </hints>
   </connection>
@@ -1796,8 +1834,8 @@
    <slot>setNewPaletteFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>698</x>
-     <y>531</y>
+     <x>695</x>
+     <y>535</y>
     </hint>
     <hint type="destinationlabel">
      <x>613</x>
@@ -1825,7 +1863,7 @@
    <sender>gvMetasprite</sender>
    <signal>requestNewTile(QPointF)</signal>
    <receiver>gvTileset</receiver>
-   <slot>createNewTile(QPointF)</slot>
+   <slot>getNewTile(QPointF)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>212</x>
@@ -1844,8 +1882,8 @@
    <slot>flipHorizontal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>331</x>
-     <y>537</y>
+     <x>330</x>
+     <y>541</y>
     </hint>
     <hint type="destinationlabel">
      <x>60</x>
@@ -1860,8 +1898,8 @@
    <slot>flipVertical()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>354</x>
-     <y>537</y>
+     <x>353</x>
+     <y>541</y>
     </hint>
     <hint type="destinationlabel">
      <x>78</x>
@@ -1876,8 +1914,8 @@
    <slot>deleteSelectedTiles()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>409</x>
-     <y>537</y>
+     <x>408</x>
+     <y>541</y>
     </hint>
     <hint type="destinationlabel">
      <x>95</x>
@@ -1896,8 +1934,8 @@
      <y>271</y>
     </hint>
     <hint type="destinationlabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
    </hints>
   </connection>
@@ -1935,9 +1973,9 @@
   </connection>
   <connection>
    <sender>gvTileset</sender>
-   <signal>tilesetChanged()</signal>
+   <signal>tilesetChanged(bool)</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>updateTiles()</slot>
+   <slot>updateTiles(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>502</x>
@@ -1960,8 +1998,8 @@
      <y>271</y>
     </hint>
     <hint type="destinationlabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
    </hints>
   </connection>
@@ -2036,8 +2074,8 @@
    <slot>moveSelectedUp()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>255</x>
-     <y>537</y>
+     <x>254</x>
+     <y>541</y>
     </hint>
     <hint type="destinationlabel">
      <x>113</x>
@@ -2052,8 +2090,8 @@
    <slot>moveSelectedDown()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>276</x>
-     <y>537</y>
+     <x>275</x>
+     <y>541</y>
     </hint>
     <hint type="destinationlabel">
      <x>132</x>
@@ -2100,8 +2138,8 @@
    <slot>setNewSpriteColours(PaletteVector,quint8,bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>681</x>
-     <y>504</y>
+     <x>679</x>
+     <y>508</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
@@ -2148,8 +2186,8 @@
    <slot>updateItems(GraphicsItemList,GraphicsItemList)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>224</x>
-     <y>214</y>
+     <x>223</x>
+     <y>305</y>
     </hint>
     <hint type="destinationlabel">
      <x>279</x>
@@ -2328,8 +2366,8 @@
      <y>300</y>
     </hint>
     <hint type="destinationlabel">
-     <x>697</x>
-     <y>325</y>
+     <x>695</x>
+     <y>334</y>
     </hint>
    </hints>
   </connection>
@@ -2372,8 +2410,8 @@
    <slot>setDelay(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>567</x>
-     <y>341</y>
+     <x>655</x>
+     <y>361</y>
     </hint>
     <hint type="destinationlabel">
      <x>584</x>
@@ -2392,8 +2430,8 @@
      <y>111</y>
     </hint>
     <hint type="destinationlabel">
-     <x>256</x>
-     <y>112</y>
+     <x>279</x>
+     <y>217</y>
     </hint>
    </hints>
   </connection>
@@ -2500,8 +2538,8 @@
    <slot>setNTSCTiming()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>223</x>
-     <y>435</y>
+     <x>240</x>
+     <y>453</y>
     </hint>
     <hint type="destinationlabel">
      <x>241</x>
@@ -2516,8 +2554,8 @@
    <slot>setPALTiming()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>254</x>
-     <y>436</y>
+     <x>287</x>
+     <y>453</y>
     </hint>
     <hint type="destinationlabel">
      <x>256</x>
@@ -2724,8 +2762,8 @@
    <slot>addFrame()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>521</x>
-     <y>369</y>
+     <x>550</x>
+     <y>392</y>
     </hint>
     <hint type="destinationlabel">
      <x>525</x>
@@ -2890,6 +2928,38 @@
     <hint type="destinationlabel">
      <x>365</x>
      <y>285</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radio8x8</sender>
+   <signal>clicked()</signal>
+   <receiver>gvTileset</receiver>
+   <slot>setStandardSprites()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>375</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>461</x>
+     <y>309</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radio8x16</sender>
+   <signal>clicked()</signal>
+   <receiver>gvTileset</receiver>
+   <slot>setTallSprites()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>384</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>439</x>
+     <y>338</y>
     </hint>
    </hints>
   </connection>

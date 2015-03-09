@@ -19,6 +19,7 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
     this->griSelection[0] = this->griSelection[1] = NULL;
     this->iSelectedTile = 0;
     this->iPalette = 0;
+    this->bTallSprite = false;
 
     this->pSelection = QPointF(0,0);
     this->drawSelectionBox();
@@ -63,7 +64,7 @@ bool TilesetManager::drawSelectionBox()
         delete this->griSelection[1];
     }
 
-    quint8 xorigin = qFloor(this->pSelection.x())-(qFloor(this->pSelection.x())%TSM_TILESIZE);
+    quint8 xorigin = qFloor(this->pSelection.x())-(qFloor(this->pSelection.x())%(TSM_TILESIZE*(this->bTallSprite?2:1)));
     quint8 yorigin = qFloor(this->pSelection.y())-(qFloor(this->pSelection.y())%TSM_TILESIZE);
     this->pSelection = QPointF(xorigin,yorigin);
     this->iSelectedTile = (qFloor((yorigin/TSM_TILESIZE)<<4)|qFloor(xorigin/TSM_TILESIZE));
@@ -72,8 +73,8 @@ bool TilesetManager::drawSelectionBox()
     QVector<qreal> dp;
     dp << 2 << 2;
     dashes.setDashPattern(dp);
-    this->griSelection[0] = this->gsTileset->addRect(QRectF(xorigin,yorigin,TSM_TILESIZE-1,TSM_TILESIZE-1),QPen(Qt::white),Qt::NoBrush);
-    this->griSelection[1] = this->gsTileset->addRect(QRectF(xorigin,yorigin,TSM_TILESIZE-1,TSM_TILESIZE-1),dashes,Qt::NoBrush);
+    this->griSelection[0] = this->gsTileset->addRect(QRectF(xorigin,yorigin,TSM_TILESIZE*(this->bTallSprite?2:1)-1,TSM_TILESIZE-1),QPen(Qt::white),Qt::NoBrush);
+    this->griSelection[1] = this->gsTileset->addRect(QRectF(xorigin,yorigin,TSM_TILESIZE*(this->bTallSprite?2:1)-1,TSM_TILESIZE-1),dashes,Qt::NoBrush);
 
     return true;
 }
@@ -133,7 +134,7 @@ bool TilesetManager::loadCHRBank(QString filename)
 
     this->redrawTileset();
 
-    emit(this->tilesetChanged());
+    emit(this->tilesetChanged(this->bTallSprite));
 
     return true;
 }
@@ -149,12 +150,46 @@ void TilesetManager::setNewSpriteColours(PaletteVector c, quint8 i)
     this->redrawTileset();
 }
 
-void TilesetManager::createNewTile(QPointF p)
+
+
+void TilesetManager::getNewTile(QPointF p)
 {
-    emit(sendNewTile(p,this->imgTileset.copy(this->pSelection.x()/TSM_SCALE,this->pSelection.y()/TSM_SCALE,8,8),this->iSelectedTile,this->iPalette));
+    emit(sendNewTile(p,this->createNewTile(this->iSelectedTile),this->iSelectedTile,this->iPalette));
+//    emit(sendNewTile(p,this->imgTileset.copy(this->pSelection.x()/TSM_SCALE,this->pSelection.y()/TSM_SCALE,MSTI_TILEWIDTH,MSTI_TILEWIDTH*(this->bTallSprite?2:1)),this->iSelectedTile,this->iPalette));
 }
 
 void TilesetManager::updateSpriteTile(MetaspriteTileItem *t)
 {
-    t->setTile(this->imgTileset.copy((t->tile()&0x0F)*8,((t->tile()&0xF0)>>4)*8,8,8));
+    t->setTile(this->createNewTile(t->tile()&(t->tallSprite()?0xFE:0xFF)));
+//    t->setTile(this->imgTileset.copy((t->tile()&0x0F)*t->width(),((t->tile()&0xF0)>>4)*t->height(),t->width(),t->height()));
+}
+
+
+
+QImage TilesetManager::createNewTile(quint8 tile)
+{
+    QImage newtile(MSTI_TILEWIDTH, MSTI_TILEWIDTH*(this->bTallSprite?2:1), QImage::Format_Indexed8);
+
+    QImage toptile(this->imgTileset.copy((tile&0x0F)*MSTI_TILEWIDTH,((tile&0xF0)>>4)*MSTI_TILEWIDTH,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
+    newtile.setColor(0,toptile.color(0));
+    newtile.setColor(1,toptile.color(1));
+    newtile.setColor(2,toptile.color(2));
+    newtile.setColor(3,toptile.color(3));
+
+    for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
+        for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
+            newtile.setPixel(x,y,toptile.pixelIndex(x,y));
+        }
+    }
+
+    if(this->bTallSprite) {
+        QImage antoniostellabottomtile(this->imgTileset.copy(((tile+1)&0x0F)*MSTI_TILEWIDTH,((tile&0xF0)>>4)*MSTI_TILEWIDTH,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
+        for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
+            for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
+                newtile.setPixel(x,y+MSTI_TILEWIDTH,antoniostellabottomtile.pixelIndex(x,y));
+            }
+        }
+    }
+
+    return newtile;
 }

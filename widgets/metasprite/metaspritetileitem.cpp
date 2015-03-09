@@ -5,7 +5,9 @@ MetaspriteTileItem::MetaspriteTileItem(QGraphicsItem *parent) : QGraphicsPixmapI
     this->bHFlip = this->bVFlip = false;
     this->iPalette = 0;
     this->iX = this->iY = 0;
-    this->imgTile = QImage(8,8,QImage::Format_Indexed8);
+    this->iW = this->iH = MSTI_TILEWIDTH;
+    this->bTallSprite = false;
+    this->imgTile = QImage(this->iW,this->iH,QImage::Format_Indexed8);
     this->imgTile.fill(0);
     this->imgTile.setColor(0,qRgba(0x00,0x00,0x00,0x00));
 }
@@ -14,6 +16,19 @@ MetaspriteTileItem::MetaspriteTileItem(QImage img, QGraphicsItem *parent) : QGra
 {
     this->bHFlip = this->bVFlip = false;
     this->iPalette = 0;
+    this->iW = this->iH = MSTI_TILEWIDTH;
+    this->bTallSprite = false;
+    this->imgTile = img;
+    this->setPixmap(QPixmap::fromImage(img));
+}
+
+MetaspriteTileItem::MetaspriteTileItem(QImage img, bool tall, QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
+{
+    this->bHFlip = this->bVFlip = false;
+    this->iPalette = 0;
+    this->bTallSprite = tall;
+    this->iW = MSTI_TILEWIDTH;
+    this->iH = MSTI_TILEWIDTH*(this->bTallSprite?2:1);
     this->imgTile = img;
     this->setPixmap(QPixmap::fromImage(img));
 }
@@ -49,7 +64,7 @@ void MetaspriteTileItem::flipHorizontal(bool f)
 {
     if(f==this->bHFlip)  return;
     this->bHFlip = f;
-    qreal t = qRound((MSTI_TILEWIDTH/2)*this->scale());
+    qreal t = qRound((this->width()/2)*this->scale());
     this->setTransform(QTransform().translate(t,0).scale(-1,1).translate(-t,0),true);
 }
 
@@ -57,7 +72,7 @@ void MetaspriteTileItem::flipVertical(bool f)
 {
     if(f==this->bVFlip)  return;
     this->bVFlip = f;
-    qreal t = qRound((MSTI_TILEHEIGHT/2)*this->scale());
+    qreal t = qRound((this->height()/2)*this->scale());
     this->setTransform(QTransform().translate(0,t).scale(1,-1).translate(0,-t),true);
 }
 

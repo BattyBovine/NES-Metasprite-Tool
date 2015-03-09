@@ -22,7 +22,7 @@
 #include "metaspritetileitem.h"
 
 #define TSM_SCALE 2
-#define TSM_TILESIZE (8*TSM_SCALE)
+#define TSM_TILESIZE    (MSTI_TILEWIDTH*TSM_SCALE)
 
 class TilesetManager : public QGraphicsView
 {
@@ -32,14 +32,16 @@ public:
     ~TilesetManager();
 
 signals:
-    void tilesetChanged();
+    void tilesetChanged(bool);
     void sendNewTile(QPointF,QImage,quint8,quint8);
 
 public slots:
     bool loadCHRBank(QString);
     void setNewSpriteColours(PaletteVector,quint8);
+    void setStandardSprites(){this->bTallSprite=false;this->drawSelectionBox();emit(this->tilesetChanged(this->bTallSprite));}
+    void setTallSprites(){this->bTallSprite=true;this->drawSelectionBox();emit(this->tilesetChanged(this->bTallSprite));}
 
-    void createNewTile(QPointF);
+    void getNewTile(QPointF);
     void updateSpriteTile(MetaspriteTileItem*);
 
 protected:
@@ -56,12 +58,14 @@ private:
     QGraphicsPixmapItem *gpiTileset;
     quint8 iSelectedTile;
     quint8 iPalette;
+    bool bTallSprite;
 
     QGraphicsRectItem *griSelection[2];
     QPointF pSelection;
 
     void redrawTileset();
     bool drawSelectionBox();
+    QImage createNewTile(quint8);
 };
 
 #endif // TILESETMANAGER_H

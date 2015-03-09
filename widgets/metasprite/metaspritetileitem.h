@@ -10,13 +10,13 @@
 #include <QMessageBox>
 
 #define MSTI_TILEWIDTH 8
-#define MSTI_TILEHEIGHT MSTI_TILEWIDTH
 
 class MetaspriteTileItem : public QGraphicsPixmapItem
 {
 public:
     MetaspriteTileItem(QGraphicsItem *parent = 0);
     MetaspriteTileItem(QImage,QGraphicsItem *parent = 0);
+    MetaspriteTileItem(QImage,bool,QGraphicsItem *parent = 0);
 
     enum { Type = UserType+1 };
     int type() const {return Type;}
@@ -27,6 +27,10 @@ public:
     int realY(){return qRound(this->y()/this->scale());}
     void setRealX(int x){this->setX(x*this->scale());this->iX=x;}
     void setRealY(int y){this->setY(y*this->scale());this->iY=y;}
+    int width(){return this->iW;}
+    int height(){return this->iH*(this->bTallSprite?2:1);}
+    bool tallSprite(){return this->bTallSprite;}
+    void setTallSprite(bool dh){this->bTallSprite=dh;}
 
     void setTile(QImage);
     void setNewColours(QRgb,QRgb,QRgb,quint8);
@@ -46,9 +50,8 @@ private:
     QImage imgTile;
     quint8 iPalette;
     quint8 iTile;
-    int iX;
-    int iY;
-    bool bHFlip,bVFlip;
+    int iX,iY,iW,iH;
+    bool bTallSprite,bHFlip,bVFlip;
 };
 
 typedef QList<MetaspriteTileItem*> MetaspriteTileList;
