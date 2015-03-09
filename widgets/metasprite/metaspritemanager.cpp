@@ -56,6 +56,8 @@ void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
 void MetaspriteManager::keyPressEvent(QKeyEvent *e)
 {
     QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
+    int translatemult = 1;
+
     switch(e->key()) {
     case Qt::Key_Delete:
         this->deleteSelectedTiles();
@@ -64,13 +66,15 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
     case Qt::Key_Up:
     case Qt::Key_Down:
         foreach(QGraphicsItem *i, sel) {
-            i->moveBy(0,(e->key()==Qt::Key_Down)?this->iScale:(-this->iScale));
+            if(e->modifiers()&Qt::ShiftModifier)    translatemult=MSTI_TILEWIDTH;
+            i->moveBy(0,(e->key()==Qt::Key_Down)?(this->iScale*translatemult):(-this->iScale*translatemult));
         }
         break;
     case Qt::Key_Left:
     case Qt::Key_Right:
         foreach(QGraphicsItem *i, sel) {
-            i->moveBy((e->key()==Qt::Key_Right)?this->iScale:(-this->iScale),0);
+            if(e->modifiers()&Qt::ShiftModifier)    translatemult=MSTI_TILEWIDTH;
+            i->moveBy((e->key()==Qt::Key_Right)?(this->iScale*translatemult):(-this->iScale*translatemult),0);
         }
         break;
 
