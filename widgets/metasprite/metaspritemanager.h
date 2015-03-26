@@ -80,6 +80,7 @@ protected:
     void dropEvent(QDropEvent*);
     void dragLeaveEvent(QDragLeaveEvent*e){e->accept();}
     void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
     void keyPressEvent(QKeyEvent*);
 

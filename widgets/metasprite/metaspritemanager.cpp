@@ -36,19 +36,20 @@ void MetaspriteManager::mousePressEvent(QMouseEvent *e)
         emit(this->requestNewTile(this->mapToScene(e->pos())));
 }
 
-void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
+void MetaspriteManager::mouseMoveEvent(QMouseEvent *e)
 {
-    QGraphicsView::mouseReleaseEvent(e);
+    QGraphicsView::mouseMoveEvent(e);
 
     QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
     foreach(QGraphicsItem *i, sel) {
         qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealX(qRound(i->pos().x()/this->iScale));
         qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealY(qRound(i->pos().y()/this->iScale));
     }
+}
 
-//    if(e->button()==Qt::MiddleButton)
-//        QMessageBox::information(this,"Position",QString::number(qgraphicsitem_cast<MetaspriteTileItem*>(sel.at(0))->realX())+","+
-//                                 QString::number(qgraphicsitem_cast<MetaspriteTileItem*>(sel.at(0))->realY()),QMessageBox::NoButton);
+void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
+{
+    QGraphicsView::mouseReleaseEvent(e);
 
     this->sendTileUpdates();
 }
