@@ -90,12 +90,12 @@ void TilesetManager::redrawTileset()
 bool TilesetManager::loadCHRBank(QString filename)
 {
     QFile file(filename);
-    if(file.size()<0x1000) {
-        QMessageBox::warning(this,tr("File too small"),tr("The selected file is too small to be a CHR bank."),QMessageBox::NoButton);
+    if(!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::critical(this,tr(TSM_CHR_OPEN_ERROR_TITLE),tr(TSM_CHR_OPEN_ERROR_BODY),QMessageBox::NoButton);
         return false;
     }
-    if(!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::critical(this,tr("Error opening file"),tr("The file could not be opened."),QMessageBox::NoButton);
+    if((file.size()%0x1000)!=0) {
+        QMessageBox::warning(this,tr(TSM_CHR_SIZE_ERROR_TITLE),tr(TSM_CHR_SIZE_ERROR_BODY),QMessageBox::NoButton);
         return false;
     }
 

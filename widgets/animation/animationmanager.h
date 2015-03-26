@@ -15,7 +15,8 @@
 
 #include <QtMath>
 
-#include "common.h"
+#include "palettemanager.h"
+#include "metaspritemanager.h"
 #include "animationframeitem.h"
 
 class AnimationPackage {

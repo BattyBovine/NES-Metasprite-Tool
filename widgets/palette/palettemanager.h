@@ -9,9 +9,15 @@
 
 #include <QtMath>
 
-#include "common.h"
 #include "metaspritetileitem.h"
 #include "spritepaletteview.h"
+
+
+#define PM_FILE_OPEN_ERROR_TITLE    "Error opening palette file"
+#define PM_FILE_OPEN_ERROR_BODY     "Could not open palette file. Please make sure you have the necessary permissions to access files in this location."
+
+typedef QVector<QRgb> PaletteVector;
+
 
 class PaletteManager : public QGraphicsView
 {

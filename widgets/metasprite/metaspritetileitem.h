@@ -54,6 +54,7 @@ private:
     bool bTallSprite,bHFlip,bVFlip;
 };
 
+typedef QList<QGraphicsItem*> GraphicsItemList;
 typedef QList<MetaspriteTileItem*> MetaspriteTileList;
 typedef QVector<MetaspriteTileList> MetaspriteStageList;
 

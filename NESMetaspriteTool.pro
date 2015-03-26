@@ -35,7 +35,6 @@ SOURCES += main.cpp \
 	widgets/animation/animationframeitem.cpp
 
 HEADERS  += nesmetaspritetool.h \
-	common.h \
 	widgets/ui/lineeditasm.h \
 	widgets/ui/graphicsviewslider.h \
 	widgets/ui/spritelistwidget.h \

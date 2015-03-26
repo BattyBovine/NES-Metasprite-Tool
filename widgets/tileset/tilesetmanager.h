@@ -18,11 +18,16 @@
 
 #include <QtMath>
 
-#include "common.h"
+#include "palettemanager.h"
 #include "metaspritetileitem.h"
 
-#define TSM_SCALE 2
+#define TSM_SCALE       2
 #define TSM_TILESIZE    (MSTI_TILEWIDTH*TSM_SCALE)
+
+#define TSM_CHR_OPEN_ERROR_TITLE    "Error opening file"
+#define TSM_CHR_OPEN_ERROR_BODY     "The file could not be opened."
+#define TSM_CHR_SIZE_ERROR_TITLE    "Could not open CHR file"
+#define TSM_CHR_SIZE_ERROR_BODY     "CHR file must be a multiple of 4KB."
 
 class TilesetManager : public QGraphicsView
 {

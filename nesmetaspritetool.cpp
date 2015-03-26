@@ -43,17 +43,48 @@ void NESMetaspriteTool::newProject()
     }
 }
 
+void NESMetaspriteTool::openProject()
+{
+    QString foldername = QFileDialog::getExistingDirectory(this, ui->actionOpenProject->text(), "");
+    if(!foldername.isEmpty())   QMessageBox::information(this,"Folder selected",foldername,QMessageBox::NoButton);
+}
+
+void NESMetaspriteTool::saveProject()
+{
+    QFileDialog saveproj(this);
+    saveproj.setFileMode(QFileDialog::AnyFile);
+    saveproj.setOptions(QFileDialog::ShowDirsOnly);
+    saveproj.setViewMode(QFileDialog::Detail);
+    connect(&saveproj,SIGNAL(fileSelected(QString)),this,SLOT(saveProjectToFolder(QString)));
+    saveproj.exec();
+}
+void NESMetaspriteTool::saveProjectToFolder(QString f)
+{
+    QDir folder(f);
+    if(!folder.exists()) {
+        folder.mkdir(f);
+    }
+}
+
+
+
 void NESMetaspriteTool::openMetaspriteBank()
 {
-    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenMetaspriteBank->text(), "", "*.*");
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenMetaspriteBank->text(), "", tr("All files (*.*)"));
     if(filename.isEmpty())  return;
     ui->gvMetasprite->openMetaspriteFile(filename);
 }
 
-void NESMetaspriteTool::saveASMMetaspriteBank()
+void NESMetaspriteTool::saveASMMetaspriteBank(QString path)
 {
-    QString filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBankASM->text(), "", "*.*");
-    if(filename.isEmpty())  return;
+    QString filename;
+    if(path.isEmpty()) {
+        filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBankASM->text(), "", tr("All files (*.*)"));
+        if(filename.isEmpty())  return;
+    } else {
+        filename = path;
+    }
+
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
         QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
@@ -65,15 +96,22 @@ void NESMetaspriteTool::saveASMMetaspriteBank()
     file.close();
 }
 
-void NESMetaspriteTool::saveBinaryMetaspriteBank()
+void NESMetaspriteTool::saveBinaryMetaspriteBank(QString path)
 {
-    QString filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBankBinary->text(), "", "*.*");
-    if(filename.isEmpty())  return;
+    QString filename;
+    if(path.isEmpty()) {
+        filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBankBinary->text(), "", tr("All files (*.*)"));
+        if(filename.isEmpty())  return;
+    } else {
+        filename = path;
+    }
+
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
         QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
         return;
     }
+
     QVector<QByteArray> bindata = ui->gvMetasprite->createMetaspriteBinaryData();
     foreach(QByteArray bin, bindata) {
         if(!bin.isEmpty())  file.write(bin);
@@ -81,24 +119,32 @@ void NESMetaspriteTool::saveBinaryMetaspriteBank()
     file.close();
 }
 
+
+
 void NESMetaspriteTool::openCHR()
 {
-    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenCHR->text(), "", "*.chr");
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenCHR->text(), "", tr("CHR-ROM data (*.chr);;All files (*.*)"));
     if(filename.isEmpty()) return;
     emit chrFileOpened(filename);
 }
 
 void NESMetaspriteTool::openPalette()
 {
-    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenPalette->text(), "", "*.pal");
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenPalette->text(), "", tr("Palette data (*.pal);;All files (*.*)"));
     if(filename.isEmpty())  return;
     ui->gvPaletteManager->setPaletteData(filename);
 }
 
-void NESMetaspriteTool::savePalette()
+void NESMetaspriteTool::savePalette(QString path)
 {
-    QString filename = QFileDialog::getSaveFileName(this, ui->actionSavePalette->text(), "", "*.pal");
-    if(filename.isEmpty())  return;
+    QString filename;
+    if(path.isEmpty()) {
+        filename = QFileDialog::getSaveFileName(this, ui->actionSavePalette->text(), "", tr("Palette data (*.pal);;All files (*.*)"));
+        if(filename.isEmpty())  return;
+    } else {
+        filename = path;
+    }
+
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
         QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
@@ -109,17 +155,25 @@ void NESMetaspriteTool::savePalette()
     file.close();
 }
 
+
+
 void NESMetaspriteTool::openAnimation()
 {
-    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenAnimation->text(), "", "*.*");
+    QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenAnimation->text(), "", tr("All files (*.*)"));
     if(filename.isEmpty())  return;
     ui->gvAnimation->openAnimationFile(filename);
 }
 
-void NESMetaspriteTool::saveASMAnimation()
+void NESMetaspriteTool::saveASMAnimation(QString path)
 {
-    QString filename = QFileDialog::getSaveFileName(this, ui->actionSaveAnimationASM->text(), "", "*.*");
-    if(filename.isEmpty())  return;
+    QString filename;
+    if(path.isEmpty()) {
+        filename = QFileDialog::getSaveFileName(this, ui->actionSaveAnimationASM->text(), "", tr("All files (*.*)"));
+        if(filename.isEmpty())  return;
+    } else {
+        filename = path;
+    }
+
     QFile file(filename);
     if(!file.open(QIODevice::WriteOnly)) {
         QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
@@ -137,8 +191,6 @@ void NESMetaspriteTool::setNewPaletteFile(QString pal)
 {
     ui->gvPaletteManager->drawFullPaletteColours(pal);
 }
-
-
 
 void NESMetaspriteTool::setAnimationLabelPrefix(QString s)
 {

@@ -9,7 +9,12 @@
 #include <QTextStream>
 #include <QRegularExpression>
 
-#include "common.h"
+
+#define FILE_OPEN_ERROR_TITLE       "Error opening file"
+#define FILE_OPEN_ERROR_BODY        "Could not open file. Please make sure you have the necessary permissions to access files in this location."
+#define FILE_SAVE_ERROR_TITLE       "Error saving file"
+#define FILE_SAVE_ERROR_BODY        "Could not save file. Please make sure you have the necessary permissions to save files to this location."
+
 
 namespace Ui {
 class NESMetaspriteTool;
@@ -29,19 +34,23 @@ signals:
 
 private slots:
     void newProject();
+    void openProject();
+    void saveProject();
+    void saveProjectToFolder(QString);
+
     void openMetaspriteBank();
-    void saveASMMetaspriteBank();
-    void saveBinaryMetaspriteBank();
+    void saveASMMetaspriteBank(QString path="");
+    void saveBinaryMetaspriteBank(QString path="");
+
     void openCHR();
     void openPalette();
-    void savePalette();
+    void savePalette(QString path="");
+
     void openAnimation();
-    void saveASMAnimation();
+    void saveASMAnimation(QString path="");
 
     void setNewPaletteFile(QString);
-
     void setAnimationLabelPrefix(QString);
-
     void setPlayButtonText();
     void setPauseButtonText();
 

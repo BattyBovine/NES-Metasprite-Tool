@@ -429,28 +429,30 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
         }
     }
 
-    file.reset();
-    QByteArray byteblob = file.readAll(), bytesin;
-    QByteArray::iterator i = byteblob.begin();
-    int loopcount = 0;
-    while(i!=byteblob.end()) {
-        bytesin.append(*i);
-        if((i+((*i)*4))>=byteblob.end()) {
-            QMessageBox::critical(this,tr(MSM_EOF_ERROR_TITLE),tr(MSM_EOF_ERROR_BODY),QMessageBox::NoButton);
-            return;
-        }
-        for(int count=*(i++); count>0; count--) {
-            for(int j=0; j<4; j++) {
-                bytesin.append(*(i++));
-            }
-        }
-        inputbytes.replace(loopcount++,bytesin);
-    }
-    QFileInfo fileinfo(filename);
-    emit(this->setMetaspriteLabel(fileinfo.baseName()));
+//    file.reset();
+//    QByteArray byteblob = file.readAll(), bytesin;
+//    QByteArray::iterator i = byteblob.begin();
+//    int loopcount = 0;
+//    while(i!=byteblob.end()) {
+//        bytesin.append(*i);
+//        if((i+((*i)*4))>=byteblob.end()) {
+//            QMessageBox::critical(this,tr(MSM_EOF_ERROR_TITLE),tr(MSM_EOF_ERROR_BODY),QMessageBox::NoButton);
+//            return;
+//        }
+//        for(int count=*(i++); count>0; count--) {
+//            for(int j=0; j<4; j++) {
+//                bytesin.append(*(i++));
+//            }
+//        }
+//        inputbytes.replace(loopcount++,bytesin);
+//    }
+//    QFileInfo fileinfo(filename);
+//    emit(this->setMetaspriteLabel(fileinfo.baseName()));
 
-    this->importMetaspriteBinaryData(inputbytes);
+//    this->importMetaspriteBinaryData(inputbytes);
+
     file.close();
+    QMessageBox::critical(this,tr(MSM_INVALID_SPRITES_TITLE),tr(MSM_INVALID_SPRITES_BODY),QMessageBox::NoButton);
 }
 
 void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)

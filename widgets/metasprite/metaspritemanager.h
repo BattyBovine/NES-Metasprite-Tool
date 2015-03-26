@@ -15,9 +15,20 @@
 
 #include <QtMath>
 
-#include "common.h"
+#include "palettemanager.h"
 #include "metaspritetileitem.h"
 #include "animationframeitem.h"
+
+
+#define MSM_FILE_OPEN_ERROR_TITLE   "Error opening metasprite file"
+#define MSM_FILE_OPEN_ERROR_BODY    "Could not open metasprite file. Please make sure you have the necessary permissions to access files in this location."
+#define MSM_INVALID_SPRITES_TITLE   "Invalid Data"
+#define MSM_INVALID_SPRITES_BODY    "Error reading metasprite data: Data is not a valid ASM sprite data file."
+#define MSM_EOF_ERROR_TITLE         "Invalid data"
+#define MSM_EOF_ERROR_BODY          "Error reading metasprite data: Unexpected end of file."
+#define MSM_COUNT_ERROR_TITLE       "Invalid data"
+#define MSM_COUNT_ERROR_BODY        "Error reading metasprite data: Sprite counts do not match length of data."
+
 
 class MetaspriteManager : public QGraphicsView
 {

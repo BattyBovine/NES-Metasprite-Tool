@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QGraphicsView>
 
-#include "common.h"
+#include "palettemanager.h"
 #include "animationframeitem.h"
 
 class AnimationFrameManager : public QGraphicsView
