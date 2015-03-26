@@ -7,6 +7,8 @@
 
 #include <QtMath>
 
+#define SPV_SWATCH_SIZE 16
+
 class SpritePaletteView : public QGraphicsView
 {
     Q_OBJECT

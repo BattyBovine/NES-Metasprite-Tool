@@ -4,6 +4,7 @@ PaletteManager::PaletteManager(QWidget *parent) : QGraphicsView(parent)
 {
     this->gsFullPaletteScene = new QGraphicsScene();
     this->gsFullPaletteScene->setSceneRect(0,0,224,64);
+    this->gsFullPaletteScene->setBackgroundBrush(QBrush(Qt::black));
 
     for(int i=0; i<4; i++) {
         this->gsSpritePaletteScene[i] = new QGraphicsScene();
@@ -128,7 +129,8 @@ void PaletteManager::dropEvent(QDropEvent *e)
 void PaletteManager::mousePressEvent(QMouseEvent *e)
 {
     QPointF p = this->mapToScene(e->pos());
-    quint8 pval = (qFloor(p.y()/16)<<4)|(qFloor(p.x()/16));
+    if((p.x()<0||p.y()<0) || (p.x()>((0x0E*PM_SWATCH_SIZE)-1))||(p.y()>((0x04*PM_SWATCH_SIZE)-1)))  return;
+    quint8 pval = (qFloor(p.y()/PM_SWATCH_SIZE)<<4)|(qFloor(p.x()/PM_SWATCH_SIZE));
     if(pval==0x0D)  pval = 0x0F;
 
     if(this->iSpritePaletteSelectedIndex == 0) {
@@ -161,8 +163,8 @@ void PaletteManager::spritePaletteSelected(QString s, quint8 i)
 
     quint8 c = this->iSpritePaletteIndices[pindex][i];
     if(c==0x0F)  c=0x0D;
-    quint8 x = (c&0x0F)*16;
-    quint8 y = (c>>4)*16;
+    quint8 x = (c&0x0F)*PM_SWATCH_SIZE;
+    quint8 y = (c>>4)*PM_SWATCH_SIZE;
 
     this->drawFullPaletteColours(this->sPaletteFile);
     this->drawSelectionBox(this->gsFullPaletteScene, QPointF(x,y));
@@ -189,11 +191,11 @@ void PaletteManager::generateNewSpritePalettes(bool changeselected)
         for(int i=0; i<4; i++) {
             quint8 index = this->iSpritePaletteIndices[spritepal][i];
             if(index==0x0F) index=0x0D;
-            this->gsSpritePaletteScene[spritepal]->addRect(QRectF((i*16),0,16,16),Qt::NoPen,this->vPaletteColours.at(index));
+            this->gsSpritePaletteScene[spritepal]->addRect(QRectF((i*PM_SWATCH_SIZE),0,16,16),Qt::NoPen,this->vPaletteColours.at(index));
         }
     }
 
-    this->drawSelectionBox(this->gsSpritePaletteScene[this->iSpritePaletteSelected], QPoint(this->iSpritePaletteSelectedIndex*16,0));
+    this->drawSelectionBox(this->gsSpritePaletteScene[this->iSpritePaletteSelected], QPoint(this->iSpritePaletteSelectedIndex*PM_SWATCH_SIZE,0));
 
     emit(newSpritePalette0(this->gsSpritePaletteScene[0]));
     emit(newSpritePalette1(this->gsSpritePaletteScene[1]));

@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>736</width>
-    <height>582</height>
+    <width>738</width>
+    <height>573</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>736</width>
-    <height>582</height>
+    <width>738</width>
+    <height>573</height>
    </size>
   </property>
   <property name="acceptDrops">
@@ -470,8 +470,8 @@
                   <widget class="SpritePaletteView" name="gvPalette0">
                    <property name="minimumSize">
                     <size>
-                     <width>68</width>
-                     <height>20</height>
+                     <width>66</width>
+                     <height>18</height>
                     </size>
                    </property>
                    <property name="maximumSize">
@@ -484,13 +484,7 @@
                     <bool>true</bool>
                    </property>
                    <property name="frameShape">
-                    <enum>QFrame::WinPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                   <property name="lineWidth">
-                    <number>2</number>
+                    <enum>QFrame::NoFrame</enum>
                    </property>
                    <property name="verticalScrollBarPolicy">
                     <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -521,8 +515,8 @@
                   <widget class="SpritePaletteView" name="gvPalette3">
                    <property name="minimumSize">
                     <size>
-                     <width>68</width>
-                     <height>20</height>
+                     <width>66</width>
+                     <height>18</height>
                     </size>
                    </property>
                    <property name="maximumSize">
@@ -535,13 +529,7 @@
                     <bool>true</bool>
                    </property>
                    <property name="frameShape">
-                    <enum>QFrame::WinPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                   <property name="lineWidth">
-                    <number>2</number>
+                    <enum>QFrame::NoFrame</enum>
                    </property>
                    <property name="verticalScrollBarPolicy">
                     <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -585,8 +573,8 @@
                   <widget class="SpritePaletteView" name="gvPalette1">
                    <property name="minimumSize">
                     <size>
-                     <width>68</width>
-                     <height>20</height>
+                     <width>66</width>
+                     <height>18</height>
                     </size>
                    </property>
                    <property name="maximumSize">
@@ -599,13 +587,7 @@
                     <bool>true</bool>
                    </property>
                    <property name="frameShape">
-                    <enum>QFrame::WinPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                   <property name="lineWidth">
-                    <number>2</number>
+                    <enum>QFrame::NoFrame</enum>
                    </property>
                    <property name="verticalScrollBarPolicy">
                     <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -636,8 +618,8 @@
                   <widget class="SpritePaletteView" name="gvPalette2">
                    <property name="minimumSize">
                     <size>
-                     <width>68</width>
-                     <height>20</height>
+                     <width>66</width>
+                     <height>18</height>
                     </size>
                    </property>
                    <property name="maximumSize">
@@ -650,13 +632,7 @@
                     <bool>true</bool>
                    </property>
                    <property name="frameShape">
-                    <enum>QFrame::WinPanel</enum>
-                   </property>
-                   <property name="frameShadow">
-                    <enum>QFrame::Raised</enum>
-                   </property>
-                   <property name="lineWidth">
-                    <number>2</number>
+                    <enum>QFrame::NoFrame</enum>
                    </property>
                    <property name="verticalScrollBarPolicy">
                     <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -705,8 +681,8 @@
                 <widget class="PaletteManager" name="gvPaletteManager">
                  <property name="minimumSize">
                   <size>
-                   <width>228</width>
-                   <height>68</height>
+                   <width>226</width>
+                   <height>66</height>
                   </size>
                  </property>
                  <property name="maximumSize">
@@ -719,13 +695,7 @@
                   <bool>true</bool>
                  </property>
                  <property name="frameShape">
-                  <enum>QFrame::WinPanel</enum>
-                 </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Raised</enum>
-                 </property>
-                 <property name="lineWidth">
-                  <number>2</number>
+                  <enum>QFrame::NoFrame</enum>
                  </property>
                  <property name="verticalScrollBarPolicy">
                   <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -1365,8 +1335,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>736</width>
-     <height>21</height>
+     <width>738</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
