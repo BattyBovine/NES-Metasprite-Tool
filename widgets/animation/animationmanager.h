@@ -8,6 +8,8 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QDragLeaveEvent>
+#include <QMouseEvent>
+#include <QWheelEvent>
 
 #include <QFile>
 #include <QByteArray>
@@ -18,6 +20,12 @@
 #include "palettemanager.h"
 #include "metaspritemanager.h"
 #include "animationframeitem.h"
+
+
+#define AM_CANVAS_SIZE      192
+#define AM_DEFAULT_ZOOM     3
+#define AM_MAX_ZOOM         8
+
 
 class AnimationPackage {
 public:
@@ -66,7 +74,7 @@ public:
 signals:
     void loopChanged(bool);
     void labelChanged(QString);
-    void requestFrameData(quint8);
+    void requestFrameData(quint8,qreal);
     void framesUpdated(AnimationFrameList,quint8);
 
     void animationStarted();
@@ -101,6 +109,10 @@ protected:
     void dragEnterEvent(QDragEnterEvent*e){e->acceptProposedAction();}
     void dropEvent(QDropEvent*);
     void dragLeaveEvent(QDragLeaveEvent*e){e->accept();}
+    void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseDoubleClickEvent(QMouseEvent*);
+    void wheelEvent(QWheelEvent*);
 
 private slots:
     void playAnimation();
@@ -108,6 +120,9 @@ private slots:
     void stopAnimation();
 
 private:
+    void drawAnimationFrame(quint8);
+    void updateList(quint8 s=0);
+
     QGraphicsScene *gsAnimation;
     quint8 iAnimation;
     AnimationList alAnimations;
@@ -119,8 +134,7 @@ private:
     int iFrameTiming;
     bool bPlayAnimation;
 
-    void drawAnimationFrame(quint8);
-    void updateList(quint8 s=0);
+    qreal iScale,iMouseTranslateX,iMouseTranslateY;
 };
 
 #endif // ANIMATIONMANAGER_H

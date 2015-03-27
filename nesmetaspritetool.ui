@@ -1531,8 +1531,8 @@
     <slot>moveSelectedUp()</slot>
     <slot>moveSelectedDown()</slot>
     <slot>setNewSpriteColours(PaletteVector,quint8,bool)</slot>
-    <slot>createFrameData(quint8)</slot>
-    <slot>createAnimationFrameData(quint8)</slot>
+    <slot>createFrameData(quint8,qreal)</slot>
+    <slot>createAnimationFrameData(quint8,qreal)</slot>
     <slot>setStandardSprites()</slot>
     <slot>setTallSprites()</slot>
    </slots>
@@ -1558,7 +1558,7 @@
    <extends>QGraphicsView</extends>
    <header>animationframemanager.h</header>
    <slots>
-    <signal>requestFrameData(quint8)</signal>
+    <signal>requestFrameData(quint8,qreal)</signal>
     <signal>addAnimationFrame(quint8,quint8)</signal>
     <signal>insertAnimationFrame(quint8,quint8)</signal>
     <signal>replaceAnimationFrame(quint8,quint8)</signal>
@@ -1600,7 +1600,7 @@
    <extends>QGraphicsView</extends>
    <header>animationmanager.h</header>
    <slots>
-    <signal>requestFrameData(quint8)</signal>
+    <signal>requestFrameData(quint8,qreal)</signal>
     <signal>framesUpdated(AnimationFrameList,quint8)</signal>
     <signal>animationStarted()</signal>
     <signal>animationStopped()</signal>
@@ -1730,12 +1730,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
     <hint type="destinationlabel">
-     <x>562</x>
-     <y>407</y>
+     <x>571</x>
+     <y>405</y>
     </hint>
    </hints>
   </connection>
@@ -1746,12 +1746,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
     <hint type="destinationlabel">
-     <x>652</x>
-     <y>407</y>
+     <x>661</x>
+     <y>405</y>
     </hint>
    </hints>
   </connection>
@@ -1762,12 +1762,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
     <hint type="destinationlabel">
-     <x>562</x>
-     <y>433</y>
+     <x>571</x>
+     <y>431</y>
     </hint>
    </hints>
   </connection>
@@ -1778,12 +1778,12 @@
    <slot>setPaletteScene(QGraphicsScene*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
     <hint type="destinationlabel">
-     <x>652</x>
-     <y>433</y>
+     <x>661</x>
+     <y>431</y>
     </hint>
    </hints>
   </connection>
@@ -1794,12 +1794,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>562</x>
-     <y>407</y>
+     <x>571</x>
+     <y>405</y>
     </hint>
     <hint type="destinationlabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
    </hints>
   </connection>
@@ -1810,12 +1810,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>652</x>
-     <y>407</y>
+     <x>661</x>
+     <y>405</y>
     </hint>
     <hint type="destinationlabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
    </hints>
   </connection>
@@ -1826,12 +1826,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>562</x>
-     <y>433</y>
+     <x>571</x>
+     <y>431</y>
     </hint>
     <hint type="destinationlabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
    </hints>
   </connection>
@@ -1842,12 +1842,12 @@
    <slot>spritePaletteSelected(QString,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>652</x>
-     <y>433</y>
+     <x>661</x>
+     <y>431</y>
     </hint>
     <hint type="destinationlabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
    </hints>
   </connection>
@@ -1858,8 +1858,8 @@
    <slot>setNewPaletteFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>695</x>
-     <y>535</y>
+     <x>704</x>
+     <y>533</y>
     </hint>
     <hint type="destinationlabel">
      <x>613</x>
@@ -1906,8 +1906,8 @@
    <slot>flipHorizontal()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>330</x>
-     <y>541</y>
+     <x>337</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>60</x>
@@ -1922,8 +1922,8 @@
    <slot>flipVertical()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>353</x>
-     <y>541</y>
+     <x>360</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>78</x>
@@ -1938,8 +1938,8 @@
    <slot>deleteSelectedTiles()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>408</x>
-     <y>541</y>
+     <x>417</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>95</x>
@@ -1958,8 +1958,8 @@
      <y>271</y>
     </hint>
     <hint type="destinationlabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
    </hints>
   </connection>
@@ -2022,8 +2022,8 @@
      <y>271</y>
     </hint>
     <hint type="destinationlabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
    </hints>
   </connection>
@@ -2098,8 +2098,8 @@
    <slot>moveSelectedUp()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>254</x>
-     <y>541</y>
+     <x>259</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>113</x>
@@ -2114,8 +2114,8 @@
    <slot>moveSelectedDown()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>275</x>
-     <y>541</y>
+     <x>280</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>132</x>
@@ -2162,8 +2162,8 @@
    <slot>setNewSpriteColours(PaletteVector,quint8,bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>679</x>
-     <y>508</y>
+     <x>688</x>
+     <y>506</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
@@ -2269,9 +2269,9 @@
   </connection>
   <connection>
    <sender>gvFrames</sender>
-   <signal>requestFrameData(quint8)</signal>
+   <signal>requestFrameData(quint8,qreal)</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>createFrameData(quint8)</slot>
+   <slot>createFrameData(quint8,qreal)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>601</x>
@@ -2509,9 +2509,9 @@
   </connection>
   <connection>
    <sender>gvAnimation</sender>
-   <signal>requestFrameData(quint8)</signal>
+   <signal>requestFrameData(quint8,qreal)</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>createAnimationFrameData(quint8)</slot>
+   <slot>createAnimationFrameData(quint8,qreal)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>160</x>
@@ -2658,8 +2658,8 @@
    <slot>moveDownSelected()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>343</x>
-     <y>548</y>
+     <x>344</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>330</x>
@@ -2674,8 +2674,8 @@
    <slot>deleteSelected()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>397</x>
-     <y>548</y>
+     <x>400</x>
+     <y>538</y>
     </hint>
     <hint type="destinationlabel">
      <x>383</x>
@@ -2866,8 +2866,8 @@
    <slot>setAnimationLoop(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>478</x>
-     <y>545</y>
+     <x>481</x>
+     <y>535</y>
     </hint>
     <hint type="destinationlabel">
      <x>255</x>
@@ -2886,8 +2886,8 @@
      <y>273</y>
     </hint>
     <hint type="destinationlabel">
-     <x>478</x>
-     <y>545</y>
+     <x>481</x>
+     <y>535</y>
     </hint>
    </hints>
   </connection>

@@ -3,9 +3,17 @@
 
 #include <QWidget>
 #include <QGraphicsView>
+#include <QMouseEvent>
+#include <QWheelEvent>
 
 #include "palettemanager.h"
 #include "animationframeitem.h"
+
+
+#define AFM_CANVAS_SIZE     128
+#define AFM_DEFAULT_ZOOM    2
+#define AFM_MAX_ZOOM        8
+
 
 class AnimationFrameManager : public QGraphicsView
 {
@@ -15,7 +23,7 @@ public:
     ~AnimationFrameManager();
 
 signals:
-    void requestFrameData(quint8);
+    void requestFrameData(quint8,qreal);
     void addAnimationFrame(quint8,quint8);
     void insertAnimationFrame(quint8,quint8);
     void replaceAnimationFrame(quint8,quint8);
@@ -31,11 +39,18 @@ public slots:
     void insertFrame();
     void replaceFrame();
 
+protected:
+    void mousePressEvent(QMouseEvent*);
+    void mouseMoveEvent(QMouseEvent*);
+    void mouseDoubleClickEvent(QMouseEvent*);
+    void wheelEvent(QWheelEvent*);
+
 private:
     QGraphicsScene *gsFrame;
     quint8 iFrame;
     MetaspriteTileList mtlFrameData;
     quint8 iDelay;
+    qreal iScale,iMouseTranslateX,iMouseTranslateY;
 };
 
 #endif // ANIMATIONFRAMEMANAGER_H

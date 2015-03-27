@@ -21,7 +21,7 @@
 #include "animationframeitem.h"
 
 
-#define MSM_GRID_SIZE       128
+#define MSM_CANVAS_SIZE     128
 #define MSM_DEFAULT_ZOOM    2
 #define MSM_MAX_ZOOM        8
 
@@ -74,8 +74,8 @@ public slots:
     void updateTiles(bool);
     void swapMetaspriteStage(int);
     void updateMetaspriteStage(){this->swapMetaspriteStage(this->iMetaspriteStage);}
-    void createFrameData(quint8);
-    void createAnimationFrameData(quint8);
+    void createFrameData(quint8,qreal);
+    void createAnimationFrameData(quint8,qreal);
 
     QVector<QByteArray> createMetaspriteBinaryData();
     QString createMetaspriteASMData(QString);
@@ -88,13 +88,14 @@ protected:
     void mousePressEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
+    void mouseDoubleClickEvent(QMouseEvent*);
     void wheelEvent(QWheelEvent*);
     void keyPressEvent(QKeyEvent*);
 
 private:
     void drawGridLines();
     void sendTileUpdates();
-    MetaspriteTileList createFrame(quint8,quint8 s=0);
+    MetaspriteTileList createFrame(quint8, qreal s=0);
 
     qreal iScale;
     int iMouseTranslateX, iMouseTranslateY;

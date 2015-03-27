@@ -3,11 +3,15 @@
 MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
 {
     this->gsMetasprite = new QGraphicsScene(this);
-    this->setSceneRect(-MSM_GRID_SIZE*MSM_DEFAULT_ZOOM,-MSM_GRID_SIZE*MSM_DEFAULT_ZOOM,MSM_GRID_SIZE*MSM_DEFAULT_ZOOM*2,MSM_GRID_SIZE*MSM_DEFAULT_ZOOM*2);
     this->setScene(this->gsMetasprite);
     this->iScale = MSM_DEFAULT_ZOOM;
-    this->setScale(this->iScale);
     this->bTallSprites = false;
+
+    this->setSceneRect(-MSM_CANVAS_SIZE*MSM_DEFAULT_ZOOM,
+                       -MSM_CANVAS_SIZE*MSM_DEFAULT_ZOOM,
+                       MSM_CANVAS_SIZE*MSM_DEFAULT_ZOOM*2,
+                       MSM_CANVAS_SIZE*MSM_DEFAULT_ZOOM*2);
+    this->centerOn(0,0);
 
     this->drawGridLines();
 
@@ -62,6 +66,17 @@ void MetaspriteManager::mouseMoveEvent(QMouseEvent *e)
     }
 }
 
+void MetaspriteManager::mouseDoubleClickEvent(QMouseEvent *e)
+{
+    if(e->buttons()&Qt::MiddleButton) {
+        this->iScale = MSM_DEFAULT_ZOOM;
+        this->centerOn(0,0);
+        this->updateMetaspriteStage();
+    } else {
+        QGraphicsView::mouseDoubleClickEvent(e);
+    }
+}
+
 void MetaspriteManager::wheelEvent(QWheelEvent *e)
 {
     qreal steps = (((qreal)e->angleDelta().y()/8)/15)/4;
@@ -71,7 +86,6 @@ void MetaspriteManager::wheelEvent(QWheelEvent *e)
         this->iScale = ((steps<0)?1:MSM_MAX_ZOOM);
     }
 
-    this->setScale(this->iScale);
     this->updateMetaspriteStage();
 }
 
@@ -139,7 +153,7 @@ void MetaspriteManager::drawGridLines()
     thickdashes.setDashPattern(dp);
     thindashes.setDashPattern(dp);
 
-    qreal canvas = MSM_GRID_SIZE*this->iScale;
+    qreal canvas = MSM_CANVAS_SIZE*this->iScale;
 
     for(int i=MSTI_TILEWIDTH*this->iScale; i<=canvas; i+=MSTI_TILEWIDTH*this->iScale) {
         this->gsMetasprite->addLine(-canvas,-i,canvas,-i,thinsolid);
@@ -355,15 +369,15 @@ void MetaspriteManager::swapMetaspriteStage(int s)
     this->sendTileUpdates();
 }
 
-void MetaspriteManager::createFrameData(quint8 frame)
+void MetaspriteManager::createFrameData(quint8 frame, qreal zoom)
 {
-    MetaspriteTileList list = this->createFrame(frame,2);
+    MetaspriteTileList list = this->createFrame(frame,zoom);
     emit(this->sendFrameData(list));
 }
 
-void MetaspriteManager::createAnimationFrameData(quint8 frame)
+void MetaspriteManager::createAnimationFrameData(quint8 frame, qreal zoom)
 {
-    MetaspriteTileList list = this->createFrame(frame,3);
+    MetaspriteTileList list = this->createFrame(frame,zoom);
     emit(this->sendAnimationFrameData(list));
 }
 
@@ -567,7 +581,7 @@ void MetaspriteManager::sendTileUpdates()
     emit(this->updateAnimationFrame());
 }
 
-MetaspriteTileList MetaspriteManager::createFrame(quint8 f, quint8 s)
+MetaspriteTileList MetaspriteManager::createFrame(quint8 f, qreal s)
 {
     MetaspriteTileList list = this->vMetaspriteStages.at(f);
     MetaspriteTileList listcopy;

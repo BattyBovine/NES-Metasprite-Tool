@@ -3,12 +3,18 @@
 AnimationManager::AnimationManager(QWidget *parent) : QGraphicsView(parent)
 {
     this->gsAnimation = new QGraphicsScene(this);
-    this->gsAnimation->setSceneRect(-128,-128,256,256);
     this->setScene(this->gsAnimation);
+    this->iScale = AM_DEFAULT_ZOOM;
     this->iAnimation = 0;
     this->iSelectedFrame = this->iPlayingFrame = 0;
     this->iFrameTiming = AnimationManager::NTSC;
     this->isPlaying = false;
+
+    this->setSceneRect(-AM_CANVAS_SIZE*AM_DEFAULT_ZOOM,
+                       -AM_CANVAS_SIZE*AM_DEFAULT_ZOOM,
+                       AM_CANVAS_SIZE*AM_DEFAULT_ZOOM*2,
+                       AM_CANVAS_SIZE*AM_DEFAULT_ZOOM*2);
+    this->centerOn(0,0);
 
     this->alAnimations = AnimationList(256);
 
@@ -27,6 +33,58 @@ void AnimationManager::dropEvent(QDropEvent *e)
 {
     e->acceptProposedAction();
     this->openAnimationFile(e->mimeData()->urls()[0].toLocalFile());
+}
+
+void AnimationManager::mousePressEvent(QMouseEvent *e)
+{
+    switch(e->button()) {
+    case Qt::MiddleButton:
+        this->iMouseTranslateX = e->x();
+        this->iMouseTranslateY = e->y();
+        break;
+    default:
+        QGraphicsView::mousePressEvent(e);
+    }
+}
+
+void AnimationManager::mouseMoveEvent(QMouseEvent *e)
+{
+    QGraphicsView::mouseMoveEvent(e);
+
+    if(e->buttons()&Qt::MiddleButton) {
+        this->setTransformationAnchor(QGraphicsView::NoAnchor);
+        this->translate((e->x()-this->iMouseTranslateX),(e->y()-this->iMouseTranslateY));
+        this->iMouseTranslateX = e->x();
+        this->iMouseTranslateY = e->y();
+    }
+}
+
+void AnimationManager::mouseDoubleClickEvent(QMouseEvent *e)
+{
+    if(e->buttons()&Qt::MiddleButton) {
+        this->iScale = AM_DEFAULT_ZOOM;
+        this->centerOn(0,0);
+        this->updateCurrentFrame();
+    } else {
+        QGraphicsView::mouseDoubleClickEvent(e);
+    }
+}
+
+void AnimationManager::wheelEvent(QWheelEvent *e)
+{
+    qreal steps = (((qreal)e->angleDelta().y()/8)/15)/4;
+    if(((this->iScale+steps)>=1) && ((this->iScale+steps)<=AM_MAX_ZOOM)) {
+        this->iScale += steps;
+    } else {
+        this->iScale = ((steps<0)?1:AM_MAX_ZOOM);
+    }
+
+    this->setSceneRect(-AM_CANVAS_SIZE*this->iScale,
+                       -AM_CANVAS_SIZE*this->iScale,
+                       AM_CANVAS_SIZE*this->iScale*2,
+                       AM_CANVAS_SIZE*this->iScale*2);
+
+    this->updateCurrentFrame();
 }
 
 
@@ -88,14 +146,14 @@ void AnimationManager::setPlayingFrame(int f)
 {
     this->iPlayingFrame = f;
     if(!this->alAnimations[this->iAnimation].isEmpty() && this->iPlayingFrame < this->alAnimations[this->iAnimation].size()) {
-        emit(this->requestFrameData(this->alAnimations[this->iAnimation][this->iPlayingFrame].frame()));
+        emit(this->requestFrameData(this->alAnimations[this->iAnimation][this->iPlayingFrame].frame(),this->iScale));
     }
 }
 
 void AnimationManager::updateCurrentFrame()
 {
     if(!this->alAnimations[this->iAnimation].isEmpty() && this->iSelectedFrame < this->alAnimations[this->iAnimation].size()) {
-        emit(this->requestFrameData(this->alAnimations[this->iAnimation][this->iSelectedFrame].frame()));
+        emit(this->requestFrameData(this->alAnimations[this->iAnimation][this->iSelectedFrame].frame(),this->iScale));
     }
 }
 
