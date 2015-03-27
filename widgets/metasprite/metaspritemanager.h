@@ -10,6 +10,7 @@
 #include <QDragLeaveEvent>
 #include <QFileInfo>
 #include <QMouseEvent>
+#include <QWheelEvent>
 #include <QMimeData>
 #include <QMessageBox>
 
@@ -19,6 +20,10 @@
 #include "metaspritetileitem.h"
 #include "animationframeitem.h"
 
+
+#define MSM_GRID_SIZE       128
+#define MSM_DEFAULT_ZOOM    2
+#define MSM_MAX_ZOOM        8
 
 #define MSM_FILE_OPEN_ERROR_TITLE   "Error opening metasprite file"
 #define MSM_FILE_OPEN_ERROR_BODY    "Could not open metasprite file. Please make sure you have the necessary permissions to access files in this location."
@@ -68,6 +73,7 @@ public slots:
 
     void updateTiles(bool);
     void swapMetaspriteStage(int);
+    void updateMetaspriteStage(){this->swapMetaspriteStage(this->iMetaspriteStage);}
     void createFrameData(quint8);
     void createAnimationFrameData(quint8);
 
@@ -82,6 +88,7 @@ protected:
     void mousePressEvent(QMouseEvent*);
     void mouseMoveEvent(QMouseEvent*);
     void mouseReleaseEvent(QMouseEvent*);
+    void wheelEvent(QWheelEvent*);
     void keyPressEvent(QKeyEvent*);
 
 private:
@@ -90,6 +97,8 @@ private:
     MetaspriteTileList createFrame(quint8,quint8 s=0);
 
     qreal iScale;
+    int iMouseTranslateX, iMouseTranslateY;
+
     bool bTallSprites;
     QGraphicsScene *gsMetasprite;
     MetaspriteStageList vMetaspriteStages;

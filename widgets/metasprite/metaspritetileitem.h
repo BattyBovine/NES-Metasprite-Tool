@@ -25,10 +25,10 @@ public:
     void flipVertical(bool);
     int realX(){return qRound(this->x()/this->scale());}
     int realY(){return qRound(this->y()/this->scale());}
-    void setRealX(int x){this->setX(x*this->scale());this->iX=x;}
-    void setRealY(int y){this->setY(y*this->scale());this->iY=y;}
-    int width(){return this->iW;}
-    int height(){return this->iH*(this->bTallSprite?2:1);}
+    void setRealX(qreal x){this->setX(x*this->scale());this->iX=x;}
+    void setRealY(qreal y){this->setY(y*this->scale());this->iY=y;}
+    qreal width(){return this->iW;}
+    qreal height(){return this->iH*(this->bTallSprite?2:1);}
     bool tallSprite(){return this->bTallSprite;}
     void setTallSprite(bool dh){this->bTallSprite=dh;}
 
@@ -50,7 +50,7 @@ private:
     QImage imgTile;
     quint8 iPalette;
     quint8 iTile;
-    int iX,iY,iW,iH;
+    qreal iX,iY,iW,iH;
     bool bTallSprite,bHFlip,bVFlip;
 };
 

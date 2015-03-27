@@ -3,9 +3,10 @@
 MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
 {
     this->gsMetasprite = new QGraphicsScene(this);
-    this->gsMetasprite->setSceneRect(-96,-96,192,192);
+    this->setSceneRect(-MSM_GRID_SIZE*MSM_DEFAULT_ZOOM,-MSM_GRID_SIZE*MSM_DEFAULT_ZOOM,MSM_GRID_SIZE*MSM_DEFAULT_ZOOM*2,MSM_GRID_SIZE*MSM_DEFAULT_ZOOM*2);
     this->setScene(this->gsMetasprite);
-    this->setScale(2);
+    this->iScale = MSM_DEFAULT_ZOOM;
+    this->setScale(this->iScale);
     this->bTallSprites = false;
 
     this->drawGridLines();
@@ -30,21 +31,48 @@ void MetaspriteManager::dropEvent(QDropEvent *e)
 
 void MetaspriteManager::mousePressEvent(QMouseEvent *e)
 {
-    if(e->button()!=Qt::RightButton)
-        QGraphicsView::mousePressEvent(e);
-    else
+    switch(e->button()) {
+    case Qt::RightButton:
         emit(this->requestNewTile(this->mapToScene(e->pos())));
+        break;
+    case Qt::MiddleButton:
+        this->iMouseTranslateX = e->x();
+        this->iMouseTranslateY = e->y();
+        break;
+    default:
+        QGraphicsView::mousePressEvent(e);
+    }
 }
 
 void MetaspriteManager::mouseMoveEvent(QMouseEvent *e)
 {
     QGraphicsView::mouseMoveEvent(e);
 
-    QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
-    foreach(QGraphicsItem *i, sel) {
-        qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealX(qRound(i->pos().x()/this->iScale));
-        qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealY(qRound(i->pos().y()/this->iScale));
+    if(e->buttons()&Qt::MiddleButton) {
+        this->setTransformationAnchor(QGraphicsView::NoAnchor);
+        this->translate((e->x()-this->iMouseTranslateX),(e->y()-this->iMouseTranslateY));
+        this->iMouseTranslateX = e->x();
+        this->iMouseTranslateY = e->y();
+    } else {
+        QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
+        foreach(QGraphicsItem *i, sel) {
+            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealX(qRound(i->pos().x()/this->iScale));
+            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealY(qRound(i->pos().y()/this->iScale));
+        }
     }
+}
+
+void MetaspriteManager::wheelEvent(QWheelEvent *e)
+{
+    qreal steps = (((qreal)e->angleDelta().y()/8)/15)/4;
+    if(((this->iScale+steps)>=1) && ((this->iScale+steps)<=MSM_MAX_ZOOM)) {
+        this->iScale += steps;
+    } else {
+        this->iScale = ((steps<0)?1:MSM_MAX_ZOOM);
+    }
+
+    this->setScale(this->iScale);
+    this->updateMetaspriteStage();
 }
 
 void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
@@ -111,22 +139,26 @@ void MetaspriteManager::drawGridLines()
     thickdashes.setDashPattern(dp);
     thindashes.setDashPattern(dp);
 
-    for(int i=MSTI_TILEWIDTH*this->iScale; i<=128; i+=MSTI_TILEWIDTH*this->iScale) {
-        this->gsMetasprite->addLine(-128,-i,128,-i,thinsolid);
-        this->gsMetasprite->addLine(-128,i,128,i,thinsolid);
-        this->gsMetasprite->addLine(-i,-128,-i,128,thinsolid);
-        this->gsMetasprite->addLine(i,-128,i,128,thinsolid);
+    qreal canvas = MSM_GRID_SIZE*this->iScale;
 
-        this->gsMetasprite->addLine(-128,-i,128,-i,thindashes);
-        this->gsMetasprite->addLine(-128,i,128,i,thindashes);
-        this->gsMetasprite->addLine(-i,-128,-i,128,thindashes);
-        this->gsMetasprite->addLine(i,-128,i,128,thindashes);
+    for(int i=MSTI_TILEWIDTH*this->iScale; i<=canvas; i+=MSTI_TILEWIDTH*this->iScale) {
+        this->gsMetasprite->addLine(-canvas,-i,canvas,-i,thinsolid);
+        this->gsMetasprite->addLine(-canvas,i,canvas,i,thinsolid);
+        this->gsMetasprite->addLine(-i,-canvas,-i,canvas,thinsolid);
+        this->gsMetasprite->addLine(i,-canvas,i,canvas,thinsolid);
+
+        this->gsMetasprite->addLine(-canvas,-i,canvas,-i,thindashes);
+        this->gsMetasprite->addLine(-canvas,i,canvas,i,thindashes);
+        this->gsMetasprite->addLine(-i,-canvas,-i,canvas,thindashes);
+        this->gsMetasprite->addLine(i,-canvas,i,canvas,thindashes);
     }
 
-    this->gsMetasprite->addLine(-128,0,128,0,thicksolid);
-    this->gsMetasprite->addLine(0,-128,0,128,thicksolid);
-    this->gsMetasprite->addLine(-128,0,128,0,thickdashes);
-    this->gsMetasprite->addLine(0,-128,0,128,thickdashes);
+    this->gsMetasprite->addLine(-canvas,0,canvas,0,thicksolid);
+    this->gsMetasprite->addLine(0,-canvas,0,canvas,thicksolid);
+    this->gsMetasprite->addLine(-canvas,0,canvas,0,thickdashes);
+    this->gsMetasprite->addLine(0,-canvas,0,canvas,thickdashes);
+
+    this->setSceneRect(-canvas,-canvas,canvas*2,canvas*2);
 }
 
 void MetaspriteManager::setNewSpriteColours(PaletteVector c, quint8 p, bool s)
@@ -289,17 +321,33 @@ void MetaspriteManager::swapMetaspriteStage(int s)
     QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder);
     QList<MetaspriteTileItem*> store;
     foreach(QGraphicsItem *i, items) {
-        if(i->type()!=MetaspriteTileItem::Type)   continue;
-        MetaspriteTileItem *ms = qgraphicsitem_cast<MetaspriteTileItem*>(i);
-        store.append(ms);
-        this->gsMetasprite->removeItem(ms);
+        if(i->type()!=MetaspriteTileItem::Type) {
+            this->gsMetasprite->removeItem(i);
+        } else {
+            MetaspriteTileItem *ms = qgraphicsitem_cast<MetaspriteTileItem*>(i);
+            store.append(ms);
+            this->gsMetasprite->removeItem(ms);
+        }
     }
     this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
+
+    this->drawGridLines();
 
     this->iMetaspriteStage = s;
     store = this->vMetaspriteStages.at(s);
     foreach(MetaspriteTileItem *ms, store) {
+        bool h = ms->flippedHorizontal();
+        bool v = ms->flippedVertical();
+        ms->flipHorizontal(false);
+        ms->flipVertical(false);
+
         ms->setTallSprite(this->bTallSprites);
+        ms->setX(ms->realX()*this->iScale);
+        ms->setY(ms->realY()*this->iScale);
+        ms->setScale(this->iScale);
+
+        ms->flipHorizontal(h);
+        ms->flipVertical(v);
         emit(this->getTileUpdate(ms));
         emit(this->getPaletteUpdate(ms));
         this->gsMetasprite->addItem(ms);
@@ -309,7 +357,7 @@ void MetaspriteManager::swapMetaspriteStage(int s)
 
 void MetaspriteManager::createFrameData(quint8 frame)
 {
-    MetaspriteTileList list = this->createFrame(frame);
+    MetaspriteTileList list = this->createFrame(frame,2);
     emit(this->sendFrameData(list));
 }
 
@@ -323,7 +371,7 @@ void MetaspriteManager::createAnimationFrameData(quint8 frame)
 
 QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
 {
-    this->swapMetaspriteStage(this->iMetaspriteStage);
+    this->updateMetaspriteStage();
 
     QVector<QByteArray> bindata = QVector<QByteArray>(256);
     for(int i=0; i<256; i++) {
