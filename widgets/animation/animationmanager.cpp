@@ -145,15 +145,19 @@ void AnimationManager::setSelectedFrame(int f)
 void AnimationManager::setPlayingFrame(int f)
 {
     this->iPlayingFrame = f;
-    if(!this->alAnimations[this->iAnimation].isEmpty() && this->iPlayingFrame < this->alAnimations[this->iAnimation].size()) {
-        emit(this->requestFrameData(this->alAnimations[this->iAnimation][this->iPlayingFrame].frame(),this->iScale));
-    }
+    this->updateCurrentFrame();
 }
 
 void AnimationManager::updateCurrentFrame()
 {
-    if(!this->alAnimations[this->iAnimation].isEmpty() && this->iSelectedFrame < this->alAnimations[this->iAnimation].size()) {
-        emit(this->requestFrameData(this->alAnimations[this->iAnimation][this->iSelectedFrame].frame(),this->iScale));
+    quint8 changedframe;
+    if(this->isPlaying)
+        changedframe = this->iPlayingFrame;
+    else
+        changedframe = this->iSelectedFrame;
+
+    if(!this->alAnimations[this->iAnimation].isEmpty() && changedframe < this->alAnimations[this->iAnimation].size()) {
+        emit(this->requestFrameData(this->alAnimations[this->iAnimation][changedframe].frame(),this->iScale));
     }
 }
 

@@ -19,6 +19,6 @@ void SpritePaletteView::mousePressEvent(QMouseEvent *e)
 
 void SpritePaletteView::setPaletteScene(QGraphicsScene *s)
 {
-    s->setBackgroundBrush(QBrush(Qt::black));
+    s->setBackgroundBrush(QBrush(QColor(0x82,0x87,0x90)));
     this->setScene(s);
 }

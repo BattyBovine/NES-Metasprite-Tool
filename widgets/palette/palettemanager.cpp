@@ -4,7 +4,7 @@ PaletteManager::PaletteManager(QWidget *parent) : QGraphicsView(parent)
 {
     this->gsFullPaletteScene = new QGraphicsScene();
     this->gsFullPaletteScene->setSceneRect(0,0,224,64);
-    this->gsFullPaletteScene->setBackgroundBrush(QBrush(Qt::black));
+    this->gsFullPaletteScene->setBackgroundBrush(QBrush(QColor(0x82,0x87,0x90)));
 
     for(int i=0; i<4; i++) {
         this->gsSpritePaletteScene[i] = new QGraphicsScene();
