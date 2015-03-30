@@ -38,7 +38,7 @@ bool PaletteManager::drawFullPaletteColours(QString palfile)
 
     this->gsFullPaletteScene->clear();
 
-    QFile pal(":/"+this->sPaletteFile+".pal");
+    QFile pal(":/pal/"+this->sPaletteFile+".pal");
     if(!pal.open(QIODevice::ReadOnly)) return false;
     QByteArray baPaletteBlob = pal.readAll();
     pal.close();

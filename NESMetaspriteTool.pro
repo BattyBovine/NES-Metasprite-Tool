@@ -50,7 +50,9 @@ HEADERS  += nesmetaspritetool.h \
 
 FORMS    += nesmetaspritetool.ui
 
-RESOURCES += palettes.qrc
+RESOURCES += \
+    res/chr.qrc \
+    res/palettes.qrc
 
 
 win32:RC_ICONS += res/icon.ico

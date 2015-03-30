@@ -2,16 +2,15 @@
 
 TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
 {
-    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
     this->gsTileset = new QGraphicsScene();
     this->setScene(this->gsTileset);
 
     this->imgTileset = QImage(128, 128, QImage::Format_Indexed8);
     this->imgTileset.fill(0);
     this->imgTileset.setColor(0,qRgba(0x00,0x00,0x00,0x00));
-    for(int i=0; i<3; i++)  this->imgTileset.setColor(i+1,qRgb(0x00,0x00,0x00));
+    this->imgTileset.setColor(1,qRgb(0x00,0x00,0x00));
+    this->imgTileset.setColor(2,qRgb(0x00,0x00,0x00));
+    this->imgTileset.setColor(3,qRgb(0x00,0x00,0x00));
 
     this->gpiTileset = new QGraphicsPixmapItem(QPixmap::fromImage(this->imgTileset));
     this->gpiTileset->setScale(TSM_SCALE);

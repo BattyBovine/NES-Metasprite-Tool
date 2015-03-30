@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/pal">
+        <file alias="FCEUX.pal">FCEUX.pal</file>
+        <file alias="ASQ_realityA.pal">ASQ_realityA.pal</file>
+        <file alias="ASQ_realityB.pal">ASQ_realityB.pal</file>
+        <file alias="BMF_final2.pal">BMF_final2.pal</file>
+        <file alias="BMF_final3.pal">BMF_final3.pal</file>
+        <file alias="FCEU-13-default_nitsuja.pal">FCEU-13-default_nitsuja.pal</file>
+        <file alias="FCEU-15-nitsuja_new.pal">FCEU-15-nitsuja_new.pal</file>
+        <file alias="nestopia_rgb.pal">nestopia_rgb.pal</file>
+        <file alias="nestopia_yuv.pal">nestopia_yuv.pal</file>
+    </qresource>
+</RCC>

@@ -12,12 +12,14 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
     while (it.hasNext()) {
         QString next = it.next();
         if(next.endsWith(".pal",Qt::CaseInsensitive))
-            palettes.append(next.replace(":/","").replace(".pal",""));
+            palettes.append(next.replace(":/pal/","").replace(".pal",""));
     }
     palettes.sort(Qt::CaseInsensitive);
     foreach(QString p, palettes) {
         ui->comboPalettes->addItem(p);
     }
+
+    ui->gvTileset->loadCHRBank(":/chr/blank.chr");
 }
 
 NESMetaspriteTool::~NESMetaspriteTool()

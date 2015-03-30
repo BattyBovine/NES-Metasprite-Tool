@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/chr">
+        <file>blank.chr</file>
+    </qresource>
+</RCC>
