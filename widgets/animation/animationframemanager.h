@@ -24,9 +24,6 @@ public:
 
 signals:
     void requestFrameData(quint8,qreal);
-    void addAnimationFrame(quint8,quint8);
-    void insertAnimationFrame(quint8,quint8);
-    void replaceAnimationFrame(quint8,quint8);
 
 public slots:
     void setBackgroundColour(PaletteVector);
@@ -34,10 +31,6 @@ public slots:
     void setNewFrame(int);
     void getFrameData(MetaspriteTileList);
     void setDelay(int d){this->iDelay=d;}
-
-    void addFrame();
-    void insertFrame();
-    void replaceFrame();
 
 protected:
     void mousePressEvent(QMouseEvent*);

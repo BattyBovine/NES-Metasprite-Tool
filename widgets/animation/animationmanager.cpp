@@ -89,27 +89,44 @@ void AnimationManager::wheelEvent(QWheelEvent *e)
 
 
 
-void AnimationManager::addAnimationFrame(quint8 f, quint8 d)
+void AnimationManager::addAnimationFrame()
 {
-    AnimationFrameItem frame(f,d);
+    AnimationFrameItem frame(AM_DEFAULT_FRAME,AM_DEFAULT_DELAY);
     this->alAnimations[this->iAnimation].append(frame);
     this->setSelectedFrame(this->alAnimations[this->iAnimation].size()-1);
 
     this->updateList(this->iSelectedFrame);
 }
 
-void AnimationManager::insertAnimationFrame(quint8 f, quint8 d)
+void AnimationManager::insertAnimationFrame()
 {
-    AnimationFrameItem frame(f,d);
-    this->alAnimations[this->iAnimation].insert(this->iSelectedFrame,frame);
+    AnimationFrameItem frame(AM_DEFAULT_FRAME,AM_DEFAULT_DELAY);
+    if(!this->alAnimations[this->iAnimation].isEmpty()) {
+        this->alAnimations[this->iAnimation].insert(this->iSelectedFrame,frame);
+    } else {
+        this->alAnimations[this->iAnimation].append(frame);
+        this->setSelectedFrame(this->alAnimations[this->iAnimation].size()-1);
+    }
 
     this->updateList(this->iSelectedFrame);
 }
 
-void AnimationManager::replaceAnimationFrame(quint8 f, quint8 d)
+void AnimationManager::replaceAnimationFrame(quint8 f)
 {
-    AnimationFrameItem frame(f,d);
+    AnimationFrameItem frame(f,this->alAnimations[this->iAnimation][this->iSelectedFrame].delay());
     this->alAnimations[this->iAnimation].replace(this->iSelectedFrame,frame);
+
+//    this->alAnimations[this->iAnimation][this->iSelectedFrame].setFrame(f);
+
+    this->updateList(this->iSelectedFrame);
+}
+
+void AnimationManager::replaceAnimationFrameDelay(quint8 d)
+{
+    AnimationFrameItem frame(this->alAnimations[this->iAnimation][this->iSelectedFrame].frame(),d);
+    this->alAnimations[this->iAnimation].replace(this->iSelectedFrame,frame);
+
+//    this->alAnimations[this->iAnimation][this->iSelectedFrame].setDelay(d);
 
     this->updateList(this->iSelectedFrame);
 }
@@ -181,7 +198,7 @@ void AnimationManager::moveFrameDown(int i)
 
 void AnimationManager::deleteFrame(int i)
 {
-    if(i<this->alAnimations[this->iAnimation].size()) {
+    if(!this->alAnimations[this->iAnimation].isEmpty() && i<this->alAnimations[this->iAnimation].size()) {
         this->alAnimations[this->iAnimation].remove(i);
         this->updateList((i==0)?i:i-1);
     }

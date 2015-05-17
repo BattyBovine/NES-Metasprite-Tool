@@ -37,6 +37,10 @@ void MetaspriteManager::mousePressEvent(QMouseEvent *e)
 {
     switch(e->button()) {
     case Qt::RightButton:
+        if(this->vMetaspriteStages[this->iMetaspriteStage].size()==64) {
+            int response = QMessageBox::warning(this, MSM_SPRITELIMIT_ERROR_TITLE, MSM_SPRITELIMIT_ERROR_BODY, QMessageBox::Yes|QMessageBox::No, QMessageBox::No);
+            if(response==QMessageBox::No)   return;
+        }
         emit(this->requestNewTile(this->mapToScene(e->pos())));
         break;
     case Qt::MiddleButton:

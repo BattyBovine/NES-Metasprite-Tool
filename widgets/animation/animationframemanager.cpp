@@ -100,20 +100,3 @@ void AnimationFrameManager::getFrameData(MetaspriteTileList l)
         this->gsFrame->addItem(i);
     }
 }
-
-
-
-void AnimationFrameManager::addFrame()
-{
-    emit(this->addAnimationFrame(this->iFrame, this->iDelay));
-}
-
-void AnimationFrameManager::insertFrame()
-{
-    emit(this->insertAnimationFrame(this->iFrame, this->iDelay));
-}
-
-void AnimationFrameManager::replaceFrame()
-{
-    emit(this->replaceAnimationFrame(this->iFrame, this->iDelay));
-}

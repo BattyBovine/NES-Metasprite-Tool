@@ -33,6 +33,8 @@
 #define MSM_EOF_ERROR_BODY          "Error reading metasprite data: Unexpected end of file."
 #define MSM_COUNT_ERROR_TITLE       "Invalid data"
 #define MSM_COUNT_ERROR_BODY        "Error reading metasprite data: Sprite counts do not match length of data."
+#define MSM_SPRITELIMIT_ERROR_TITLE "Too many sprites"
+#define MSM_SPRITELIMIT_ERROR_BODY  "You already have 64 sprites on the stage. This is as much as the NES can handle. Any more added sprites will not be visible unless custom flickering is used. Are you sure you wish to continue?"
 
 
 class MetaspriteManager : public QGraphicsView

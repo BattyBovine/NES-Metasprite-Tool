@@ -26,6 +26,9 @@
 #define AM_DEFAULT_ZOOM     3
 #define AM_MAX_ZOOM         8
 
+#define AM_DEFAULT_FRAME    0
+#define AM_DEFAULT_DELAY    1
+
 
 class AnimationPackage {
 public:
@@ -86,9 +89,10 @@ public slots:
     void setAnimationLabel(QString l){this->alAnimations[this->iAnimation].setLabel(l);}
     void setAnimationLoop(bool l){this->alAnimations[this->iAnimation].setLoop(l);}
 
-    void addAnimationFrame(quint8,quint8);
-    void insertAnimationFrame(quint8,quint8);
-    void replaceAnimationFrame(quint8,quint8);
+    void addAnimationFrame();
+    void insertAnimationFrame();
+    void replaceAnimationFrame(quint8);
+    void replaceAnimationFrameDelay(quint8);
     void setBackgroundColour(PaletteVector);
 
     void setNewAnimation(int);

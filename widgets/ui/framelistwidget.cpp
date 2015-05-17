@@ -2,6 +2,7 @@
 
 FrameListWidget::FrameListWidget(QWidget *parent) : QListWidget(parent)
 {
+    //this->connect(this,SIGNAL(currentRowChanged(int)),this,SLOT(regenerateList(int)));
 }
 
 FrameListWidget::~FrameListWidget()
@@ -39,17 +40,28 @@ void FrameListWidget::updateItems(AnimationFrameList l, quint8 s)
     this->generateListDisplay(s);
 }
 
+void FrameListWidget::regenerateList(int r)
+{
+    this->generateListDisplay(r);
+}
+
 
 
 void FrameListWidget::generateListDisplay(quint8 s)
 {
     this->clear();
 
-    for(int i=0; i<this->lItems.size(); i++) {
-        QString lineitem = QString("%1").arg(i,3,10,QChar('0'))+
-                QString(": MS=%1").arg(this->lItems[i].frame(),3,10,QChar('0'))+
-                QString(",Delay=")+QString("%1").arg(this->lItems[i].delay(),3,10,QChar('0'));
-        this->addItem(lineitem);
+    if(!this->lItems.isEmpty()) {
+        for(int i=0; i<this->lItems.size(); i++) {
+            QString lineitem = QString("%1").arg(i,3,10,QChar('0'))+
+                    QString(": MS=%1").arg(this->lItems[i].frame(),3,10,QChar('0'))+
+                    QString(",Delay=")+QString("%1").arg(this->lItems[i].delay(),3,10,QChar('0'));
+            this->addItem(lineitem);
+        }
+
+        this->setCurrentRow(s);
+
+        emit(this->setSelectedFrame(this->lItems[s].frame()));
+        emit(this->setSelectedDelay(this->lItems[s].delay()));
     }
-    this->setCurrentRow(s);
 }
