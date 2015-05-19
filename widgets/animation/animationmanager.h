@@ -26,9 +26,6 @@
 #define AM_DEFAULT_ZOOM     3
 #define AM_MAX_ZOOM         8
 
-#define AM_DEFAULT_FRAME    0
-#define AM_DEFAULT_DELAY    1
-
 
 class AnimationPackage {
 public:
@@ -78,7 +75,7 @@ signals:
     void loopChanged(bool);
     void labelChanged(QString);
     void requestFrameData(quint8,qreal);
-    void framesUpdated(AnimationFrameList,quint8);
+    void sendUpdatedFrames(AnimationFrameList,int);
 
     void animationStarted();
     void animationStopped();
@@ -89,20 +86,15 @@ public slots:
     void setAnimationLabel(QString l){this->alAnimations[this->iAnimation].setLabel(l);}
     void setAnimationLoop(bool l){this->alAnimations[this->iAnimation].setLoop(l);}
 
-    void addAnimationFrame();
-    void insertAnimationFrame();
-    void replaceAnimationFrame(quint8);
-    void replaceAnimationFrameDelay(quint8);
+    void getNewAnimation(AnimationFrameList);
+    void setAnimationFrame(int);
+    void setAnimationFrameDelay(int);
     void setBackgroundColour(PaletteVector);
 
     void setNewAnimation(int);
     void setSelectedFrame(int);
     void setPlayingFrame(int);
     void updateCurrentFrame();
-
-    void moveFrameUp(int);
-    void moveFrameDown(int);
-    void deleteFrame(int);
 
     void playAnimationToggle(bool);
 
@@ -125,7 +117,7 @@ private slots:
 
 private:
     void drawAnimationFrame(quint8);
-    void updateList(quint8 s=0);
+    void updateList(int s=-1);
 
     QGraphicsScene *gsAnimation;
     quint8 iAnimation;

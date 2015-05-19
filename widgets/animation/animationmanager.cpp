@@ -89,46 +89,16 @@ void AnimationManager::wheelEvent(QWheelEvent *e)
 
 
 
-void AnimationManager::addAnimationFrame()
-{
-    AnimationFrameItem frame(AM_DEFAULT_FRAME,AM_DEFAULT_DELAY);
-    this->alAnimations[this->iAnimation].append(frame);
-    this->setSelectedFrame(this->alAnimations[this->iAnimation].size()-1);
-
-    this->updateList(this->iSelectedFrame);
-}
-
-void AnimationManager::insertAnimationFrame()
-{
-    AnimationFrameItem frame(AM_DEFAULT_FRAME,AM_DEFAULT_DELAY);
-    if(!this->alAnimations[this->iAnimation].isEmpty()) {
-        this->alAnimations[this->iAnimation].insert(this->iSelectedFrame,frame);
-    } else {
-        this->alAnimations[this->iAnimation].append(frame);
-        this->setSelectedFrame(this->alAnimations[this->iAnimation].size()-1);
-    }
-
-    this->updateList(this->iSelectedFrame);
-}
-
-void AnimationManager::replaceAnimationFrame(quint8 f)
+void AnimationManager::setAnimationFrame(int f)
 {
     AnimationFrameItem frame(f,this->alAnimations[this->iAnimation][this->iSelectedFrame].delay());
     this->alAnimations[this->iAnimation].replace(this->iSelectedFrame,frame);
-
-//    this->alAnimations[this->iAnimation][this->iSelectedFrame].setFrame(f);
-
-    this->updateList(this->iSelectedFrame);
 }
 
-void AnimationManager::replaceAnimationFrameDelay(quint8 d)
+void AnimationManager::setAnimationFrameDelay(int d)
 {
     AnimationFrameItem frame(this->alAnimations[this->iAnimation][this->iSelectedFrame].frame(),d);
     this->alAnimations[this->iAnimation].replace(this->iSelectedFrame,frame);
-
-//    this->alAnimations[this->iAnimation][this->iSelectedFrame].setDelay(d);
-
-    this->updateList(this->iSelectedFrame);
 }
 
 void AnimationManager::setBackgroundColour(PaletteVector c)
@@ -137,6 +107,11 @@ void AnimationManager::setBackgroundColour(PaletteVector c)
 }
 
 
+
+void AnimationManager::getNewAnimation(AnimationFrameList l)
+{
+    this->alAnimations[this->iAnimation].setFrames(l);
+}
 
 void AnimationManager::setNewAnimation(int f)
 {
@@ -153,8 +128,8 @@ void AnimationManager::setNewAnimation(int f)
 void AnimationManager::setSelectedFrame(int f)
 {
     this->stopAnimation();
-    this->iSelectedFrame = f;
-    if(this->iSelectedFrame < this->alAnimations[this->iAnimation].size()) {
+    if(f>=0 && f<this->alAnimations[this->iAnimation].size()) {
+        this->iSelectedFrame = f;
         this->updateCurrentFrame();
     }
 }
@@ -175,32 +150,6 @@ void AnimationManager::updateCurrentFrame()
 
     if(!this->alAnimations[this->iAnimation].isEmpty() && changedframe < this->alAnimations[this->iAnimation].size()) {
         emit(this->requestFrameData(this->alAnimations[this->iAnimation][changedframe].frame(),this->iScale));
-    }
-}
-
-void AnimationManager::moveFrameUp(int i)
-{
-    if(i>0) {
-        AnimationFrameItem item = this->alAnimations[this->iAnimation].takeAt(i);
-        this->alAnimations[this->iAnimation].insert(--i,item);
-        this->updateList(i);
-    }
-}
-
-void AnimationManager::moveFrameDown(int i)
-{
-    if(i<this->alAnimations[this->iAnimation].size()-1) {
-        AnimationFrameItem item = this->alAnimations[this->iAnimation].takeAt(i);
-        this->alAnimations[this->iAnimation].insert(++i,item);
-        this->updateList(i);
-    }
-}
-
-void AnimationManager::deleteFrame(int i)
-{
-    if(!this->alAnimations[this->iAnimation].isEmpty() && i<this->alAnimations[this->iAnimation].size()) {
-        this->alAnimations[this->iAnimation].remove(i);
-        this->updateList((i==0)?i:i-1);
     }
 }
 
@@ -260,10 +209,10 @@ void AnimationManager::drawAnimationFrameData(MetaspriteTileList f)
     }
 }
 
-void AnimationManager::updateList(quint8 s)
+void AnimationManager::updateList(int s)
 {
     this->gsAnimation->clear();
-    emit(this->framesUpdated(this->alAnimations[this->iAnimation].frames(),s));
+    emit(this->sendUpdatedFrames(this->alAnimations[this->iAnimation].frames(),s));
 }
 
 

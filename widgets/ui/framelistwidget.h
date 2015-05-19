@@ -7,6 +7,11 @@
 
 #include "animationframeitem.h"
 
+
+#define FLW_DEFAULT_FRAME   0
+#define FLW_DEFAULT_DELAY   1
+
+
 class FrameListWidget : public QListWidget
 {
     Q_OBJECT
@@ -15,37 +20,34 @@ public:
     ~FrameListWidget();
 
 signals:
-    void moveUp(int);
-    void moveDown(int);
-    void deleteItem(int);
-    void addAnimationFrame();
-    void insertAnimationFrame();
-    void replaceAnimationFrame(quint8);
-    void replaceAnimationFrameDelay(quint8);
-    void setSelectedFrame(int);
-    void setSelectedDelay(int);
+    void pushFrameUpdate(AnimationFrameList);
+    void selectedFrameChanged(int);
+    void selectedFrameNumberChanged(int);
+    void selectedFrameDelayChanged(int);
 
 public slots:
-    void updateItems(AnimationFrameList,quint8);
-    void regenerateList(int);
+    void newFrameData(AnimationFrameList,int);
+    void frameNumberUpdate(int);
+    void frameDelayUpdate(int);
 
-    void moveUpSelected(){emit(this->moveUp(this->currentRow()));}
-    void moveDownSelected(){emit(this->moveDown(this->currentRow()));}
-
-    void addFrame(){emit(this->addAnimationFrame());}
-    void insertFrame(){emit(this->insertAnimationFrame());}
-    void replaceFrame(int f){emit(this->replaceAnimationFrame(f));}
-    void replaceDelay(int d){emit(this->replaceAnimationFrameDelay(d));}
-    void deleteSelected(){emit(this->deleteItem(this->currentRow()));}
+    void moveUpSelected();
+    void moveDownSelected();
+    void addFrame();
+    void insertFrame();
+    void deleteSelected();
 
 protected:
     void keyPressEvent(QKeyEvent*);
 
-private:
-    void generateListDisplay(quint8);
+private slots:
+    void sendSelectedFrame();
 
-    AnimationFrameList lItems;
-    bool bUpdatingList;
+private:
+    void generateListDisplay(int);
+    QString generateListItem(int);
+    void replaceItem(int);
+
+    AnimationFrameList aflFrames;
 };
 
 #endif // FRAMELISTWIDGET_H

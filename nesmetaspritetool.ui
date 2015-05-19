@@ -1533,9 +1533,9 @@
     <signal>replaceAnimationFrame(quint8,quint8)</signal>
     <slot>setBackgroundColour(PaletteVector)</slot>
     <slot>getFrameData(MetaspriteTileList)</slot>
-    <slot>setNewFrame(int)</slot>
+    <slot>setNewFrame(quint8)</slot>
     <slot>updateCurrentFrame()</slot>
-    <slot>setDelay(int)</slot>
+    <slot>setDelay(quint8)</slot>
     <slot>addFrame()</slot>
     <slot>insertFrame()</slot>
     <slot>replaceFrame()</slot>
@@ -1560,18 +1560,19 @@
     <signal>deleteItem(int)</signal>
     <signal>addAnimationFrame()</signal>
     <signal>insertAnimationFrame()</signal>
-    <signal>replaceAnimationFrame(quint8)</signal>
-    <signal>replaceAnimationFrameDelay(quint8)</signal>
-    <signal>setSelectedFrame(int)</signal>
+    <signal>selectedFrameChanged(int)</signal>
     <signal>setSelectedDelay(int)</signal>
-    <slot>updateItems(AnimationFrameList,quint8)</slot>
+    <signal>pushFrameUpdate(AnimationFrameList)</signal>
+    <signal>selectedFrameNumberChanged(int)</signal>
+    <signal>selectedFrameDelayChanged(int)</signal>
+    <slot>newFrameData(AnimationFrameList,int)</slot>
     <slot>deleteSelected()</slot>
     <slot>moveUpSelected()</slot>
     <slot>moveDownSelected()</slot>
     <slot>addFrame()</slot>
     <slot>insertFrame()</slot>
-    <slot>replaceFrame(int)</slot>
-    <slot>replaceDelay(int)</slot>
+    <slot>frameNumberUpdate(int)</slot>
+    <slot>frameDelayUpdate(int)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1580,7 +1581,7 @@
    <header>animationmanager.h</header>
    <slots>
     <signal>requestFrameData(quint8,qreal)</signal>
-    <signal>framesUpdated(AnimationFrameList,quint8)</signal>
+    <signal>sendUpdatedFrames(AnimationFrameList,int)</signal>
     <signal>animationStarted()</signal>
     <signal>animationStopped()</signal>
     <signal>loopChanged(bool)</signal>
@@ -1598,10 +1599,11 @@
     <slot>deleteFrame(int)</slot>
     <slot>playAnimationToggle(bool)</slot>
     <slot>insertAnimationFrame()</slot>
-    <slot>replaceAnimationFrame(quint8)</slot>
+    <slot>setAnimationFrame(int)</slot>
     <slot>setAnimationLoop(bool)</slot>
     <slot>setAnimationLabel(QString)</slot>
-    <slot>replaceAnimationFrameDelay(quint8)</slot>
+    <slot>setAnimationFrameDelay(int)</slot>
+    <slot>getNewAnimation(AnimationFrameList)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -2232,22 +2234,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>hsFrameSlider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>gvFrames</receiver>
-   <slot>setNewFrame(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>620</x>
-     <y>320</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>620</x>
-     <y>241</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>gvFrames</sender>
    <signal>requestFrameData(quint8,qreal)</signal>
    <receiver>gvMetasprite</receiver>
@@ -2408,22 +2394,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>gvFrames</receiver>
-   <slot>setDelay(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>662</x>
-     <y>361</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>584</x>
-     <y>216</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>hsAnimationSlider</sender>
    <signal>valueChanged(int)</signal>
    <receiver>labelAnimationSlider</receiver>
@@ -2488,22 +2458,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>gvAnimation</sender>
-   <signal>framesUpdated(AnimationFrameList,quint8)</signal>
-   <receiver>listFrames</receiver>
-   <slot>updateItems(AnimationFrameList,quint8)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>262</x>
-     <y>124</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>359</x>
-     <y>129</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>gvMetasprite</sender>
    <signal>updateAnimationFrame()</signal>
    <receiver>gvAnimation</receiver>
@@ -2548,22 +2502,6 @@
     <hint type="destinationlabel">
      <x>256</x>
      <y>334</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>listFrames</sender>
-   <signal>currentRowChanged(int)</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>setSelectedFrame(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>386</x>
-     <y>294</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>160</x>
-     <y>238</y>
     </hint>
    </hints>
   </connection>
@@ -2632,54 +2570,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>listFrames</sender>
-   <signal>deleteItem(int)</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>deleteFrame(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>327</x>
-     <y>159</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>227</x>
-     <y>161</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>listFrames</sender>
-   <signal>moveUp(int)</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>moveFrameUp(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>321</x>
-     <y>174</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>213</x>
-     <y>177</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>listFrames</sender>
-   <signal>moveDown(int)</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>moveFrameDown(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>326</x>
-     <y>192</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>207</x>
-     <y>193</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>btnPlayAnimation</sender>
    <signal>toggled(bool)</signal>
    <receiver>gvAnimation</receiver>
@@ -2724,22 +2614,6 @@
     <hint type="destinationlabel">
      <x>3</x>
      <y>192</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>chkLoop</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>setAnimationLoop(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>479</x>
-     <y>538</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>255</x>
-     <y>256</y>
     </hint>
    </hints>
   </connection>
@@ -2936,104 +2810,8 @@
    </hints>
   </connection>
   <connection>
-   <sender>hsFrameSlider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>listFrames</receiver>
-   <slot>replaceFrame(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>514</x>
-     <y>326</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>385</x>
-     <y>325</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>listFrames</sender>
-   <signal>replaceAnimationFrame(quint8)</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>replaceAnimationFrame(quint8)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>319</x>
-     <y>292</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>261</x>
-     <y>289</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spinBox</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>listFrames</receiver>
-   <slot>replaceDelay(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>551</x>
-     <y>348</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>422</x>
-     <y>346</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>listFrames</sender>
-   <signal>addAnimationFrame()</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>addAnimationFrame()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>350</x>
-     <y>141</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>231</x>
-     <y>146</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>listFrames</sender>
-   <signal>insertAnimationFrame()</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>insertAnimationFrame()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>315</x>
-     <y>223</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>222</x>
-     <y>224</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>listFrames</sender>
-   <signal>replaceAnimationFrameDelay(quint8)</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>replaceAnimationFrameDelay(quint8)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>342</x>
-     <y>298</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>225</x>
-     <y>303</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>listFrames</sender>
-   <signal>setSelectedFrame(int)</signal>
+   <signal>selectedFrameNumberChanged(int)</signal>
    <receiver>hsFrameSlider</receiver>
    <slot>setValue(int)</slot>
    <hints>
@@ -3049,7 +2827,7 @@
   </connection>
   <connection>
    <sender>listFrames</sender>
-   <signal>setSelectedDelay(int)</signal>
+   <signal>selectedFrameDelayChanged(int)</signal>
    <receiver>spinBox</receiver>
    <slot>setValue(int)</slot>
    <hints>
@@ -3060,6 +2838,134 @@
     <hint type="destinationlabel">
      <x>563</x>
      <y>358</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hsFrameSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>listFrames</receiver>
+   <slot>frameNumberUpdate(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>519</x>
+     <y>322</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>378</x>
+     <y>325</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>listFrames</receiver>
+   <slot>frameDelayUpdate(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>549</x>
+     <y>354</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>441</x>
+     <y>346</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chkLoop</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>setAnimationLoop(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>453</x>
+     <y>531</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>272</x>
+     <y>257</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listFrames</sender>
+   <signal>selectedFrameNumberChanged(int)</signal>
+   <receiver>gvFrames</receiver>
+   <slot>setNewFrame(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>448</x>
+     <y>92</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>556</x>
+     <y>95</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listFrames</sender>
+   <signal>selectedFrameDelayChanged(int)</signal>
+   <receiver>gvFrames</receiver>
+   <slot>setDelay(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>437</x>
+     <y>106</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>557</x>
+     <y>111</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvAnimation</sender>
+   <signal>sendUpdatedFrames(AnimationFrameList,int)</signal>
+   <receiver>listFrames</receiver>
+   <slot>newFrameData(AnimationFrameList,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>244</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>331</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listFrames</sender>
+   <signal>pushFrameUpdate(AnimationFrameList)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>getNewAnimation(AnimationFrameList)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>335</x>
+     <y>142</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>229</x>
+     <y>140</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listFrames</sender>
+   <signal>selectedFrameChanged(int)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>setSelectedFrame(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>333</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>239</x>
+     <y>155</y>
     </hint>
    </hints>
   </connection>
