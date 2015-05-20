@@ -77,8 +77,8 @@ signals:
     void requestFrameData(quint8,qreal);
     void sendUpdatedFrames(AnimationFrameList,int);
 
-    void animationStarted();
-    void animationStopped();
+//    void animationStarted();
+//    void animationStopped();
 
 public slots:
     void setNTSCTiming(){this->iFrameTiming=AnimationManager::NTSC;}

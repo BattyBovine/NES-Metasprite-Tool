@@ -51,8 +51,8 @@ private slots:
 
     void setNewPaletteFile(QString);
     void setAnimationLabelPrefix(QString);
-    void setPlayButtonText();
-    void setPauseButtonText();
+//    void setPlayButtonText();
+//    void setPauseButtonText();
 
 private:
     Ui::NESMetaspriteTool *ui;

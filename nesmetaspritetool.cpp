@@ -199,14 +199,14 @@ void NESMetaspriteTool::setAnimationLabelPrefix(QString s)
     ui->labelMetaspriteName->setText((!s.isEmpty())?s:"emptylabel");
 }
 
-void NESMetaspriteTool::setPlayButtonText()
-{
-    ui->btnPlayAnimation->setText("►");
-    ui->btnPlayAnimation->setChecked(false);
-}
+//void NESMetaspriteTool::setPlayButtonText()
+//{
+//    ui->btnPlayAnimation->setText("►");
+//    ui->btnPlayAnimation->setChecked(false);
+//}
 
-void NESMetaspriteTool::setPauseButtonText()
-{
-    ui->btnPlayAnimation->setText("▮▮");
-    ui->btnPlayAnimation->setChecked(true);
-}
+//void NESMetaspriteTool::setPauseButtonText()
+//{
+//    ui->btnPlayAnimation->setText("▮▮");
+//    ui->btnPlayAnimation->setChecked(true);
+//}

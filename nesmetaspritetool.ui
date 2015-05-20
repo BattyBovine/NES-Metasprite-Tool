@@ -896,28 +896,6 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_22">
                <item>
-                <widget class="QPushButton" name="btnPlayAnimation">
-                 <property name="minimumSize">
-                  <size>
-                   <width>24</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>24</width>
-                   <height>24</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>►</string>
-                 </property>
-                 <property name="checkable">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <spacer name="horizontalSpacer_17">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -2570,54 +2548,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>btnPlayAnimation</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>playAnimationToggle(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>52</x>
-     <y>436</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>117</x>
-     <y>259</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvAnimation</sender>
-   <signal>animationStarted()</signal>
-   <receiver>NESMetaspriteTool</receiver>
-   <slot>setPauseButtonText()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>41</x>
-     <y>117</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>4</x>
-     <y>162</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvAnimation</sender>
-   <signal>animationStopped()</signal>
-   <receiver>NESMetaspriteTool</receiver>
-   <slot>setPlayButtonText()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>43</x>
-     <y>142</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>3</x>
-     <y>192</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>gvAnimation</sender>
    <signal>loopChanged(bool)</signal>
    <receiver>chkLoop</receiver>
@@ -2902,22 +2832,6 @@
     <hint type="destinationlabel">
      <x>556</x>
      <y>95</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>listFrames</sender>
-   <signal>selectedFrameDelayChanged(int)</signal>
-   <receiver>gvFrames</receiver>
-   <slot>setDelay(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>437</x>
-     <y>106</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>557</x>
-     <y>111</y>
     </hint>
    </hints>
   </connection>

@@ -30,7 +30,6 @@ public slots:
     void updateCurrentFrame();
     void setNewFrame(int);
     void getFrameData(MetaspriteTileList);
-    void setDelay(int d){this->iDelay=d;}
 
 protected:
     void mousePressEvent(QMouseEvent*);
@@ -42,7 +41,6 @@ private:
     QGraphicsScene *gsFrame;
     quint8 iFrame;
     MetaspriteTileList mtlFrameData;
-    quint8 iDelay;
     qreal iScale,iMouseTranslateX,iMouseTranslateY;
 };
 

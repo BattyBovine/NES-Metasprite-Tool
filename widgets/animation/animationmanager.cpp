@@ -115,7 +115,6 @@ void AnimationManager::getNewAnimation(AnimationFrameList l)
 
 void AnimationManager::setNewAnimation(int f)
 {
-    this->tFrameCounter.stop();
     this->gsAnimation->clear();
     this->iAnimation = f;
     this->setSelectedFrame(0);
@@ -123,11 +122,11 @@ void AnimationManager::setNewAnimation(int f)
     emit(this->labelChanged(this->alAnimations[this->iAnimation].label()));
 
     this->updateList(this->iSelectedFrame);
+    this->playNextFrame(false);
 }
 
 void AnimationManager::setSelectedFrame(int f)
 {
-    this->stopAnimation();
     if(f>=0 && f<this->alAnimations[this->iAnimation].size()) {
         this->iSelectedFrame = f;
         this->updateCurrentFrame();
@@ -143,10 +142,7 @@ void AnimationManager::setPlayingFrame(int f)
 void AnimationManager::updateCurrentFrame()
 {
     quint8 changedframe;
-    if(this->isPlaying)
-        changedframe = this->iPlayingFrame;
-    else
-        changedframe = this->iSelectedFrame;
+    changedframe = this->iPlayingFrame;
 
     if(!this->alAnimations[this->iAnimation].isEmpty() && changedframe < this->alAnimations[this->iAnimation].size()) {
         emit(this->requestFrameData(this->alAnimations[this->iAnimation][changedframe].frame(),this->iScale));
@@ -167,11 +163,11 @@ void AnimationManager::playAnimationToggle(bool p)
 void AnimationManager::playAnimation()
 {
     if(!this->isPlaying) {
-        this->isPlaying = true;
         if(this->alAnimations[this->iAnimation].isEmpty())  return;
+        this->isPlaying = true;
         this->setPlayingFrame(0);
         this->playNextFrame(false);
-        emit(this->animationStarted());
+//        emit(this->animationStarted());
     }
 }
 
@@ -193,7 +189,7 @@ void AnimationManager::stopAnimation()
 {
     if(this->isPlaying) {
         this->tFrameCounter.stop();
-        emit(this->animationStopped());
+//        emit(this->animationStopped());
         this->isPlaying = false;
     }
     this->setPlayingFrame(this->iSelectedFrame);

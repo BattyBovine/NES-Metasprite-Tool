@@ -5,7 +5,6 @@ AnimationFrameManager::AnimationFrameManager(QWidget *parent) : QGraphicsView(pa
     this->gsFrame = new QGraphicsScene(this);
     this->setScene(this->gsFrame);
     this->iFrame = 0;
-    this->iDelay = 1;
 
     this->iScale = AFM_DEFAULT_ZOOM;
     this->setSceneRect(-AFM_CANVAS_SIZE*AFM_DEFAULT_ZOOM,
