@@ -19,6 +19,9 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
         ui->comboPalettes->addItem(p);
     }
 
+    this->sSettings.setDefaultFormat(QSettings::NativeFormat);
+    this->restoreSettings();
+
     ui->gvTileset->loadCHRBank(":/chr/blank.chr");
 }
 
@@ -66,6 +69,23 @@ void NESMetaspriteTool::saveProjectToFolder(QString f)
     if(!folder.exists()) {
         folder.mkdir(f);
     }
+}
+
+
+
+void NESMetaspriteTool::saveSpriteMode()
+{
+    this->sSettings.setValue("SpriteMode", ui->radio8x16->isChecked());
+}
+void NESMetaspriteTool::saveRefreshRate()
+{
+    this->sSettings.setValue("RefreshRate", ui->radioPAL->isChecked());
+}
+
+void NESMetaspriteTool::restoreSettings()
+{
+    ui->radio8x16->setChecked(this->sSettings.value("SpriteMode",false).toBool());
+    ui->radioPAL->setChecked(this->sSettings.value("RefreshRate",false).toBool());
 }
 
 

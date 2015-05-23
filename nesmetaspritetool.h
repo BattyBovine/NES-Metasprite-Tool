@@ -8,6 +8,7 @@
 #include <QDirIterator>
 #include <QTextStream>
 #include <QRegularExpression>
+#include <QSettings>
 
 
 #define FILE_OPEN_ERROR_TITLE       "Error opening file"
@@ -38,6 +39,10 @@ private slots:
     void saveProject();
     void saveProjectToFolder(QString);
 
+    void saveSpriteMode();
+    void saveRefreshRate();
+    void restoreSettings();
+
     void openMetaspriteBank();
     void saveASMMetaspriteBank(QString path="");
     void saveBinaryMetaspriteBank(QString path="");
@@ -56,6 +61,8 @@ private slots:
 
 private:
     Ui::NESMetaspriteTool *ui;
+
+    QSettings sSettings;
 };
 
 #endif // NESMETASPRITETOOL_H

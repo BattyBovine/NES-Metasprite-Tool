@@ -173,6 +173,7 @@ void AnimationManager::playAnimation()
 
 void AnimationManager::playNextFrame(bool inc)
 {
+    if(this->alAnimations[this->iAnimation].isEmpty())  return;
     if(inc) this->iPlayingFrame++;
     if(this->iPlayingFrame>=this->alAnimations[this->iAnimation].size()) {
         this->iPlayingFrame=0;

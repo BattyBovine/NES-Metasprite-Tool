@@ -43,8 +43,7 @@ signals:
 public slots:
     bool loadCHRBank(QString);
     void setNewSpriteColours(PaletteVector,quint8);
-    void setStandardSprites(){this->bTallSprite=false;this->drawSelectionBox();emit(this->tilesetChanged(this->bTallSprite));}
-    void setTallSprites(){this->bTallSprite=true;this->drawSelectionBox();emit(this->tilesetChanged(this->bTallSprite));}
+    void setSprites(bool tall){this->bTallSprite=tall;this->drawSelectionBox();emit(this->tilesetChanged(this->bTallSprite));}
 
     void getNewTile(QPointF);
     void updateSpriteTile(MetaspriteTileItem*);

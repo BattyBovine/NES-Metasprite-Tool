@@ -81,8 +81,7 @@ signals:
 //    void animationStopped();
 
 public slots:
-    void setNTSCTiming(){this->iFrameTiming=AnimationManager::NTSC;}
-    void setPALTiming(){this->iFrameTiming=AnimationManager::PAL;}
+    void setTiming(bool pal){this->iFrameTiming=pal?AnimationManager::PAL:AnimationManager::NTSC;}
     void setAnimationLabel(QString l){this->alAnimations[this->iAnimation].setLabel(l);}
     void setAnimationLoop(bool l){this->alAnimations[this->iAnimation].setLoop(l);}
 
