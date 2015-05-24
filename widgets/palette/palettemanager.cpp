@@ -5,6 +5,8 @@ PaletteManager::PaletteManager(QWidget *parent) : QGraphicsView(parent)
     this->gsFullPaletteScene = new QGraphicsScene();
     this->gsFullPaletteScene->setSceneRect(0,0,224,64);
     this->gsFullPaletteScene->setBackgroundBrush(QBrush(QColor(0x82,0x87,0x90)));
+    this->iFullPaletteIndex = 0x0D;
+    this->drawSelectionBox(this->gsFullPaletteScene, this->iFullPaletteIndex);
 
     for(int i=0; i<4; i++) {
         this->gsSpritePaletteScene[i] = new QGraphicsScene();
@@ -58,22 +60,24 @@ bool PaletteManager::drawFullPaletteColours(QString palfile)
         }
     }
 
+    this->drawSelectionBox(this->gsFullPaletteScene, this->iFullPaletteIndex);
+
     this->generateNewSpritePalettes(true);
 
     return true;
 }
 
-bool PaletteManager::drawSelectionBox(QGraphicsScene *s, QPointF p)
+bool PaletteManager::drawSelectionBox(QGraphicsScene *s, quint8 i)
 {
-    quint8 xorigin = qFloor(p.x())-(qFloor(p.x())%16);
-    quint8 yorigin = qFloor(p.y())-(qFloor(p.y())%16);
+    quint8 xorigin = (i&0x0F)*PM_SWATCH_SIZE;
+    quint8 yorigin = ((i&0xF0)>>4)*PM_SWATCH_SIZE;
 
     QPen dashes(Qt::black,1,Qt::DashLine);
     QVector<qreal> dp;
     dp << 2 << 2;
     dashes.setDashPattern(dp);
-    s->addRect(QRectF(xorigin,yorigin,15,15),QPen(Qt::white),Qt::NoBrush);
-    s->addRect(QRectF(xorigin,yorigin,15,15),dashes,Qt::NoBrush);
+    s->addRect(QRectF(xorigin,yorigin,PM_SWATCH_SIZE-1,PM_SWATCH_SIZE-1),QPen(Qt::white),Qt::NoBrush);
+    s->addRect(QRectF(xorigin,yorigin,PM_SWATCH_SIZE-1,PM_SWATCH_SIZE-1),dashes,Qt::NoBrush);
 
     return true;
 }
@@ -131,6 +135,7 @@ void PaletteManager::mousePressEvent(QMouseEvent *e)
     QPointF p = this->mapToScene(e->pos());
     if((p.x()<0||p.y()<0) || (p.x()>((0x0E*PM_SWATCH_SIZE)-1))||(p.y()>((0x04*PM_SWATCH_SIZE)-1)))  return;
     quint8 pval = (qFloor(p.y()/PM_SWATCH_SIZE)<<4)|(qFloor(p.x()/PM_SWATCH_SIZE));
+    this->iFullPaletteIndex = pval;
     if(pval==0x0D)  pval = 0x0F;
 
     if(this->iSpritePaletteSelectedIndex == 0) {
@@ -142,7 +147,6 @@ void PaletteManager::mousePressEvent(QMouseEvent *e)
     }
 
     this->drawFullPaletteColours(this->sPaletteFile);
-    this->drawSelectionBox(this->gsFullPaletteScene, p);
 }
 
 void PaletteManager::setPaletteFile(QString p)
@@ -163,11 +167,8 @@ void PaletteManager::spritePaletteSelected(QString s, quint8 i)
 
     quint8 c = this->iSpritePaletteIndices[pindex][i];
     if(c==0x0F)  c=0x0D;
-    quint8 x = (c&0x0F)*PM_SWATCH_SIZE;
-    quint8 y = (c>>4)*PM_SWATCH_SIZE;
-
     this->drawFullPaletteColours(this->sPaletteFile);
-    this->drawSelectionBox(this->gsFullPaletteScene, QPointF(x,y));
+    this->drawSelectionBox(this->gsFullPaletteScene, c);
 
     QVector<QColor> newspritecolours;
     for(int i=0; i<4; i++)  newspritecolours.append(this->vPaletteColours.at(this->iSpritePaletteIndices[pindex][i]));
@@ -195,7 +196,7 @@ void PaletteManager::generateNewSpritePalettes(bool changeselected)
         }
     }
 
-    this->drawSelectionBox(this->gsSpritePaletteScene[this->iSpritePaletteSelected], QPoint(this->iSpritePaletteSelectedIndex*PM_SWATCH_SIZE,0));
+    this->drawSelectionBox(this->gsSpritePaletteScene[this->iSpritePaletteSelected], /*QPoint(*/this->iSpritePaletteSelectedIndex/**PM_SWATCH_SIZE,0)*/);
 
     emit(newSpritePalette0(this->gsSpritePaletteScene[0]));
     emit(newSpritePalette1(this->gsSpritePaletteScene[1]));

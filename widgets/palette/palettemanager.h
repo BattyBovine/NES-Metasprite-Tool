@@ -30,7 +30,7 @@ public:
 
     bool drawFullPaletteColours(QString);
 
-    bool drawSelectionBox(QGraphicsScene*, QPointF);
+    bool drawSelectionBox(QGraphicsScene*, quint8);
     bool setPaletteData(QString);
     QByteArray paletteData();
 
@@ -64,6 +64,7 @@ private:
     QString sPaletteFile;
     QVector<QColor> vPaletteColours;
     QGraphicsScene *gsFullPaletteScene;
+    quint8 iFullPaletteIndex;
 
     QGraphicsScene *gsSpritePaletteScene[4];
     quint8 iSpritePaletteIndices[4][4];
