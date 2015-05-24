@@ -21,6 +21,9 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 
     this->sSettings.setDefaultFormat(QSettings::NativeFormat);
     this->restoreSettings();
+    connect(ui->radio8x16,SIGNAL(toggled(bool)),this,SLOT(saveSpriteMode()));
+    connect(ui->comboPalettes,SIGNAL(currentIndexChanged(int)),this,SLOT(savePaletteSwatch()));
+    connect(ui->radioPAL,SIGNAL(toggled(bool)),this,SLOT(saveRefreshRate()));
 
     ui->gvTileset->loadCHRBank(":/chr/blank.chr");
 }
@@ -77,6 +80,10 @@ void NESMetaspriteTool::saveSpriteMode()
 {
     this->sSettings.setValue("SpriteMode", ui->radio8x16->isChecked());
 }
+void NESMetaspriteTool::savePaletteSwatch()
+{
+    this->sSettings.setValue("PaletteSwatch", ui->comboPalettes->currentIndex());
+}
 void NESMetaspriteTool::saveRefreshRate()
 {
     this->sSettings.setValue("RefreshRate", ui->radioPAL->isChecked());
@@ -85,6 +92,7 @@ void NESMetaspriteTool::saveRefreshRate()
 void NESMetaspriteTool::restoreSettings()
 {
     ui->radio8x16->setChecked(this->sSettings.value("SpriteMode",false).toBool());
+    ui->comboPalettes->setCurrentIndex(this->sSettings.value("PaletteSwatch",0).toInt());
     ui->radioPAL->setChecked(this->sSettings.value("RefreshRate",false).toBool());
 }
 

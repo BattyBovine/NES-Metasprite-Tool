@@ -2869,54 +2869,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>radio8x16</sender>
-   <signal>clicked()</signal>
-   <receiver>NESMetaspriteTool</receiver>
-   <slot>saveSpriteMode()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>204</x>
-     <y>378</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>5</x>
-     <y>430</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioPAL</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>NESMetaspriteTool</receiver>
-   <slot>saveRefreshRate()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>271</x>
-     <y>443</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>2</x>
-     <y>490</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radio8x8</sender>
-   <signal>clicked()</signal>
-   <receiver>NESMetaspriteTool</receiver>
-   <slot>saveSpriteMode()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>168</x>
-     <y>374</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>5</x>
-     <y>415</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>radioNTSC</sender>
    <signal>clicked()</signal>
    <receiver>NESMetaspriteTool</receiver>
@@ -2953,8 +2905,5 @@
   <slot>openAnimation()</slot>
   <slot>openProject()</slot>
   <slot>saveProject()</slot>
-  <slot>saveSpriteMode()</slot>
-  <slot>restoreSettings()</slot>
-  <slot>saveRefreshRate()</slot>
  </slots>
 </ui>
