@@ -1529,7 +1529,7 @@
     <signal>replaceAnimationFrame(quint8,quint8)</signal>
     <slot>setBackgroundColour(PaletteVector)</slot>
     <slot>getFrameData(MetaspriteTileList)</slot>
-    <slot>setNewFrame(quint8)</slot>
+    <slot>setNewFrame(int)</slot>
     <slot>updateCurrentFrame()</slot>
     <slot>setDelay(quint8)</slot>
     <slot>addFrame()</slot>
@@ -2881,6 +2881,22 @@
     <hint type="destinationlabel">
      <x>2</x>
      <y>475</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hsFrameSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gvFrames</receiver>
+   <slot>setNewFrame(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>623</x>
+     <y>324</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>624</x>
+     <y>235</y>
     </hint>
    </hints>
   </connection>

@@ -111,6 +111,7 @@ void AnimationManager::setBackgroundColour(PaletteVector c)
 void AnimationManager::getNewAnimation(AnimationFrameList l)
 {
     this->alAnimations[this->iAnimation].setFrames(l);
+    this->playNextFrame(false);
 }
 
 void AnimationManager::setNewAnimation(int f)
