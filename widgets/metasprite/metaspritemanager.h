@@ -21,6 +21,9 @@
 #include "animationframeitem.h"
 
 
+#define roundToMult(x,f)    (f*qCeil(x/f))
+
+
 #define MSM_CANVAS_SIZE     128
 #define MSM_DEFAULT_ZOOM    2
 #define MSM_MAX_ZOOM        8
@@ -79,6 +82,9 @@ public slots:
     void createFrameData(quint8,qreal);
     void createAnimationFrameData(quint8,qreal);
 
+    void toggleShowGrid(bool);
+    void toggleSnapToGrid(bool);
+
     QVector<QByteArray> createMetaspriteBinaryData();
     QString createMetaspriteASMData(QString);
 
@@ -102,10 +108,12 @@ private:
     qreal iScale;
     int iMouseTranslateX, iMouseTranslateY;
 
-    bool bTallSprites;
+    bool bTallSprites, bShowGrid, bSnapToGrid;
     QGraphicsScene *gsMetasprite;
     MetaspriteStageList vMetaspriteStages;
     quint8 iMetaspriteStage;
+
+    MetaspriteTileList mtlClipboard;
 };
 
 #endif // METASPRITEMANAGER_H

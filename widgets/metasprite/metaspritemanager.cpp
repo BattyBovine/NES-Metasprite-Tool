@@ -5,7 +5,8 @@ MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
     this->gsMetasprite = new QGraphicsScene(this);
     this->setScene(this->gsMetasprite);
     this->iScale = MSM_DEFAULT_ZOOM;
-    this->bTallSprites = false;
+    this->bTallSprites = this->bSnapToGrid = false;
+    this->bShowGrid = true;
 
     this->setSceneRect(-MSM_CANVAS_SIZE*MSM_DEFAULT_ZOOM,
                        -MSM_CANVAS_SIZE*MSM_DEFAULT_ZOOM,
@@ -64,8 +65,14 @@ void MetaspriteManager::mouseMoveEvent(QMouseEvent *e)
     } else {
         QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
         foreach(QGraphicsItem *i, sel) {
-            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealX(qRound(i->pos().x()/this->iScale));
-            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealY(qRound(i->pos().y()/this->iScale));
+            qreal xrounded = i->pos().x();
+            qreal yrounded = i->pos().y();
+            if(this->bSnapToGrid) {
+                xrounded = roundToMult(xrounded, MSTI_TILEWIDTH*this->iScale);
+                yrounded = roundToMult(yrounded, MSTI_TILEWIDTH*this->iScale);
+            }
+            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealX(qRound(xrounded/this->iScale));
+            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealY(qRound(yrounded/this->iScale));
         }
     }
 }
@@ -113,14 +120,19 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
     case Qt::Key_Up:
     case Qt::Key_Down:
         foreach(QGraphicsItem *i, sel) {
-            if(e->modifiers()&Qt::ShiftModifier)    translatemult=MSTI_TILEWIDTH;
-            i->moveBy(0,(e->key()==Qt::Key_Down)?(this->iScale*translatemult):(-this->iScale*translatemult));
+            if(this->bSnapToGrid) {
+                qreal ydiff = (qgraphicsitem_cast<MetaspriteTileItem*>(i)->realY()-(qgraphicsitem_cast<MetaspriteTileItem*>(i)->realY()&~7))+MSTI_TILEWIDTH;
+                i->moveBy(0,(e->key()==Qt::Key_Down)?(this->iScale*ydiff)+(MSTI_TILEWIDTH*this->iScale):(-this->iScale*ydiff)+(MSTI_TILEWIDTH*this->iScale));
+            } else {
+                if(e->modifiers()&Qt::ShiftModifier)    translatemult=MSTI_TILEWIDTH;
+                i->moveBy(0,(e->key()==Qt::Key_Down)?(this->iScale*translatemult):(-this->iScale*translatemult));
+            }
         }
         break;
     case Qt::Key_Left:
     case Qt::Key_Right:
+        if(e->modifiers()&Qt::ShiftModifier&&!this->bSnapToGrid)    translatemult=MSTI_TILEWIDTH;
         foreach(QGraphicsItem *i, sel) {
-            if(e->modifiers()&Qt::ShiftModifier)    translatemult=MSTI_TILEWIDTH;
             i->moveBy((e->key()==Qt::Key_Right)?(this->iScale*translatemult):(-this->iScale*translatemult),0);
         }
         break;
@@ -137,6 +149,39 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
     case Qt::Key_PageDown:
         this->moveSelectedDown();
         break;
+
+    case Qt::Key_X:
+    case Qt::Key_C:
+        if(e->modifiers()&Qt::ControlModifier) {
+            this->mtlClipboard.clear();
+            foreach(QGraphicsItem *i, sel) {
+                MetaspriteTileItem *icast = qgraphicsitem_cast<MetaspriteTileItem*>(i);
+                this->mtlClipboard.append(icast);
+                if(e->key()==Qt::Key_X) this->gsMetasprite->removeItem(i);
+            }
+        }
+        break;
+    case Qt::Key_V:
+        if(e->modifiers()&Qt::ControlModifier) {
+            foreach(MetaspriteTileItem *i, this->mtlClipboard) {
+                MetaspriteTileItem *newitem = new MetaspriteTileItem();
+                newitem->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+                newitem->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+                newitem->setScale(i->scale());
+                newitem->setRealX(i->realX());
+                newitem->setRealY(i->realY());
+                newitem->setTallSprite(this->bTallSprites);
+                newitem->flipHorizontal(i->flippedHorizontal());
+                newitem->flipVertical(i->flippedVertical());
+                newitem->setPalette(i->palette());
+                newitem->setTile(i->tile());
+                emit(this->getTileUpdate(newitem));
+                emit(this->getPaletteUpdate(newitem));
+                this->gsMetasprite->addItem(newitem);
+            }
+        }
+        break;
+
     default:
         QGraphicsView::keyPressEvent(e);
     }
@@ -349,7 +394,7 @@ void MetaspriteManager::swapMetaspriteStage(int s)
     }
     this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
 
-    this->drawGridLines();
+    if(this->bShowGrid) this->drawGridLines();
 
     this->iMetaspriteStage = s;
     store = this->vMetaspriteStages.at(s);
@@ -383,6 +428,19 @@ void MetaspriteManager::createAnimationFrameData(quint8 frame, qreal zoom)
 {
     MetaspriteTileList list = this->createFrame(frame,zoom);
     emit(this->sendAnimationFrameData(list));
+}
+
+
+
+void MetaspriteManager::toggleShowGrid(bool showgrid)
+{
+    this->bShowGrid = showgrid;
+    this->updateMetaspriteStage();
+}
+
+void MetaspriteManager::toggleSnapToGrid(bool snaptogrid)
+{
+    this->bSnapToGrid = snaptogrid;
 }
 
 
