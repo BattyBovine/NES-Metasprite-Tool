@@ -166,10 +166,13 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
     case Qt::Key_C:
         if(e->modifiers()&Qt::ControlModifier) {
             this->mtlClipboard.clear();
-            foreach(QGraphicsItem *i, sel) {
-                MetaspriteTileItem *icast = qgraphicsitem_cast<MetaspriteTileItem*>(i);
-                this->mtlClipboard.append(icast);
-                if(e->key()==Qt::Key_X) this->gsMetasprite->removeItem(i);
+            QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder);
+            foreach(QGraphicsItem *i, items) {
+                if(i->isSelected()) {
+                    MetaspriteTileItem *icast = qgraphicsitem_cast<MetaspriteTileItem*>(i);
+                    this->mtlClipboard.append(icast);
+                    if(e->key()==Qt::Key_X) this->gsMetasprite->removeItem(i);
+                }
             }
         }
         break;

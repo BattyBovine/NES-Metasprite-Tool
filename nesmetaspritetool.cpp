@@ -22,6 +22,8 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
     this->sSettings.setDefaultFormat(QSettings::NativeFormat);
     this->restoreSettings();
     connect(ui->radio8x16,SIGNAL(toggled(bool)),this,SLOT(saveSpriteMode()));
+    connect(ui->chkShowGrid,SIGNAL(toggled(bool)),this,SLOT(saveShowGrid()));
+    connect(ui->chkSnapToGrid,SIGNAL(toggled(bool)),this,SLOT(saveSnapToGrid()));
     connect(ui->comboPalettes,SIGNAL(currentIndexChanged(int)),this,SLOT(savePaletteSwatch()));
     connect(ui->radioPAL,SIGNAL(toggled(bool)),this,SLOT(saveRefreshRate()));
 
@@ -80,6 +82,14 @@ void NESMetaspriteTool::saveSpriteMode()
 {
     this->sSettings.setValue("SpriteMode", ui->radio8x16->isChecked());
 }
+void NESMetaspriteTool::saveShowGrid()
+{
+    this->sSettings.setValue("ShowGrid", ui->chkShowGrid->isChecked());
+}
+void NESMetaspriteTool::saveSnapToGrid()
+{
+    this->sSettings.setValue("SnapToGrid", ui->chkSnapToGrid->isChecked());
+}
 void NESMetaspriteTool::savePaletteSwatch()
 {
     this->sSettings.setValue("PaletteSwatch", ui->comboPalettes->currentIndex());
@@ -92,6 +102,8 @@ void NESMetaspriteTool::saveRefreshRate()
 void NESMetaspriteTool::restoreSettings()
 {
     ui->radio8x16->setChecked(this->sSettings.value("SpriteMode",false).toBool());
+    ui->chkShowGrid->setChecked(this->sSettings.value("ShowGrid",true).toBool());
+    ui->chkSnapToGrid->setChecked(this->sSettings.value("SnapToGrid",false).toBool());
     ui->comboPalettes->setCurrentIndex(this->sSettings.value("PaletteSwatch",0).toInt());
     ui->radioPAL->setChecked(this->sSettings.value("RefreshRate",false).toBool());
 }

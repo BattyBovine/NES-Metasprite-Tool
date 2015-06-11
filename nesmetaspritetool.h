@@ -40,6 +40,8 @@ private slots:
     void saveProjectToFolder(QString);
 
     void saveSpriteMode();
+    void saveShowGrid();
+    void saveSnapToGrid();
     void savePaletteSwatch();
     void saveRefreshRate();
     void restoreSettings();
