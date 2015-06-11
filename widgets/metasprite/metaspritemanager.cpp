@@ -65,8 +65,8 @@ void MetaspriteManager::mouseMoveEvent(QMouseEvent *e)
     } else {
         QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
         foreach(QGraphicsItem *i, sel) {
-            qreal xnew = (i->x()/this->iScale);
-            qreal ynew = (i->y()/this->iScale);
+            qreal xnew = qRound(i->x()/this->iScale);
+            qreal ynew = qRound(i->y()/this->iScale);
             if(this->bSnapToGrid) {
                 xnew = roundToMult(qRound(i->x()/this->iScale),MSTI_TILEWIDTH);
                 ynew = roundToMult(qRound(i->y()/this->iScale),MSTI_TILEWIDTH);
