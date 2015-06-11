@@ -22,6 +22,7 @@
 
 
 #define roundToMult(x,f)    (f*qCeil(x/f))
+#define getMultDiff(x,f)    (roundToMult(x,f)-x)
 
 
 #define MSM_CANVAS_SIZE     128

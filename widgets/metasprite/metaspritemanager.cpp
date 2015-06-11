@@ -65,14 +65,14 @@ void MetaspriteManager::mouseMoveEvent(QMouseEvent *e)
     } else {
         QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
         foreach(QGraphicsItem *i, sel) {
-            qreal xrounded = i->pos().x();
-            qreal yrounded = i->pos().y();
+            qreal xnew = (i->x()/this->iScale);
+            qreal ynew = (i->y()/this->iScale);
             if(this->bSnapToGrid) {
-                xrounded = roundToMult(xrounded, MSTI_TILEWIDTH*this->iScale);
-                yrounded = roundToMult(yrounded, MSTI_TILEWIDTH*this->iScale);
+                xnew = roundToMult(qRound(i->x()/this->iScale),MSTI_TILEWIDTH);
+                ynew = roundToMult(qRound(i->y()/this->iScale),MSTI_TILEWIDTH);
             }
-            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealX(qRound(xrounded/this->iScale));
-            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealY(qRound(yrounded/this->iScale));
+            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealX(xnew);
+            qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealY(ynew);
         }
     }
 }
@@ -121,8 +121,11 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
     case Qt::Key_Down:
         foreach(QGraphicsItem *i, sel) {
             if(this->bSnapToGrid) {
-                qreal ydiff = (qgraphicsitem_cast<MetaspriteTileItem*>(i)->realY()-(qgraphicsitem_cast<MetaspriteTileItem*>(i)->realY()&~7))+MSTI_TILEWIDTH;
-                i->moveBy(0,(e->key()==Qt::Key_Down)?(this->iScale*ydiff)+(MSTI_TILEWIDTH*this->iScale):(-this->iScale*ydiff)+(MSTI_TILEWIDTH*this->iScale));
+                qreal ydiff = getMultDiff(qgraphicsitem_cast<MetaspriteTileItem*>(i)->realY(),MSTI_TILEWIDTH);
+                ydiff = (e->key()==Qt::Key_Down)?((this->iScale*ydiff)+(MSTI_TILEWIDTH*this->iScale)):((this->iScale*ydiff)-(MSTI_TILEWIDTH*this->iScale));
+                while(ydiff>MSTI_TILEWIDTH*this->iScale){ydiff-=MSTI_TILEWIDTH*this->iScale;}
+                while(ydiff<-(MSTI_TILEWIDTH*this->iScale)){ydiff+=MSTI_TILEWIDTH*this->iScale;}
+                i->moveBy(0,ydiff);
             } else {
                 if(e->modifiers()&Qt::ShiftModifier)    translatemult=MSTI_TILEWIDTH;
                 i->moveBy(0,(e->key()==Qt::Key_Down)?(this->iScale*translatemult):(-this->iScale*translatemult));
@@ -133,7 +136,16 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
     case Qt::Key_Right:
         if(e->modifiers()&Qt::ShiftModifier&&!this->bSnapToGrid)    translatemult=MSTI_TILEWIDTH;
         foreach(QGraphicsItem *i, sel) {
-            i->moveBy((e->key()==Qt::Key_Right)?(this->iScale*translatemult):(-this->iScale*translatemult),0);
+            if(this->bSnapToGrid) {
+                qreal xdiff = getMultDiff(qgraphicsitem_cast<MetaspriteTileItem*>(i)->realX(),MSTI_TILEWIDTH);
+                xdiff = (e->key()==Qt::Key_Right)?((this->iScale*xdiff)+(MSTI_TILEWIDTH*this->iScale)):((this->iScale*xdiff)-(MSTI_TILEWIDTH*this->iScale));
+                while(xdiff>MSTI_TILEWIDTH*this->iScale){xdiff-=MSTI_TILEWIDTH*this->iScale;}
+                while(xdiff<-(MSTI_TILEWIDTH*this->iScale)){xdiff+=MSTI_TILEWIDTH*this->iScale;}
+                i->moveBy(xdiff,0);
+            } else {
+                if(e->modifiers()&Qt::ShiftModifier)    translatemult=MSTI_TILEWIDTH;
+                i->moveBy((e->key()==Qt::Key_Right)?(this->iScale*translatemult):(-this->iScale*translatemult),0);
+            }
         }
         break;
 
@@ -256,8 +268,17 @@ void MetaspriteManager::addNewTile(QPointF p, QImage i, quint8 t, quint8 c)
     pi->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
     pi->setTallSprite(this->bTallSprites);
     pi->setScale(this->iScale);
-    pi->setRealX(qRound(p.x()/this->iScale));
-    pi->setRealY(qRound(p.y()/this->iScale));
+    if(this->bSnapToGrid) {
+        int realx = roundToMult(qRound(p.x()/this->iScale),MSTI_TILEWIDTH);
+        int realy = roundToMult(qRound(p.y()/this->iScale),MSTI_TILEWIDTH);
+        if(p.x()<0) realx-=MSTI_TILEWIDTH;
+        if(p.y()<0) realy-=MSTI_TILEWIDTH;
+        pi->setRealX(realx);
+        pi->setRealY(realy);
+    } else {
+        pi->setRealX(qRound(p.x()/this->iScale));
+        pi->setRealY(qRound(p.y()/this->iScale));
+    }
     pi->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
     pi->setTile(t&(this->bTallSprites?0xFE:0xFF));
     pi->setPalette(c);
