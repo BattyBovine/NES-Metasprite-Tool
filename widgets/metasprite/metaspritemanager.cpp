@@ -109,6 +109,7 @@ void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
 
 void MetaspriteManager::keyPressEvent(QKeyEvent *e)
 {
+    QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder);
     QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
     int translatemult = 1;
 
@@ -162,11 +163,16 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
         this->moveSelectedDown();
         break;
 
+    case Qt::Key_A:
+        foreach(QGraphicsItem *i, items) {
+            i->setSelected(true);
+        }
+        break;
+
     case Qt::Key_X:
     case Qt::Key_C:
         if(e->modifiers()&Qt::ControlModifier) {
             this->mtlClipboard.clear();
-            QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder);
             foreach(QGraphicsItem *i, items) {
                 if(i->isSelected()) {
                     MetaspriteTileItem *icast = qgraphicsitem_cast<MetaspriteTileItem*>(i);
