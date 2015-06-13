@@ -1142,7 +1142,7 @@
         <item>
          <widget class="QGroupBox" name="groupBox_5">
           <property name="title">
-           <string>Frame Selector</string>
+           <string>Frame Editor</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_10">
            <item>
@@ -1271,7 +1271,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="spinBox">
+                <widget class="QSpinBox" name="spinDelay">
                  <property name="minimum">
                   <number>1</number>
                  </property>
@@ -1318,9 +1318,6 @@
      </widget>
     </item>
    </layout>
-   <zorder>tabWidget</zorder>
-   <zorder>chkShowGrid</zorder>
-   <zorder>chkSnapToGrid</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -2790,7 +2787,7 @@
   <connection>
    <sender>listFrames</sender>
    <signal>selectedFrameDelayChanged(int)</signal>
-   <receiver>spinBox</receiver>
+   <receiver>spinDelay</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -2820,7 +2817,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>spinBox</sender>
+   <sender>spinDelay</sender>
    <signal>valueChanged(int)</signal>
    <receiver>listFrames</receiver>
    <slot>frameDelayUpdate(int)</slot>

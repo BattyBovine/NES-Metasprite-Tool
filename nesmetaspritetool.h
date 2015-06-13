@@ -62,7 +62,11 @@ private slots:
 //    void setPlayButtonText();
 //    void setPauseButtonText();
 
+protected:
+    void keyPressEvent(QKeyEvent*);
+
 private:
+
     Ui::NESMetaspriteTool *ui;
 
     QSettings sSettings;

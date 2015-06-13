@@ -37,6 +37,91 @@ NESMetaspriteTool::~NESMetaspriteTool()
 
 
 
+void NESMetaspriteTool::keyPressEvent(QKeyEvent *e)
+{
+    if(ui->tabWidget->currentWidget()==ui->tabMetasprites) {
+        if(e->modifiers()&Qt::ControlModifier) {
+            switch(e->key()) {
+            case Qt::Key_A:
+                (e->modifiers()&Qt::ShiftModifier)?ui->gvMetasprite->deselectAllSprites():ui->gvMetasprite->selectAllSprites();
+                break;
+            case Qt::Key_X:
+            case Qt::Key_C:
+                ui->gvMetasprite->copySpritesToClipboard((e->key()==Qt::Key_X));
+                break;
+            case Qt::Key_V:
+                ui->gvMetasprite->pasteSpritesFromClipboard();
+                break;
+            }
+        } else {
+            switch(e->key()) {
+            case Qt::Key_Left:
+            case Qt::Key_Right:
+                ui->gvMetasprite->moveSelectedX((e->key()==Qt::Key_Right),(e->modifiers()&Qt::ShiftModifier));
+                break;
+            case Qt::Key_Up:
+            case Qt::Key_Down:
+                ui->gvMetasprite->moveSelectedX((e->key()==Qt::Key_Down),(e->modifiers()&Qt::ShiftModifier));
+                break;
+            case Qt::Key_PageUp:
+                ui->gvMetasprite->moveSelectedUp();
+                break;
+            case Qt::Key_PageDown:
+                ui->gvMetasprite->moveSelectedDown();
+                break;
+            case Qt::Key_Comma:
+                ui->hsMetaspriteSlider->prevValue();
+                break;
+            case Qt::Key_Period:
+                ui->hsMetaspriteSlider->nextValue();
+                break;
+            case Qt::Key_Delete:
+                ui->gvMetasprite->deleteSelectedTiles();
+                break;
+            }
+        }
+        return;
+    } else if(ui->tabWidget->currentWidget()==ui->tabAnimation) {
+        if(e->modifiers()&Qt::ControlModifier) {
+            switch(e->key()) {
+            default:
+                break;
+            }
+        } else {
+            switch(e->key()) {
+            case Qt::Key_Comma:
+                ui->hsFrameSlider->prevValue();
+                break;
+            case Qt::Key_Period:
+                ui->hsFrameSlider->nextValue();
+                break;
+            case Qt::Key_BracketLeft:
+                ui->hsAnimationSlider->prevValue();
+                break;
+            case Qt::Key_BracketRight:
+                ui->hsAnimationSlider->nextValue();
+                break;
+//            case Qt::Key_Left:
+//                ui->spinDelay->setValue(ui->spinDelay->value()-1);
+//                break;
+//            case Qt::Key_Right:
+//                ui->spinDelay->setValue(ui->spinDelay->value()+1);
+//                break;
+//            case Qt::Key_PageUp:
+//                ui->spinDelay->setValue(ui->spinDelay->value()+10);
+//                break;
+//            case Qt::Key_PageDown:
+//                ui->spinDelay->setValue(ui->spinDelay->value()-10);
+//                break;
+            }
+        }
+    }
+
+    QMainWindow::keyPressEvent(e);
+}
+
+
+
 void NESMetaspriteTool::newProject()
 {
     int retval = QMessageBox::warning(this,"Clear current data?",

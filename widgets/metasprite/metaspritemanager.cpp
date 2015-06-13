@@ -109,52 +109,14 @@ void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
 
 void MetaspriteManager::keyPressEvent(QKeyEvent *e)
 {
-    QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder);
-    QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
-    int translatemult = 1;
-
     switch(e->key()) {
-    case Qt::Key_Delete:
-        this->deleteSelectedTiles();
-        break;
-
-    case Qt::Key_Up:
-    case Qt::Key_Down:
-        foreach(QGraphicsItem *i, sel) {
-            if(this->bSnapToGrid) {
-                qreal ydiff = getMultDiff(qgraphicsitem_cast<MetaspriteTileItem*>(i)->realY(),MSTI_TILEWIDTH);
-                ydiff = (e->key()==Qt::Key_Down)?((this->iScale*ydiff)+(MSTI_TILEWIDTH*this->iScale)):((this->iScale*ydiff)-(MSTI_TILEWIDTH*this->iScale));
-                while(ydiff>MSTI_TILEWIDTH*this->iScale){ydiff-=MSTI_TILEWIDTH*this->iScale;}
-                while(ydiff<-(MSTI_TILEWIDTH*this->iScale)){ydiff+=MSTI_TILEWIDTH*this->iScale;}
-                i->moveBy(0,ydiff);
-            } else {
-                if(e->modifiers()&Qt::ShiftModifier)    translatemult=MSTI_TILEWIDTH;
-                i->moveBy(0,(e->key()==Qt::Key_Down)?(this->iScale*translatemult):(-this->iScale*translatemult));
-            }
-        }
-        break;
     case Qt::Key_Left:
     case Qt::Key_Right:
-        if(e->modifiers()&Qt::ShiftModifier&&!this->bSnapToGrid)    translatemult=MSTI_TILEWIDTH;
-        foreach(QGraphicsItem *i, sel) {
-            if(this->bSnapToGrid) {
-                qreal xdiff = getMultDiff(qgraphicsitem_cast<MetaspriteTileItem*>(i)->realX(),MSTI_TILEWIDTH);
-                xdiff = (e->key()==Qt::Key_Right)?((this->iScale*xdiff)+(MSTI_TILEWIDTH*this->iScale)):((this->iScale*xdiff)-(MSTI_TILEWIDTH*this->iScale));
-                while(xdiff>MSTI_TILEWIDTH*this->iScale){xdiff-=MSTI_TILEWIDTH*this->iScale;}
-                while(xdiff<-(MSTI_TILEWIDTH*this->iScale)){xdiff+=MSTI_TILEWIDTH*this->iScale;}
-                i->moveBy(xdiff,0);
-            } else {
-                if(e->modifiers()&Qt::ShiftModifier)    translatemult=MSTI_TILEWIDTH;
-                i->moveBy((e->key()==Qt::Key_Right)?(this->iScale*translatemult):(-this->iScale*translatemult),0);
-            }
-        }
+        this->moveSelectedX((e->key()==Qt::Key_Right),(e->modifiers()&Qt::ShiftModifier));
         break;
-
-    case Qt::Key_1:
-    case Qt::Key_2:
-    case Qt::Key_3:
-    case Qt::Key_4:
-        emit(requestPaletteUpdates(e->key()-Qt::Key_1));
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+        this->moveSelectedY((e->key()==Qt::Key_Down),(e->modifiers()&Qt::ShiftModifier));
         break;
     case Qt::Key_PageUp:
         this->moveSelectedUp();
@@ -162,51 +124,106 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
     case Qt::Key_PageDown:
         this->moveSelectedDown();
         break;
-
-    case Qt::Key_A:
-        foreach(QGraphicsItem *i, items) {
-            i->setSelected(true);
-        }
-        break;
-
-    case Qt::Key_X:
-    case Qt::Key_C:
-        if(e->modifiers()&Qt::ControlModifier) {
-            this->mtlClipboard.clear();
-            foreach(QGraphicsItem *i, items) {
-                if(i->isSelected()) {
-                    MetaspriteTileItem *icast = qgraphicsitem_cast<MetaspriteTileItem*>(i);
-                    this->mtlClipboard.append(icast);
-                    if(e->key()==Qt::Key_X) this->gsMetasprite->removeItem(i);
-                }
-            }
-        }
-        break;
-    case Qt::Key_V:
-        if(e->modifiers()&Qt::ControlModifier) {
-            foreach(MetaspriteTileItem *i, this->mtlClipboard) {
-                MetaspriteTileItem *newitem = new MetaspriteTileItem();
-                newitem->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
-                newitem->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
-                newitem->setScale(i->scale());
-                newitem->setRealX(i->realX());
-                newitem->setRealY(i->realY());
-                newitem->setTallSprite(this->bTallSprites);
-                newitem->flipHorizontal(i->flippedHorizontal());
-                newitem->flipVertical(i->flippedVertical());
-                newitem->setPalette(i->palette());
-                newitem->setTile(i->tile());
-                emit(this->getTileUpdate(newitem));
-                emit(this->getPaletteUpdate(newitem));
-                this->gsMetasprite->addItem(newitem);
-            }
-        }
-        break;
-
     default:
         QGraphicsView::keyPressEvent(e);
     }
+}
 
+
+
+void MetaspriteManager::selectAllSprites()
+{
+    QList<QGraphicsItem*> items = this->gsMetasprite->items();
+    foreach(QGraphicsItem *i, items) {
+        i->setSelected(true);
+    }
+    this->sendTileUpdates();
+}
+
+void MetaspriteManager::deselectAllSprites()
+{
+    QList<QGraphicsItem*> items = this->gsMetasprite->items();
+    foreach(QGraphicsItem *i, items) {
+        i->setSelected(false);
+    }
+    this->sendTileUpdates();
+}
+
+void MetaspriteManager::copySpritesToClipboard(bool cut)
+{
+    QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder);
+    this->mtlClipboard.clear();
+    foreach(QGraphicsItem *i, items) {
+        if(i->isSelected()) {
+            MetaspriteTileItem *icast = qgraphicsitem_cast<MetaspriteTileItem*>(i);
+            this->mtlClipboard.append(icast);
+            if(cut) this->gsMetasprite->removeItem(i);
+        }
+    }
+    this->sendTileUpdates();
+}
+
+void MetaspriteManager::pasteSpritesFromClipboard()
+{
+    foreach(MetaspriteTileItem *i, this->mtlClipboard) {
+        MetaspriteTileItem *newitem = new MetaspriteTileItem();
+        newitem->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+        newitem->setShapeMode(QGraphicsPixmapItem::BoundingRectShape);
+        newitem->setScale(i->scale());
+        newitem->setRealX(i->realX());
+        newitem->setRealY(i->realY());
+        newitem->setTallSprite(this->bTallSprites);
+        newitem->flipHorizontal(i->flippedHorizontal());
+        newitem->flipVertical(i->flippedVertical());
+        newitem->setPalette(i->palette());
+        newitem->setTile(i->tile());
+        emit(this->getTileUpdate(newitem));
+        emit(this->getPaletteUpdate(newitem));
+        this->gsMetasprite->addItem(newitem);
+    }
+    this->sendTileUpdates();
+}
+
+void MetaspriteManager::changePalette(int p)
+{
+    emit(requestPaletteUpdates(p));
+}
+
+void MetaspriteManager::moveSelectedX(bool right, bool shiftmod)
+{
+    int translatemult = 1;
+    QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
+    foreach(QGraphicsItem *i, sel) {
+        if(this->bSnapToGrid) {
+            qreal xdiff = getMultDiff(qgraphicsitem_cast<MetaspriteTileItem*>(i)->realX(),MSTI_TILEWIDTH);
+            xdiff = right?((this->iScale*xdiff)+(MSTI_TILEWIDTH*this->iScale)):((this->iScale*xdiff)-(MSTI_TILEWIDTH*this->iScale));
+            while(xdiff>MSTI_TILEWIDTH*this->iScale){xdiff-=MSTI_TILEWIDTH*this->iScale;}
+            while(xdiff<-(MSTI_TILEWIDTH*this->iScale)){xdiff+=MSTI_TILEWIDTH*this->iScale;}
+            i->moveBy(xdiff,0);
+        } else {
+            if(shiftmod)    translatemult=MSTI_TILEWIDTH;
+            i->moveBy(right?(this->iScale*translatemult):(-this->iScale*translatemult),0);
+        }
+    }
+    this->sendTileUpdates();
+}
+
+void MetaspriteManager::moveSelectedY(bool down, bool shiftmod)
+{
+    int translatemult = 1;
+    QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
+    foreach(QGraphicsItem *i, sel) {
+        if(this->bSnapToGrid) {
+            qreal ydiff = getMultDiff(qgraphicsitem_cast<MetaspriteTileItem*>(i)->realY(),MSTI_TILEWIDTH);
+            ydiff = down?((this->iScale*ydiff)+(MSTI_TILEWIDTH*this->iScale)):((this->iScale*ydiff)-(MSTI_TILEWIDTH*this->iScale));
+            while(ydiff>MSTI_TILEWIDTH*this->iScale){ydiff-=MSTI_TILEWIDTH*this->iScale;}
+            while(ydiff<-(MSTI_TILEWIDTH*this->iScale)){ydiff+=MSTI_TILEWIDTH*this->iScale;}
+            i->moveBy(0,ydiff);
+        } else {
+            if(shiftmod)    translatemult=MSTI_TILEWIDTH;
+            i->moveBy(0,down?(this->iScale*translatemult):(-this->iScale*translatemult));
+        }
+    }
     this->sendTileUpdates();
 }
 

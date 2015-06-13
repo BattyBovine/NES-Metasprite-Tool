@@ -53,6 +53,14 @@ public:
     void importMetaspriteBinaryData(QVector<QByteArray>);
     void clearAllMetaspriteData();
 
+    void selectAllSprites();
+    void deselectAllSprites();
+    void copySpritesToClipboard(bool);
+    void pasteSpritesFromClipboard();
+    void changePalette(int);
+    void moveSelectedX(bool,bool);
+    void moveSelectedY(bool,bool);
+
 signals:
     void requestNewTile(QPointF);
     void getTileUpdate(MetaspriteTileItem*);
