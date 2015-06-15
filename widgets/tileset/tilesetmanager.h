@@ -20,6 +20,7 @@
 
 #include "palettemanager.h"
 #include "metaspritetileitem.h"
+#include "chrthread.h"
 
 #define TSM_SCALE       2
 #define TSM_TILESIZE    (MSTI_TILEWIDTH*TSM_SCALE)
@@ -41,12 +42,13 @@ signals:
     void sendNewTile(QPointF,QImage,quint8,quint8);
 
 public slots:
-    bool loadCHRBank(QString);
+    void loadCHRBank(QString);
     void setNewSpriteColours(PaletteVector,quint8);
     void setSprites(bool tall){this->bTallSprite=tall;this->drawSelectionBox();emit(this->tilesetChanged(this->bTallSprite));}
 
     void getNewTile(QPointF);
     void updateSpriteTile(MetaspriteTileItem*);
+    void getNewCHRData(QImage);
 
     void reloadCurrentTileset();
 
@@ -58,10 +60,14 @@ protected:
     void mousePressEvent(QMouseEvent*);
 
 private:
+    bool drawSelectionBox();
+    QImage createNewTile(quint8);
+
     QGraphicsScene *gsTileset;
     QString sCurrentTilesetFile;
+    CHRThread *threadCHR;
     QImage imgTileset;
-    QByteArray baTilesetData;
+    PaletteVector pvCurrentColours;
     QGraphicsPixmapItem *gpiTileset;
     quint8 iSelectedTile;
     quint8 iPalette;
@@ -69,10 +75,6 @@ private:
 
     QGraphicsRectItem *griSelection[2];
     QPointF pSelection;
-
-    void redrawTileset();
-    bool drawSelectionBox();
-    QImage createNewTile(quint8);
 };
 
 #endif // TILESETMANAGER_H

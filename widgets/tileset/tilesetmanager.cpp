@@ -5,6 +5,9 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
     this->gsTileset = new QGraphicsScene();
     this->setScene(this->gsTileset);
 
+    this->threadCHR = new CHRThread();
+    connect(threadCHR,SIGNAL(sendCHRImageData(QImage)),this,SLOT(getNewCHRData(QImage)));
+
     this->imgTileset = QImage(128, 128, QImage::Format_Indexed8);
     this->imgTileset.fill(0);
     this->imgTileset.setColor(0,qRgba(0x00,0x00,0x00,0x00));
@@ -12,7 +15,7 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
     this->imgTileset.setColor(2,qRgb(0x00,0x00,0x00));
     this->imgTileset.setColor(3,qRgb(0x00,0x00,0x00));
 
-    this->gpiTileset = new QGraphicsPixmapItem(QPixmap::fromImage(this->imgTileset));
+    this->gpiTileset = new QGraphicsPixmapItem();
     this->gpiTileset->setScale(TSM_SCALE);
     this->gsTileset->addItem(this->gpiTileset);
     this->griSelection[0] = this->griSelection[1] = NULL;
@@ -78,71 +81,18 @@ bool TilesetManager::drawSelectionBox()
     return true;
 }
 
-void TilesetManager::redrawTileset()
-{
-    this->gpiTileset->setPixmap(QPixmap::fromImage(this->imgTileset));
-}
-
 void TilesetManager::reloadCurrentTileset()
 {
-    this->loadCHRBank(this->sCurrentTilesetFile);
+    threadCHR->loadFile(this->sCurrentTilesetFile);
 }
 
 
 
-
-bool TilesetManager::loadCHRBank(QString filename)
+void TilesetManager::loadCHRBank(QString filename)
 {
-    QFile file(filename);
-    if(!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::critical(this,tr(TSM_CHR_OPEN_ERROR_TITLE),tr(TSM_CHR_OPEN_ERROR_BODY),QMessageBox::NoButton);
-        return false;
-    }
-    if((file.size()%0x1000)!=0) {
-        QMessageBox::warning(this,tr(TSM_CHR_SIZE_ERROR_TITLE),tr(TSM_CHR_SIZE_ERROR_BODY),QMessageBox::NoButton);
-        return false;
-    }
-
-    this->baTilesetData.clear();
-    while(file.bytesAvailable()>=16) {
-        char bitplanes[2][8];
-        file.read(bitplanes[0],8);
-        file.read(bitplanes[1],8);
-        for(int i=0; i<8; i++) {
-            quint16 bpbyte1 = bitplanes[0][i];
-            quint16 bpbyte2 = bitplanes[1][i];
-            quint16 mask = 0x80;
-            for(int j=0; j<8; j++) {
-                quint8 index = 0;
-                if((bpbyte1&mask)&&(bpbyte2&mask))  index = 3;
-                if(!(bpbyte1&mask)&&(bpbyte2&mask)) index = 2;
-                if((bpbyte1&mask)&&!(bpbyte2&mask)) index = 1;
-                this->baTilesetData.append(index);
-                mask >>= 1;
-            }
-        }
-    }
-    file.close();
-
-    for(int imgy=0; imgy<16; imgy++) {
-        for(int imgx=0; imgx<16; imgx++) {
-            for(int tiley=0; tiley<8; tiley++) {
-                for(int tilex=0; tilex<8; tilex++) {
-                    this->imgTileset.setPixel(tilex+(8*imgx),
-                                              tiley+(8*imgy),
-                                              this->baTilesetData.at(((imgx+(imgy*16))*64)+(tilex+(tiley*8))));
-                }
-            }
-        }
-    }
-
-    this->redrawTileset();
-
-    emit(this->tilesetChanged(this->bTallSprite));
-
+    this->threadCHR->loadFile(filename);
     this->sCurrentTilesetFile = filename;
-
-    return true;
+    return;
 }
 
 void TilesetManager::setNewSpriteColours(PaletteVector c, quint8 i)
@@ -153,7 +103,7 @@ void TilesetManager::setNewSpriteColours(PaletteVector c, quint8 i)
     this->imgTileset.setColor(3,c.at((4*i)+3));
     this->iPalette = i;
 
-    this->redrawTileset();
+    this->gpiTileset->setPixmap(QPixmap::fromImage(this->imgTileset));
 }
 
 
@@ -161,13 +111,21 @@ void TilesetManager::setNewSpriteColours(PaletteVector c, quint8 i)
 void TilesetManager::getNewTile(QPointF p)
 {
     emit(sendNewTile(p,this->createNewTile(this->iSelectedTile),this->iSelectedTile,this->iPalette));
-//    emit(sendNewTile(p,this->imgTileset.copy(this->pSelection.x()/TSM_SCALE,this->pSelection.y()/TSM_SCALE,MSTI_TILEWIDTH,MSTI_TILEWIDTH*(this->bTallSprite?2:1)),this->iSelectedTile,this->iPalette));
 }
 
 void TilesetManager::updateSpriteTile(MetaspriteTileItem *t)
 {
     t->setTile(this->createNewTile(t->tile()&(t->tallSprite()?0xFE:0xFF)));
-//    t->setTile(this->imgTileset.copy((t->tile()&0x0F)*t->width(),((t->tile()&0xF0)>>4)*t->height(),t->width(),t->height()));
+}
+
+void TilesetManager::getNewCHRData(QImage img)
+{
+    img.setColor(1,this->imgTileset.color(1));
+    img.setColor(2,this->imgTileset.color(2));
+    img.setColor(3,this->imgTileset.color(3));
+    this->imgTileset = img;
+    this->gpiTileset->setPixmap(QPixmap::fromImage(this->imgTileset));
+    emit(this->tilesetChanged(this->bTallSprite));
 }
 
 
