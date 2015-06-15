@@ -48,6 +48,8 @@ public slots:
     void getNewTile(QPointF);
     void updateSpriteTile(MetaspriteTileItem*);
 
+    void reloadCurrentTileset();
+
 protected:
     void dragMoveEvent(QDragMoveEvent*e){e->accept();}
     void dragEnterEvent(QDragEnterEvent*e){e->acceptProposedAction();}
@@ -57,6 +59,7 @@ protected:
 
 private:
     QGraphicsScene *gsTileset;
+    QString sCurrentTilesetFile;
     QImage imgTileset;
     QByteArray baTilesetData;
     QGraphicsPixmapItem *gpiTileset;

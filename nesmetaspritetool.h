@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <QRegularExpression>
 #include <QSettings>
+#include <QEvent>
 
 
 #define FILE_OPEN_ERROR_TITLE       "Error opening file"
@@ -34,6 +35,8 @@ signals:
     void metaspriteFileOpened(QString);
 
 private slots:
+    void onReceiveFocus(QWidget*,QWidget*);
+
     void newProject();
     void openProject();
     void saveProject();

@@ -83,6 +83,11 @@ void TilesetManager::redrawTileset()
     this->gpiTileset->setPixmap(QPixmap::fromImage(this->imgTileset));
 }
 
+void TilesetManager::reloadCurrentTileset()
+{
+    this->loadCHRBank(this->sCurrentTilesetFile);
+}
+
 
 
 
@@ -134,6 +139,8 @@ bool TilesetManager::loadCHRBank(QString filename)
     this->redrawTileset();
 
     emit(this->tilesetChanged(this->bTallSprite));
+
+    this->sCurrentTilesetFile = filename;
 
     return true;
 }

@@ -7,6 +7,8 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    connect(qApp, SIGNAL(focusChanged(QWidget*,QWidget*)),this,SLOT(onReceiveFocus(QWidget*,QWidget*)));
+
     QStringList palettes;
     QDirIterator it(":", QDirIterator::Subdirectories);
     while (it.hasNext()) {
@@ -118,6 +120,15 @@ void NESMetaspriteTool::keyPressEvent(QKeyEvent *e)
     }
 
     QMainWindow::keyPressEvent(e);
+}
+
+
+
+void NESMetaspriteTool::onReceiveFocus(QWidget *oldwidget, QWidget *newwidget)
+{
+    if(oldwidget==0 && this->isAncestorOf(newwidget)==true) {
+        ui->gvTileset->reloadCurrentTileset();
+    }
 }
 
 
