@@ -5,9 +5,6 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
     this->gsTileset = new QGraphicsScene();
     this->setScene(this->gsTileset);
 
-    this->threadCHR = new CHRThread();
-    connect(threadCHR,SIGNAL(sendCHRImageData(QImage)),this,SLOT(getNewCHRData(QImage)));
-
     this->imgTileset = QImage(128, 128, QImage::Format_Indexed8);
     this->imgTileset.fill(0);
     this->imgTileset.setColor(0,qRgba(0x00,0x00,0x00,0x00));
@@ -25,6 +22,11 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
 
     this->pSelection = QPointF(0,0);
     this->drawSelectionBox();
+
+    this->threadCHR = new CHRThread();
+    connect(this->threadCHR,SIGNAL(sendCHRImageData(QImage)),this,SLOT(getNewCHRData(QImage)));
+
+    connect(&this->fswCHR,SIGNAL(fileChanged(QString)),this,SLOT(reloadCurrentTileset()));
 }
 
 TilesetManager::~TilesetManager()
@@ -91,7 +93,9 @@ void TilesetManager::reloadCurrentTileset()
 void TilesetManager::loadCHRBank(QString filename)
 {
     this->threadCHR->loadFile(filename);
+    if(!this->fswCHR.files().isEmpty()) this->fswCHR.removePath(this->sCurrentTilesetFile);
     this->sCurrentTilesetFile = filename;
+    this->fswCHR.addPath(filename);
     return;
 }
 

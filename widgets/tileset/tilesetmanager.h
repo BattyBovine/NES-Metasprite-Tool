@@ -11,6 +11,7 @@
 #include <QMouseEvent>
 
 #include <QFile>
+#include <QFileSystemWatcher>
 #include <QMimeData>
 #include <QMessageBox>
 #include <QPixmap>
@@ -65,6 +66,7 @@ private:
 
     QGraphicsScene *gsTileset;
     QString sCurrentTilesetFile;
+    QFileSystemWatcher fswCHR;
     CHRThread *threadCHR;
     QImage imgTileset;
     PaletteVector pvCurrentColours;

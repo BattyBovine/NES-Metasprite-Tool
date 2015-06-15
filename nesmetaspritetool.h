@@ -35,8 +35,6 @@ signals:
     void metaspriteFileOpened(QString);
 
 private slots:
-    void onReceiveFocus(QWidget*,QWidget*);
-
     void newProject();
     void openProject();
     void saveProject();
