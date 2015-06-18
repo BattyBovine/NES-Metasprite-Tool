@@ -14,40 +14,40 @@
 
 class FrameListWidget : public QListWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    FrameListWidget(QWidget *parent = 0);
-    ~FrameListWidget();
+	FrameListWidget(QWidget *parent = 0);
+	~FrameListWidget();
 
 signals:
-    void pushFrameUpdate(AnimationFrameList);
-    void selectedFrameChanged(int);
-    void selectedFrameNumberChanged(int);
-    void selectedFrameDelayChanged(int);
+	void pushFrameUpdate(AnimationFrameList);
+	void selectedFrameChanged(int);
+	void selectedFrameNumberChanged(int);
+	void selectedFrameDelayChanged(int);
 
 public slots:
-    void newFrameData(AnimationFrameList,int);
-    void frameNumberUpdate(int);
-    void frameDelayUpdate(int);
+	void newFrameData(AnimationFrameList,int);
+	void frameNumberUpdate(int);
+	void frameDelayUpdate(int);
 
-    void moveUpSelected();
-    void moveDownSelected();
-    void addFrame();
-    void insertFrame();
-    void deleteSelected();
+	void moveUpSelected();
+	void moveDownSelected();
+	void addFrame();
+	void insertFrame();
+	void deleteSelected();
 
 protected:
-    void keyPressEvent(QKeyEvent*);
+	void keyPressEvent(QKeyEvent*);
 
 private slots:
-    void sendSelectedFrame();
+	void sendSelectedFrame();
 
 private:
-    void generateListDisplay(int);
-    QString generateListItem(int);
-    void replaceItem(int);
+	void generateListDisplay(int);
+	QString generateListItem(int);
+	void replaceItem(int);
 
-    AnimationFrameList aflFrames;
+	AnimationFrameList aflFrames;
 };
 
 #endif // FRAMELISTWIDGET_H

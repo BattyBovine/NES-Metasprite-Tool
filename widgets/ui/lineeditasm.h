@@ -6,14 +6,14 @@
 
 class LineEditASM : public QLineEdit
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    LineEditASM(QWidget *parent = 0);
-    ~LineEditASM();
+	LineEditASM(QWidget *parent = 0);
+	~LineEditASM();
 
 protected:
-    void keyPressEvent(QKeyEvent*);
+	void keyPressEvent(QKeyEvent*);
 };
 
 #endif // LINEEDITASM_H

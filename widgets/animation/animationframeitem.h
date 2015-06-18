@@ -6,17 +6,17 @@
 class AnimationFrameItem
 {
 public:
-    AnimationFrameItem();
-    AnimationFrameItem(quint8,quint8);
+	AnimationFrameItem();
+	AnimationFrameItem(quint8,quint8);
 
-    quint8 frame(){return this->iFrame;}
-    void setFrame(quint8 f){this->iFrame=f;}
-    quint8 delay(){return this->iDelay;}
-    void setDelay(quint8 d){this->iDelay=d;}
+	quint8 frame(){return this->iFrame;}
+	void setFrame(quint8 f){this->iFrame=f;}
+	quint8 delay(){return this->iDelay;}
+	void setDelay(quint8 d){this->iDelay=d;}
 
 private:
-    quint8 iFrame;
-    quint8 iDelay;
+	quint8 iFrame;
+	quint8 iDelay;
 };
 
 typedef QVector<AnimationFrameItem> AnimationFrameList;

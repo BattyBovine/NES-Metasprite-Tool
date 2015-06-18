@@ -6,14 +6,14 @@
 
 class GraphicsViewSlider : public QSlider
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    GraphicsViewSlider(QWidget *parent = 0);
-    ~GraphicsViewSlider();
+	GraphicsViewSlider(QWidget *parent = 0);
+	~GraphicsViewSlider();
 
 public slots:
-    void nextValue(){this->setValue(this->value()+this->singleStep());}
-    void prevValue(){this->setValue(this->value()-this->singleStep());}
+	void nextValue(){this->setValue(this->value()+this->singleStep());}
+	void prevValue(){this->setValue(this->value()-this->singleStep());}
 };
 
 #endif // GRAPHICSVIEWSLIDER_H

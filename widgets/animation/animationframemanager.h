@@ -17,31 +17,31 @@
 
 class AnimationFrameManager : public QGraphicsView
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit AnimationFrameManager(QWidget *parent = 0);
-    ~AnimationFrameManager();
+	explicit AnimationFrameManager(QWidget *parent = 0);
+	~AnimationFrameManager();
 
 signals:
-    void requestFrameData(quint8,qreal);
+	void requestFrameData(quint8,qreal);
 
 public slots:
-    void setBackgroundColour(PaletteVector);
-    void updateCurrentFrame();
-    void setNewFrame(int);
-    void getFrameData(MetaspriteTileList);
+	void setBackgroundColour(PaletteVector);
+	void updateCurrentFrame();
+	void setNewFrame(int);
+	void getFrameData(MetaspriteTileList);
 
 protected:
-    void mousePressEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
-    void mouseDoubleClickEvent(QMouseEvent*);
-    void wheelEvent(QWheelEvent*);
+	void mousePressEvent(QMouseEvent*);
+	void mouseMoveEvent(QMouseEvent*);
+	void mouseDoubleClickEvent(QMouseEvent*);
+	void wheelEvent(QWheelEvent*);
 
 private:
-    QGraphicsScene *gsFrame;
-    quint8 iFrame;
-    MetaspriteTileList mtlFrameData;
-    qreal iScale,iMouseTranslateX,iMouseTranslateY;
+	QGraphicsScene *gsFrame;
+	quint8 iFrame;
+	MetaspriteTileList mtlFrameData;
+	qreal iScale,iMouseTranslateX,iMouseTranslateY;
 };
 
 #endif // ANIMATIONFRAMEMANAGER_H

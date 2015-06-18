@@ -9,30 +9,30 @@
 
 class SpriteListWidget : public QListWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    SpriteListWidget(QWidget *parent = 0);
-    ~SpriteListWidget();
+	SpriteListWidget(QWidget *parent = 0);
+	~SpriteListWidget();
 
 signals:
-    void moveSelectedUp();
-    void moveSelectedDown();
-    void deleteSelectedItems();
+	void moveSelectedUp();
+	void moveSelectedDown();
+	void deleteSelectedItems();
 
 public slots:
-    void updateItems(GraphicsItemList,GraphicsItemList);
+	void updateItems(GraphicsItemList,GraphicsItemList);
 
 private slots:
-    void updateListSelection();
+	void updateListSelection();
 
 protected:
-    void keyPressEvent(QKeyEvent*);
+	void keyPressEvent(QKeyEvent*);
 
 private:
-    void generateListDisplay();
+	void generateListDisplay();
 
-    QList<QGraphicsItem*> lItems;
-    QList<QGraphicsItem*> lSelectedItems;
+	QList<QGraphicsItem*> lItems;
+	QList<QGraphicsItem*> lSelectedItems;
 };
 
 #endif // SPRITELISTWIDGET_H

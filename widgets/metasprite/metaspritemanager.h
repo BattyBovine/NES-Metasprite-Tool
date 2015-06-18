@@ -43,86 +43,86 @@
 
 class MetaspriteManager : public QGraphicsView
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit MetaspriteManager(QWidget *parent = 0);
-    ~MetaspriteManager();
+	explicit MetaspriteManager(QWidget *parent = 0);
+	~MetaspriteManager();
 
-    qreal scale(){return this->iScale;}
-    void openMetaspriteFile(QString);
-    void importMetaspriteBinaryData(QVector<QByteArray>);
-    void clearAllMetaspriteData();
+	qreal scale(){return this->iScale;}
+	void openMetaspriteFile(QString);
+	void importMetaspriteBinaryData(QVector<QByteArray>);
+	void clearAllMetaspriteData();
 
-    void selectAllSprites();
-    void deselectAllSprites();
-    void copySpritesToClipboard(bool);
-    void pasteSpritesFromClipboard();
-    void changePalette(int);
-    void moveSelectedX(bool,bool);
-    void moveSelectedY(bool,bool);
+	void selectAllSprites();
+	void deselectAllSprites();
+	void copySpritesToClipboard(bool);
+	void pasteSpritesFromClipboard();
+	void changePalette(int);
+	void moveSelectedX(bool,bool);
+	void moveSelectedY(bool,bool);
 
 signals:
-    void requestNewTile(QPointF);
-    void getTileUpdate(MetaspriteTileItem*);
-    void getPaletteUpdate(MetaspriteTileItem*);
-    void requestPaletteUpdates(quint8);
-    void sendFrameData(MetaspriteTileList);
-    void sendAnimationFrameData(MetaspriteTileList);
+	void requestNewTile(QPointF);
+	void getTileUpdate(MetaspriteTileItem*);
+	void getPaletteUpdate(MetaspriteTileItem*);
+	void requestPaletteUpdates(quint8);
+	void sendFrameData(MetaspriteTileList);
+	void sendAnimationFrameData(MetaspriteTileList);
 
-    void setMetaspriteLabel(QString);
+	void setMetaspriteLabel(QString);
 
-    void updateList(GraphicsItemList,GraphicsItemList);
-    void updateAnimationFrame();
+	void updateList(GraphicsItemList,GraphicsItemList);
+	void updateAnimationFrame();
 
 public slots:
-    void setScale(qreal s){this->iScale=s;}
+	void setScale(qreal s){this->iScale=s;}
 
-    void setNewSpriteColours(PaletteVector,quint8,bool);
-    void addNewTile(QPointF,QImage,quint8,quint8);
-    void moveSelectedUp();
-    void moveSelectedDown();
-    void flipHorizontal();
-    void flipVertical();
-    void deleteSelectedTiles();
+	void setNewSpriteColours(PaletteVector,quint8,bool);
+	void addNewTile(QPointF,QImage,quint8,quint8);
+	void moveSelectedUp();
+	void moveSelectedDown();
+	void flipHorizontal();
+	void flipVertical();
+	void deleteSelectedTiles();
 
-    void updateTiles(bool);
-    void swapMetaspriteStage(int);
-    void updateMetaspriteStage(){this->swapMetaspriteStage(this->iMetaspriteStage);}
-    void createFrameData(quint8,qreal);
-    void createAnimationFrameData(quint8,qreal);
+	void updateTiles(bool);
+	void swapMetaspriteStage(int);
+	void updateMetaspriteStage(){this->swapMetaspriteStage(this->iMetaspriteStage);}
+	void createFrameData(quint8,qreal);
+	void createAnimationFrameData(quint8,qreal);
 
-    void toggleShowGrid(bool);
-    void toggleSnapToGrid(bool);
+	void toggleShowGrid(bool);
+	void toggleSnapToGrid(bool);
 
-    QVector<QByteArray> createMetaspriteBinaryData();
-    QString createMetaspriteASMData(QString);
+	QVector<QByteArray> createMetaspriteBinaryData();
+	QString createMetaspriteASMData(QString);
 
 protected:
-    void dragMoveEvent(QDragMoveEvent*e){e->accept();}
-    void dragEnterEvent(QDragEnterEvent*e){e->acceptProposedAction();}
-    void dropEvent(QDropEvent*);
-    void dragLeaveEvent(QDragLeaveEvent*e){e->accept();}
-    void mousePressEvent(QMouseEvent*);
-    void mouseMoveEvent(QMouseEvent*);
-    void mouseReleaseEvent(QMouseEvent*);
-    void mouseDoubleClickEvent(QMouseEvent*);
-    void wheelEvent(QWheelEvent*);
-    void keyPressEvent(QKeyEvent*);
+	void dragMoveEvent(QDragMoveEvent*e){e->accept();}
+	void dragEnterEvent(QDragEnterEvent*e){e->acceptProposedAction();}
+	void dropEvent(QDropEvent*);
+	void dragLeaveEvent(QDragLeaveEvent*e){e->accept();}
+	void mousePressEvent(QMouseEvent*);
+	void mouseMoveEvent(QMouseEvent*);
+	void mouseReleaseEvent(QMouseEvent*);
+	void mouseDoubleClickEvent(QMouseEvent*);
+	void wheelEvent(QWheelEvent*);
+	void keyPressEvent(QKeyEvent*);
 
 private:
-    void drawGridLines();
-    void sendTileUpdates();
-    MetaspriteTileList createFrame(quint8, qreal s=0);
+	void drawGridLines();
+	void sendTileUpdates();
+	MetaspriteTileList createFrame(quint8, qreal s=0);
 
-    qreal iScale;
-    int iMouseTranslateX, iMouseTranslateY;
+	qreal iScale;
+	int iMouseTranslateX, iMouseTranslateY;
 
-    bool bTallSprites, bShowGrid, bSnapToGrid;
-    QGraphicsScene *gsMetasprite;
-    MetaspriteStageList vMetaspriteStages;
-    quint8 iMetaspriteStage;
+	bool bTallSprites, bShowGrid, bSnapToGrid;
+	QGraphicsScene *gsMetasprite;
+	MetaspriteStageList vMetaspriteStages;
+	quint8 iMetaspriteStage;
 
-    MetaspriteTileList mtlClipboard;
+	MetaspriteTileList mtlClipboard;
 };
 
 #endif // METASPRITEMANAGER_H

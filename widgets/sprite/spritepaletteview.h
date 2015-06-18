@@ -11,19 +11,19 @@
 
 class SpritePaletteView : public QGraphicsView
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit SpritePaletteView(QWidget *parent = 0);
-    ~SpritePaletteView();
+	explicit SpritePaletteView(QWidget *parent = 0);
+	~SpritePaletteView();
 
 signals:
-    void spritePaletteSelected(QString,quint8);
+	void spritePaletteSelected(QString,quint8);
 
 protected:
-    void mousePressEvent(QMouseEvent*);
+	void mousePressEvent(QMouseEvent*);
 
 public slots:
-    void setPaletteScene(QGraphicsScene*);
+	void setPaletteScene(QGraphicsScene*);
 };
 
 #endif // SPRITEPALETTEVIEW_H

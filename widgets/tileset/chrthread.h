@@ -15,20 +15,20 @@
 
 class CHRThread : public QThread
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit CHRThread(QThread *parent = 0);
-    ~CHRThread();
+	explicit CHRThread(QThread *parent = 0);
+	~CHRThread();
 
-    void loadFile(QString);
+	void loadFile(QString);
 
 signals:
-    void sendCHRImageData(QImage);
+	void sendCHRImageData(QImage);
 
 private:
-    void run();
+	void run();
 
-    QString sFile;
+	QString sFile;
 };
 
 #endif // CHRTHREAD_H

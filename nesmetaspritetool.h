@@ -24,53 +24,53 @@ class NESMetaspriteTool;
 
 class NESMetaspriteTool : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    explicit NESMetaspriteTool(QWidget *parent = 0);
-    ~NESMetaspriteTool();
+	explicit NESMetaspriteTool(QWidget *parent = 0);
+	~NESMetaspriteTool();
 
 signals:
-    void chrFileOpened(QString);
-    void metaspriteFileOpened(QString);
+	void chrFileOpened(QString);
+	void metaspriteFileOpened(QString);
 
 private slots:
-    void newProject();
-    void openProject();
-    void saveProject();
-    void saveProjectToFolder(QString);
+	void newProject();
+	void openProject();
+	void saveProject();
+	void saveProjectToFolder(QString);
 
-    void saveSpriteMode();
-    void saveShowGrid();
-    void saveSnapToGrid();
-    void savePaletteSwatch();
-    void saveRefreshRate();
-    void restoreSettings();
+	void saveSpriteMode();
+	void saveShowGrid();
+	void saveSnapToGrid();
+	void savePaletteSwatch();
+	void saveRefreshRate();
+	void restoreSettings();
 
-    void openMetaspriteBank();
-    void saveASMMetaspriteBank(QString path="");
-    void saveBinaryMetaspriteBank(QString path="");
+	void openMetaspriteBank();
+	void saveASMMetaspriteBank(QString path="");
+	void saveBinaryMetaspriteBank(QString path="");
 
-    void openCHR();
-    void openPalette();
-    void savePalette(QString path="");
+	void openCHR();
+	void openPalette();
+	void savePalette(QString path="");
 
-    void openAnimation();
-    void saveASMAnimation(QString path="");
+	void openAnimation();
+	void saveASMAnimation(QString path="");
 
-    void setNewPaletteFile(QString);
-    void setAnimationLabelPrefix(QString);
+	void setNewPaletteFile(QString);
+	void setAnimationLabelPrefix(QString);
 //    void setPlayButtonText();
 //    void setPauseButtonText();
 
 protected:
-    void keyPressEvent(QKeyEvent*);
+	void keyPressEvent(QKeyEvent*);
 
 private:
 
-    Ui::NESMetaspriteTool *ui;
+	Ui::NESMetaspriteTool *ui;
 
-    QSettings sSettings;
+	QSettings sSettings;
 };
 
 #endif // NESMETASPRITETOOL_H
