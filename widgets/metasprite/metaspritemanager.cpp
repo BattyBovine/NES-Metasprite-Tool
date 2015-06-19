@@ -98,6 +98,11 @@ void MetaspriteManager::wheelEvent(QWheelEvent *e)
 	}
 
 	this->updateMetaspriteStage();
+
+	this->setSceneRect(-MSM_CANVAS_SIZE*this->iScale,
+					   -MSM_CANVAS_SIZE*this->iScale,
+					   MSM_CANVAS_SIZE*this->iScale*2,
+					   MSM_CANVAS_SIZE*this->iScale*2);
 }
 
 void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
@@ -258,8 +263,6 @@ void MetaspriteManager::drawGridLines()
 	this->gsMetasprite->addLine(0,-canvas,0,canvas,thicksolid);
 	this->gsMetasprite->addLine(-canvas,0,canvas,0,thickdashes);
 	this->gsMetasprite->addLine(0,-canvas,0,canvas,thickdashes);
-
-	this->setSceneRect(-canvas,-canvas,canvas*2,canvas*2);
 }
 
 void MetaspriteManager::setNewSpriteColours(PaletteVector c, quint8 p, bool s)
