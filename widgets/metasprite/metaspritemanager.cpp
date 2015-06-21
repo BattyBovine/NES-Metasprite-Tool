@@ -659,7 +659,7 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
 			ms->flipVertical((oamattr&0x80)?true:false);
 			emit(this->getTileUpdate(ms));
 			emit(this->getPaletteUpdate(ms));
-			mslist.prepend(ms);
+			mslist.append(ms);
 		}
 		this->vMetaspriteStages.replace(j,mslist);
 	}
