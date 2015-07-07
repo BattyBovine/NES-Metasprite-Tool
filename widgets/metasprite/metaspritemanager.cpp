@@ -36,6 +36,8 @@ void MetaspriteManager::dropEvent(QDropEvent *e)
 
 void MetaspriteManager::mousePressEvent(QMouseEvent *e)
 {
+	QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
+
 	switch(e->button()) {
 	case Qt::RightButton:
 		if(this->vMetaspriteStages[this->iMetaspriteStage].size()==64) {
@@ -65,16 +67,19 @@ void MetaspriteManager::mouseMoveEvent(QMouseEvent *e)
 	} else {
 		QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
 		foreach(QGraphicsItem *i, sel) {
-			qreal xnew = qRound(i->x()/this->iScale);
-			qreal ynew = qRound(i->y()/this->iScale);
+			MetaspriteTileItem *icast = qgraphicsitem_cast<MetaspriteTileItem*>(i);
+			qreal xnew = icast->realX();
+			qreal ynew = icast->realY();
 			if(this->bSnapToGrid) {
-				xnew = roundToMult(qRound(i->x()/this->iScale),MSTI_TILEWIDTH);
-				ynew = roundToMult(qRound(i->y()/this->iScale),MSTI_TILEWIDTH);
+				xnew = roundToMult(xnew,MSTI_TILEWIDTH);
+				ynew = roundToMult(ynew,MSTI_TILEWIDTH);
 			}
-			qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealX(xnew);
-			qgraphicsitem_cast<MetaspriteTileItem*>(i)->setRealY(ynew);
+			icast->setRealX(xnew);
+			icast->setRealY(ynew);
 		}
 	}
+
+	this->sendTileUpdates();
 }
 
 void MetaspriteManager::mouseDoubleClickEvent(QMouseEvent *e)
@@ -108,8 +113,6 @@ void MetaspriteManager::wheelEvent(QWheelEvent *e)
 void MetaspriteManager::mouseReleaseEvent(QMouseEvent *e)
 {
 	QGraphicsView::mouseReleaseEvent(e);
-
-	this->sendTileUpdates();
 }
 
 void MetaspriteManager::keyPressEvent(QKeyEvent *e)
