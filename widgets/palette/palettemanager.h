@@ -65,6 +65,7 @@ private:
 	QVector<QColor> vPaletteColours;
 	QGraphicsScene *gsFullPaletteScene;
 	quint8 iFullPaletteIndex;
+	QGraphicsRectItem *griSelectionBox[2];
 
 	QGraphicsScene *gsSpritePaletteScene[4];
 	quint8 iSpritePaletteIndices[4][4];
