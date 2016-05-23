@@ -10,7 +10,7 @@
 #define CHR_OPEN_ERROR_TITLE    "Error opening file"
 #define CHR_OPEN_ERROR_BODY     "The file could not be opened."
 #define CHR_SIZE_ERROR_TITLE    "Could not open CHR file"
-#define CHR_SIZE_ERROR_BODY     "CHR file must be a multiple of 4KB."
+#define CHR_SIZE_ERROR_BODY     "CHR file must be a multiple of 1KB."
 
 
 class CHRThread : public QThread

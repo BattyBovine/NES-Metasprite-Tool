@@ -17,6 +17,8 @@ public:
 signals:
 	void moveSelectedUp();
 	void moveSelectedDown();
+	void flipSelectedHorizontal();
+	void flipSelectedVertical();
 	void deleteSelectedItems();
 
 public slots:

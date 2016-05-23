@@ -7,6 +7,7 @@ MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
 	this->iScale = MSM_DEFAULT_ZOOM;
 	this->bTallSprites = this->bSnapToGrid = false;
 	this->bShowGrid = true;
+	this->iBankDivider = 0x100;
 
 	this->setSceneRect(-MSM_CANVAS_SIZE*MSM_DEFAULT_ZOOM,
 					   -MSM_CANVAS_SIZE*MSM_DEFAULT_ZOOM,
@@ -132,6 +133,12 @@ void MetaspriteManager::keyPressEvent(QKeyEvent *e)
 	case Qt::Key_PageDown:
 		this->moveSelectedDown();
 		break;
+//	case Qt::Key_H:
+//		this->flipHorizontal();
+//		break;
+//	case Qt::Key_V:
+//		this->flipVertical();
+//		break;
 	default:
 		QGraphicsView::keyPressEvent(e);
 	}
@@ -496,6 +503,11 @@ void MetaspriteManager::toggleSnapToGrid(bool snaptogrid)
 	this->bSnapToGrid = snaptogrid;
 }
 
+void MetaspriteManager::setBankDivider(int banksizeindex)
+{
+	this->iBankDivider = (0x100/(1<<banksizeindex));
+}
+
 
 
 QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
@@ -512,7 +524,7 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
 				MetaspriteTileItem *ms = mslist.at(j);
 				quint8 oamx = ms->realX();
 				quint8 oamy = ms->realY();
-				quint8 oamindex = ms->tile();
+				quint8 oamindex = ms->tile()%this->iBankDivider;
 				quint8 oamattr = ms->palette()|(ms->flippedHorizontal()?0x40:0x00)|(ms->flippedVertical()?0x80:0x00);
 				bin.append(oamy);
 				bin.append(oamindex);
@@ -530,6 +542,7 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 	QString asmlabel = labelprefix.isEmpty()?"emptylabel_":labelprefix;
 	QString datatable_hi = asmlabel+"hi:\n\t.byte ";
 	QString datatable_lo = asmlabel+"lo:\n\t.byte ";
+	QString databanks = asmlabel+"bank:\n\t.byte ";
 	QString databytes;
 
 	for(int i=0; i<256; i++) {
@@ -543,26 +556,32 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 		databytes += "\n";
 		databytes += countedlabel+":\n\t.byte ";
 		databytes += QString("$%1").arg(mslist.size(),2,16,QChar('0')).toUpper();
+		quint8 oamfullindex;
 		foreach(MetaspriteTileItem *mti, mslist) {
 			quint8 oamx = mti->realX();
 			quint8 oamy = mti->realY();
-			quint8 oamindex = mti->tile();
+			oamfullindex = (oamfullindex>mti->tile()) ? oamfullindex : mti->tile();
+			quint8 oamindex = mti->tile()%this->iBankDivider;
 			quint8 oamattr = mti->palette()|(mti->flippedHorizontal()?0x40:0x00)|(mti->flippedVertical()?0x80:0x00);
 			databytes += QString(",$%1").arg(oamy,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamindex,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamattr,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamx,2,16,QChar('0')).toUpper();
 		}
+		databanks += QString("$%1").arg(int(floor(oamfullindex/this->iBankDivider)),2,16,QChar('0')).append(",");
+		oamfullindex = 0;
 	}
 
 	datatable_hi.remove(datatable_hi.size()-1,1);
 	datatable_lo.remove(datatable_lo.size()-1,1);
+	databanks.remove(databanks.size()-1,1);
 	datatable_hi += "\n";
 	datatable_lo += "\n";
+	databanks += "\n";
 	databytes += "\n";
 	databytes += asmlabel+"end:\n";
 
-	return datatable_hi+datatable_lo+databytes;
+	return datatable_hi+datatable_lo+databanks+databytes;
 }
 
 
@@ -576,9 +595,23 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 	}
 	quint8 labelnum = 0;
 	QVector<QByteArray> inputbytes(256);
+	QByteArray bankbytes;
 	QString labelname;
 	while(!file.atEnd()) {
 		QString line = file.readLine();
+
+		QRegularExpression banklabel("^(.*?)_bank:$");
+		QRegularExpressionMatch banklabelmatch = banklabel.match(line);
+		if(banklabelmatch.hasMatch()) {
+			QString line = file.readLine();
+			QRegularExpression bytes(",?\\$([0-9a-fA-F]+)");
+			QRegularExpressionMatchIterator bytesiter = bytes.globalMatch(line);
+			while(bytesiter.hasNext()) {
+				QRegularExpressionMatch bytesmatch = bytesiter.next();
+				bankbytes.append(quint8(bytesmatch.captured(1).toUInt(NULL,16)));
+			}
+		}
+
 		QRegularExpression label("^(.*?)_(\\d+?):$");
 		QRegularExpressionMatch labelmatch = label.match(line);
 		if(labelmatch.hasMatch()) {
@@ -597,10 +630,10 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 		}
 		if(!bytesin.isEmpty())  inputbytes.replace(labelnum,bytesin);
 	}
-	if(!labelname.isEmpty()) {
+	if(!labelname.isEmpty() && !bankbytes.isEmpty()) {
 		foreach(QByteArray test, inputbytes) {
 			if(!test.isEmpty()) {
-				this->importMetaspriteBinaryData(inputbytes);
+				this->importMetaspriteBinaryData(inputbytes,bankbytes);
 				file.close();
 				return;
 			}
@@ -633,8 +666,9 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 	QMessageBox::critical(this,tr(MSM_INVALID_SPRITES_TITLE),tr(MSM_INVALID_SPRITES_BODY),QMessageBox::NoButton);
 }
 
-void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
+void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, QByteArray banks)
 {
+	int blankcounter = 0;
 	for(int j=0; j<256; j++) {
 		QByteArray bin = bindata.at(j);
 		QList<MetaspriteTileItem*> mslist = this->vMetaspriteStages.at(j);
@@ -656,7 +690,7 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
 			ms->setTallSprite(this->bTallSprites);
 			ms->setRealX(oamx);
 			ms->setRealY(oamy);
-			ms->setTile(oamindex&(this->bTallSprites?0xFE:0xFF));
+			ms->setTile((oamindex&(this->bTallSprites?0xFE:0xFF))+(this->iBankDivider*banks[j-blankcounter]));
 			ms->setPalette(oamattr&0x03);
 			ms->flipHorizontal((oamattr&0x40)?true:false);
 			ms->flipVertical((oamattr&0x80)?true:false);
@@ -665,6 +699,7 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata)
 			mslist.append(ms);
 		}
 		this->vMetaspriteStages.replace(j,mslist);
+		if(mslist.isEmpty()) blankcounter += 1;
 	}
 
 	QList<MetaspriteTileItem*> store = this->vMetaspriteStages.at(this->iMetaspriteStage);

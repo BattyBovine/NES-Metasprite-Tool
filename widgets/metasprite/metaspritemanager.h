@@ -50,7 +50,7 @@ public:
 
 	qreal scale(){return this->iScale;}
 	void openMetaspriteFile(QString);
-	void importMetaspriteBinaryData(QVector<QByteArray>);
+	void importMetaspriteBinaryData(QVector<QByteArray>, QByteArray);
 	void clearAllMetaspriteData();
 
 	void selectAllSprites();
@@ -93,6 +93,7 @@ public slots:
 
 	void toggleShowGrid(bool);
 	void toggleSnapToGrid(bool);
+	void setBankDivider(int);
 
 	QVector<QByteArray> createMetaspriteBinaryData();
 	QString createMetaspriteASMData(QString);
@@ -118,6 +119,7 @@ private:
 	int iMouseTranslateX, iMouseTranslateY;
 
 	bool bTallSprites, bShowGrid, bSnapToGrid;
+	int iBankDivider;
 	QGraphicsScene *gsMetasprite;
 	MetaspriteStageList vMetaspriteStages;
 	quint8 iMetaspriteStage;

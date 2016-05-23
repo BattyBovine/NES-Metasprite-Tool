@@ -24,6 +24,7 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 	connect(ui->radio8x16,SIGNAL(toggled(bool)),this,SLOT(saveSpriteMode()));
 	connect(ui->chkShowGrid,SIGNAL(toggled(bool)),this,SLOT(saveShowGrid()));
 	connect(ui->chkSnapToGrid,SIGNAL(toggled(bool)),this,SLOT(saveSnapToGrid()));
+	connect(ui->comboBankSize,SIGNAL(currentIndexChanged(int)),this,SLOT(saveBankSize()));
 	connect(ui->comboPalettes,SIGNAL(currentIndexChanged(int)),this,SLOT(savePaletteSwatch()));
 	connect(ui->radioPAL,SIGNAL(toggled(bool)),this,SLOT(saveRefreshRate()));
 
@@ -68,6 +69,12 @@ void NESMetaspriteTool::keyPressEvent(QKeyEvent *e)
 				break;
 			case Qt::Key_PageDown:
 				ui->gvMetasprite->moveSelectedDown();
+				break;
+			case Qt::Key_H:
+				ui->gvMetasprite->flipHorizontal();
+				break;
+			case Qt::Key_V:
+				ui->gvMetasprite->flipVertical();
 				break;
 			case Qt::Key_Comma:
 				ui->hsMetaspriteSlider->prevValue();
@@ -180,6 +187,10 @@ void NESMetaspriteTool::saveSnapToGrid()
 {
 	this->sSettings.setValue("SnapToGrid", ui->chkSnapToGrid->isChecked());
 }
+void NESMetaspriteTool::saveBankSize()
+{
+	this->sSettings.setValue("BankSize", ui->comboBankSize->currentIndex());
+}
 void NESMetaspriteTool::savePaletteSwatch()
 {
 	this->sSettings.setValue("PaletteSwatch", ui->comboPalettes->currentIndex());
@@ -194,6 +205,7 @@ void NESMetaspriteTool::restoreSettings()
 	ui->radio8x16->setChecked(this->sSettings.value("SpriteMode",false).toBool());
 	ui->chkShowGrid->setChecked(this->sSettings.value("ShowGrid",true).toBool());
 	ui->chkSnapToGrid->setChecked(this->sSettings.value("SnapToGrid",false).toBool());
+	ui->comboBankSize->setCurrentIndex(this->sSettings.value("BankSize",0).toInt());
 	ui->comboPalettes->setCurrentIndex(this->sSettings.value("PaletteSwatch",0).toInt());
 	ui->radioPAL->setChecked(this->sSettings.value("RefreshRate",false).toBool());
 }

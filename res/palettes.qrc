@@ -9,5 +9,8 @@
         <file alias="FCEU-15-nitsuja_new.pal">FCEU-15-nitsuja_new.pal</file>
         <file alias="nestopia_rgb.pal">nestopia_rgb.pal</file>
         <file alias="nestopia_yuv.pal">nestopia_yuv.pal</file>
+        <file alias="NES-C64.pal">NES-C64.pal</file>
+        <file alias="NES-CGA.pal">NES-CGA.pal</file>
+        <file alias="NES-EGA.pal">NES-EGA.pal</file>
     </qresource>
 </RCC>

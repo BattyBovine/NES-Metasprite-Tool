@@ -34,7 +34,9 @@ void CHRThread::run()
 		QMessageBox::critical(NULL,tr(CHR_OPEN_ERROR_TITLE),tr(CHR_OPEN_ERROR_BODY),QMessageBox::NoButton);
 		return;
 	}
-	if((file.size()%0x1000)!=0) {
+
+	int filesize = file.size();
+	if((filesize%0x0400)!=0) {
 		QMessageBox::warning(NULL,tr(CHR_SIZE_ERROR_TITLE),tr(CHR_SIZE_ERROR_BODY),QMessageBox::NoButton);
 		return;
 	}
@@ -60,7 +62,7 @@ void CHRThread::run()
 	}
 	file.close();
 
-	for(int imgy=0; imgy<16; imgy++) {
+	for(int imgy=0; imgy<((filesize/0x0400)*4); imgy++) {
 		for(int imgx=0; imgx<16; imgx++) {
 			for(int tiley=0; tiley<8; tiley++) {
 				for(int tilex=0; tilex<8; tilex++) {

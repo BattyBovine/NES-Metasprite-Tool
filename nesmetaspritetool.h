@@ -43,6 +43,7 @@ private slots:
 	void saveSpriteMode();
 	void saveShowGrid();
 	void saveSnapToGrid();
+	void saveBankSize();
 	void savePaletteSwatch();
 	void saveRefreshRate();
 	void restoreSettings();
