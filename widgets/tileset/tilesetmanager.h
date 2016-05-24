@@ -35,13 +35,15 @@ public:
 
 signals:
 	void tilesetChanged(bool);
-	void sendNewTile(QPointF,QImage,quint8,quint8);
+	void sendNewTile(QPointF,QImage,quint32,quint8);
+	void chrBankChanged(quint16);
 
 public slots:
 	void loadCHRData(QString);
 	void loadCHRBank();
 	void setNewSpriteColours(PaletteVector,quint8);
 	void setSprites(bool tall){this->bTallSprite=tall;this->drawSelectionBox();emit(this->tilesetChanged(this->bTallSprite));}
+	void setSelectedBank(quint16);
 
 	void getNewTile(QPointF);
 	void updateSpriteTile(MetaspriteTileItem*);
@@ -57,23 +59,26 @@ protected:
 	void dropEvent(QDropEvent*);
 	void dragLeaveEvent(QDragLeaveEvent*e){e->accept();}
 	void mousePressEvent(QMouseEvent*);
+	void wheelEvent(QWheelEvent*);
 
 private:
 	bool drawBankDivider();
 	bool drawSelectionBox();
-	QImage createNewTile(quint8);
+	QImage createNewTile(quint32);
 
 	QGraphicsScene *gsTileset;
 	QString sCurrentTilesetFile;
 	QFileSystemWatcher fswCHR;
 	CHRThread *threadCHR;
 	QImage imgTileset;
+	QImage imgSelectedBank;
 	PaletteVector pvCurrentColours;
 	QGraphicsPixmapItem *gpiTileset;
-	quint8 iSelectedTile;
+	quint32 iSelectedTile;
 	quint8 iPalette;
 	bool bTallSprite;
 	quint16 iBankDivider;
+	quint16 iSelectedBank;
 
 	QGraphicsRectItem *griSelection[2];
 	QPointF pSelection;

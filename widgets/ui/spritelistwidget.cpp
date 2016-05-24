@@ -71,7 +71,7 @@ void SpriteListWidget::generateListDisplay()
 	foreach(QGraphicsItem *i, this->lItems) {
 		if(i->type()!=MetaspriteTileItem::Type)   continue;
 		MetaspriteTileItem *ms = qgraphicsitem_cast<MetaspriteTileItem*>(i);
-		QString lineitem = QString("%1").arg(ms->tile(),4,16,QChar('0')).toUpper()+
+		QString lineitem = QString("%1").arg(ms->tileIndex(),4,16,QChar('0')).toUpper()+
 				QString(" X=")+QString("%1").arg(ms->realX(),3,10,QChar('_'))+
 				QString(" Y=")+QString("%1").arg(ms->realY(),3,10,QChar('_'))+
 				QString(" P=")+QString::number(ms->palette(),10);

@@ -74,12 +74,13 @@ signals:
 
 	void updateList(GraphicsItemList,GraphicsItemList);
 	void updateAnimationFrame();
+	void updateSpriteBank(quint16);
 
 public slots:
 	void setScale(qreal s){this->iScale=s;}
 
 	void setNewSpriteColours(PaletteVector,quint8,bool);
-	void addNewTile(QPointF,QImage,quint8,quint8);
+	void addNewTile(QPointF,QImage,quint32,quint8);
 	void moveSelectedUp();
 	void moveSelectedDown();
 	void flipHorizontal();
@@ -95,6 +96,7 @@ public slots:
 	void toggleShowGrid(bool);
 	void toggleSnapToGrid(bool);
 	void setBankDivider(int);
+	void setSelectedBank(quint16);
 
 	QVector<QByteArray> createMetaspriteBinaryData();
 	QString createMetaspriteASMData(QString);
@@ -121,6 +123,7 @@ private:
 
 	bool bTallSprites, bShowGrid, bSnapToGrid;
 	quint16 iBankDivider;
+	quint16 iSelectedBank;
 	QGraphicsScene *gsMetasprite;
 	MetaspriteStageList vMetaspriteStages;
 	quint8 iMetaspriteStage;

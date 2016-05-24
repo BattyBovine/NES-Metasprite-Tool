@@ -41,8 +41,8 @@ public:
 	bool flippedVertical(){return this->bVFlip;}
 	quint8 palette(){return this->iPalette;}
 	void setPalette(quint8 p){this->iPalette=p;}
-	quint8 tile(){return this->iTile;}
-	void setTile(quint8 t){this->iTile=t;}
+	quint32 tileIndex(){return this->iTile;}
+	void setTileIndex(quint32 t){this->iTile=t;}
 
 protected:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
@@ -51,7 +51,7 @@ protected:
 private:
 	QImage imgTile;
 	quint8 iPalette;
-	quint8 iTile;
+	quint32 iTile;
 	qreal iX,iY,iW,iH;
 	bool bTallSprite,bHFlip,bVFlip;
 };

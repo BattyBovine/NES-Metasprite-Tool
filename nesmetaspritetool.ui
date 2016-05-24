@@ -1576,8 +1576,9 @@
    <extends>QGraphicsView</extends>
    <header>tilesetmanager.h</header>
    <slots>
-    <signal>sendNewTile(QPointF,QImage,quint8,quint8)</signal>
+    <signal>sendNewTile(QPointF,QImage,quint32,quint8)</signal>
     <signal>tilesetChanged(bool)</signal>
+    <signal>chrBankChanged(quint16)</signal>
     <slot>loadCHRData(QString)</slot>
     <slot>setNewSpriteColours(QVector,quint8)</slot>
     <slot>getNewTile(QPointF)</slot>
@@ -1586,6 +1587,7 @@
     <slot>setSprites(bool)</slot>
     <slot>getBankDivider(quint16)</slot>
     <slot>loadCHRBank()</slot>
+    <slot>setSelectedBank(quint16)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1603,8 +1605,9 @@
     <signal>updateAnimationFrame()</signal>
     <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
     <signal>bankDividerChanged(quint16)</signal>
+    <signal>updateSpriteBank(quint16)</signal>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
-    <slot>addNewTile(QPointF,QImage,quint8,quint8)</slot>
+    <slot>addNewTile(QPointF,QImage,quint32,quint8)</slot>
     <slot>flipHorizontal()</slot>
     <slot>flipVertical()</slot>
     <slot>deleteSelectedTiles()</slot>
@@ -1621,6 +1624,7 @@
     <slot>toggleShowGrid(bool)</slot>
     <slot>toggleSnapToGrid(bool)</slot>
     <slot>setBankDivider(int)</slot>
+    <slot>setSelectedBank(quint16)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1969,9 +1973,9 @@
   </connection>
   <connection>
    <sender>gvTileset</sender>
-   <signal>sendNewTile(QPointF,QImage,quint8,quint8)</signal>
+   <signal>sendNewTile(QPointF,QImage,quint32,quint8)</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>addNewTile(QPointF,QImage,quint8,quint8)</slot>
+   <slot>addNewTile(QPointF,QImage,quint32,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>520</x>
@@ -3120,18 +3124,18 @@
    </hints>
   </connection>
   <connection>
-   <sender>comboBankSize</sender>
-   <signal>currentIndexChanged(int)</signal>
+   <sender>gvMetasprite</sender>
+   <signal>updateSpriteBank(quint16)</signal>
    <receiver>gvTileset</receiver>
-   <slot>loadCHRBank()</slot>
+   <slot>setSelectedBank(quint16)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>156</x>
-     <y>531</y>
+     <x>129</x>
+     <y>209</y>
     </hint>
     <hint type="destinationlabel">
      <x>573</x>
-     <y>213</y>
+     <y>219</y>
     </hint>
    </hints>
   </connection>
