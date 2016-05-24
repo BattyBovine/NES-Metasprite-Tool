@@ -28,7 +28,7 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 	connect(ui->comboPalettes,SIGNAL(currentIndexChanged(int)),this,SLOT(savePaletteSwatch()));
 	connect(ui->radioPAL,SIGNAL(toggled(bool)),this,SLOT(saveRefreshRate()));
 
-	ui->gvTileset->loadCHRBank(":/chr/blank.chr");
+	ui->gvTileset->loadCHRData(":/chr/blank.chr");
 }
 
 NESMetaspriteTool::~NESMetaspriteTool()

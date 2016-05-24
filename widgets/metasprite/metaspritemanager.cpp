@@ -506,6 +506,7 @@ void MetaspriteManager::toggleSnapToGrid(bool snaptogrid)
 void MetaspriteManager::setBankDivider(int banksizeindex)
 {
 	this->iBankDivider = (0x100/(1<<banksizeindex));
+	emit(this->bankDividerChanged(this->iBankDivider));
 }
 
 

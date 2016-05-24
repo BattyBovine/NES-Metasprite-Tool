@@ -19,6 +19,7 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
 	this->iSelectedTile = 0;
 	this->iPalette = 0;
 	this->bTallSprite = false;
+	this->iBankDivider = 0x100;
 
 	this->pSelection = QPointF(0,0);
 	this->drawSelectionBox();
@@ -45,11 +46,11 @@ void TilesetManager::dropEvent(QDropEvent *e)
 
 	foreach(QUrl url, e->mimeData()->urls()) {
 		if(url.toLocalFile().endsWith(".chr",Qt::CaseInsensitive)) {
-			this->loadCHRBank(url.toLocalFile());
+			this->loadCHRData(url.toLocalFile());
 			return;
 		}
 	}
-	this->loadCHRBank(e->mimeData()->urls()[0].toLocalFile());
+	this->loadCHRData(e->mimeData()->urls()[0].toLocalFile());
 }
 
 void TilesetManager::mousePressEvent(QMouseEvent *e)
@@ -91,13 +92,23 @@ void TilesetManager::reloadCurrentTileset()
 
 
 
-void TilesetManager::loadCHRBank(QString filename)
+void TilesetManager::loadCHRData(QString filename)
 {
 	this->threadCHR->loadFile(filename);
 	if(!this->fswCHR.files().isEmpty()) this->fswCHR.removePath(this->sCurrentTilesetFile);
 	this->sCurrentTilesetFile = filename;
 	this->fswCHR.addPath(filename);
 	return;
+}
+
+void TilesetManager::loadCHRBank()
+{
+	QImage tilecropped = this->imgTileset.copy(QRect(0,0,128,(this->iBankDivider>>1)));
+	this->setFixedSize(256,this->iBankDivider);
+	this->setSceneRect(0,0,256,this->iBankDivider);
+
+	this->gpiTileset->setPixmap(QPixmap::fromImage(tilecropped));
+	emit(this->tilesetChanged(this->bTallSprite));
 }
 
 void TilesetManager::setNewSpriteColours(PaletteVector c, quint8 i)
@@ -129,13 +140,18 @@ void TilesetManager::getNewCHRData(QImage img)
 	img.setColor(2,this->imgTileset.color(2));
 	img.setColor(3,this->imgTileset.color(3));
 	this->imgTileset = img;
-	this->gpiTileset->setPixmap(QPixmap::fromImage(this->imgTileset));
-	emit(this->tilesetChanged(this->bTallSprite));
+	this->loadCHRBank();
 }
 
 void TilesetManager::getCHRError(QString title,QString body)
 {
 	QMessageBox::warning(NULL,title,body,QMessageBox::NoButton);
+}
+
+void TilesetManager::getBankDivider(quint16 bankdiv)
+{
+	this->iBankDivider = bankdiv;
+	this->drawSelectionBox();
 }
 
 

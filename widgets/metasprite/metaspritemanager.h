@@ -70,6 +70,7 @@ signals:
 	void sendAnimationFrameData(MetaspriteTileList);
 
 	void setMetaspriteLabel(QString);
+	void bankDividerChanged(quint16);
 
 	void updateList(GraphicsItemList,GraphicsItemList);
 	void updateAnimationFrame();
@@ -119,7 +120,7 @@ private:
 	int iMouseTranslateX, iMouseTranslateY;
 
 	bool bTallSprites, bShowGrid, bSnapToGrid;
-	int iBankDivider;
+	quint16 iBankDivider;
 	QGraphicsScene *gsMetasprite;
 	MetaspriteStageList vMetaspriteStages;
 	quint8 iMetaspriteStage;

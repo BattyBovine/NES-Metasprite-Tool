@@ -38,7 +38,8 @@ signals:
 	void sendNewTile(QPointF,QImage,quint8,quint8);
 
 public slots:
-	void loadCHRBank(QString);
+	void loadCHRData(QString);
+	void loadCHRBank();
 	void setNewSpriteColours(PaletteVector,quint8);
 	void setSprites(bool tall){this->bTallSprite=tall;this->drawSelectionBox();emit(this->tilesetChanged(this->bTallSprite));}
 
@@ -46,6 +47,7 @@ public slots:
 	void updateSpriteTile(MetaspriteTileItem*);
 	void getNewCHRData(QImage);
 	void getCHRError(QString,QString);
+	void getBankDivider(quint16);
 
 	void reloadCurrentTileset();
 
@@ -57,6 +59,7 @@ protected:
 	void mousePressEvent(QMouseEvent*);
 
 private:
+	bool drawBankDivider();
 	bool drawSelectionBox();
 	QImage createNewTile(quint8);
 
@@ -70,6 +73,7 @@ private:
 	quint8 iSelectedTile;
 	quint8 iPalette;
 	bool bTallSprite;
+	quint16 iBankDivider;
 
 	QGraphicsRectItem *griSelection[2];
 	QPointF pSelection;

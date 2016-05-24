@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>736</width>
-    <height>576</height>
+    <height>587</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>736</width>
-    <height>576</height>
+    <height>587</height>
    </size>
   </property>
   <property name="acceptDrops">
@@ -448,10 +448,29 @@
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
            <widget class="QGroupBox" name="groupBox_2">
+            <property name="minimumSize">
+             <size>
+              <width>278</width>
+              <height>303</height>
+             </size>
+            </property>
             <property name="title">
              <string>Tileset</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <spacer name="verticalSpacer_8">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_10">
                <property name="spacing">
@@ -509,6 +528,19 @@
                 </spacer>
                </item>
               </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
@@ -1546,12 +1578,14 @@
    <slots>
     <signal>sendNewTile(QPointF,QImage,quint8,quint8)</signal>
     <signal>tilesetChanged(bool)</signal>
-    <slot>loadCHRBank(QString)</slot>
+    <slot>loadCHRData(QString)</slot>
     <slot>setNewSpriteColours(QVector,quint8)</slot>
     <slot>getNewTile(QPointF)</slot>
     <slot>updateSpriteTile(MetaspriteTileItem*)</slot>
     <slot>setNewSpriteColours(PaletteVector,quint8)</slot>
     <slot>setSprites(bool)</slot>
+    <slot>getBankDivider(quint16)</slot>
+    <slot>loadCHRBank()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1568,6 +1602,7 @@
     <signal>sendFrameData(MetaspriteTileList)</signal>
     <signal>updateAnimationFrame()</signal>
     <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
+    <signal>bankDividerChanged(quint16)</signal>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
     <slot>addNewTile(QPointF,QImage,quint8,quint8)</slot>
     <slot>flipHorizontal()</slot>
@@ -1760,7 +1795,7 @@
    <sender>NESMetaspriteTool</sender>
    <signal>chrFileOpened(QString)</signal>
    <receiver>gvTileset</receiver>
-   <slot>loadCHRBank(QString)</slot>
+   <slot>loadCHRData(QString)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>389</x>
@@ -3065,6 +3100,38 @@
     <hint type="destinationlabel">
      <x>129</x>
      <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>bankDividerChanged(quint16)</signal>
+   <receiver>gvTileset</receiver>
+   <slot>getBankDivider(quint16)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>129</x>
+     <y>209</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>573</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBankSize</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>gvTileset</receiver>
+   <slot>loadCHRBank()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>156</x>
+     <y>531</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>573</x>
+     <y>213</y>
     </hint>
    </hints>
   </connection>

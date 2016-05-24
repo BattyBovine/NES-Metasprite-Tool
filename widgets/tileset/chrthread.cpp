@@ -2,6 +2,7 @@
 
 CHRThread::CHRThread(QThread *parent) : QThread(parent)
 {
+	this->iBankSize = 0x100;
 }
 
 CHRThread::~CHRThread()
@@ -22,23 +23,14 @@ void CHRThread::run()
 {
 	if(this->sFile.isEmpty()) return;
 
-	QImage imgtileset(128, 128, QImage::Format_Indexed8);
-	imgtileset.fill(0);
-	imgtileset.setColor(0,qRgba(0x00,0x00,0x00,0x00));
-	imgtileset.setColor(1,qRgb(0x00,0x00,0x00));
-	imgtileset.setColor(2,qRgb(0x00,0x00,0x00));
-	imgtileset.setColor(3,qRgb(0x00,0x00,0x00));
-
 	QFile file(this->sFile);
 	if(!file.open(QIODevice::ReadOnly)) {
-//		QMessageBox::critical(NULL,tr(CHR_OPEN_ERROR_TITLE),tr(CHR_OPEN_ERROR_BODY),QMessageBox::NoButton);
 		emit(this->error(tr(CHR_OPEN_ERROR_TITLE),tr(CHR_OPEN_ERROR_BODY)));
 		return;
 	}
 
 	int filesize = file.size();
-	if((filesize%0x0400)!=0) {
-//		QMessageBox::warning(NULL,tr(CHR_SIZE_ERROR_TITLE),tr(CHR_SIZE_ERROR_BODY),QMessageBox::NoButton);
+	if((filesize%0x0200)!=0) {
 		emit(this->error(tr(CHR_SIZE_ERROR_TITLE),tr(CHR_SIZE_ERROR_BODY)));
 		return;
 	}
@@ -64,7 +56,14 @@ void CHRThread::run()
 	}
 	file.close();
 
-	for(int imgy=0; imgy<((filesize/0x0400)*4); imgy++) {
+	QImage imgtileset(128, (filesize>>5), QImage::Format_Indexed8);
+	imgtileset.fill(0);
+	imgtileset.setColor(0,qRgba(0x00,0x00,0x00,0x00));
+	imgtileset.setColor(1,qRgb(0x00,0x00,0x00));
+	imgtileset.setColor(2,qRgb(0x00,0x00,0x00));
+	imgtileset.setColor(3,qRgb(0x00,0x00,0x00));
+
+	for(int imgy=0; imgy<((filesize/0x0200)*2); imgy++) {
 		for(int imgx=0; imgx<16; imgx++) {
 			for(int tiley=0; tiley<8; tiley++) {
 				for(int tilex=0; tilex<8; tilex++) {
