@@ -24,6 +24,7 @@ public:
 
 signals:
 	void sendCHRImageData(QImage);
+	void error(QString,QString);
 
 private:
 	void run();

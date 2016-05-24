@@ -31,13 +31,15 @@ void CHRThread::run()
 
 	QFile file(this->sFile);
 	if(!file.open(QIODevice::ReadOnly)) {
-		QMessageBox::critical(NULL,tr(CHR_OPEN_ERROR_TITLE),tr(CHR_OPEN_ERROR_BODY),QMessageBox::NoButton);
+//		QMessageBox::critical(NULL,tr(CHR_OPEN_ERROR_TITLE),tr(CHR_OPEN_ERROR_BODY),QMessageBox::NoButton);
+		emit(this->error(tr(CHR_OPEN_ERROR_TITLE),tr(CHR_OPEN_ERROR_BODY)));
 		return;
 	}
 
 	int filesize = file.size();
 	if((filesize%0x0400)!=0) {
-		QMessageBox::warning(NULL,tr(CHR_SIZE_ERROR_TITLE),tr(CHR_SIZE_ERROR_BODY),QMessageBox::NoButton);
+//		QMessageBox::warning(NULL,tr(CHR_SIZE_ERROR_TITLE),tr(CHR_SIZE_ERROR_BODY),QMessageBox::NoButton);
+		emit(this->error(tr(CHR_SIZE_ERROR_TITLE),tr(CHR_SIZE_ERROR_BODY)));
 		return;
 	}
 

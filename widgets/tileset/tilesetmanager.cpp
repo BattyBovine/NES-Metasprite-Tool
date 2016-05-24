@@ -25,6 +25,7 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
 
 	this->threadCHR = new CHRThread();
 	connect(this->threadCHR,SIGNAL(sendCHRImageData(QImage)),this,SLOT(getNewCHRData(QImage)));
+	connect(this->threadCHR,SIGNAL(error(QString,QString)),this,SLOT(getCHRError(QString,QString)));
 
 	connect(&this->fswCHR,SIGNAL(fileChanged(QString)),this,SLOT(reloadCurrentTileset()));
 }
@@ -130,6 +131,11 @@ void TilesetManager::getNewCHRData(QImage img)
 	this->imgTileset = img;
 	this->gpiTileset->setPixmap(QPixmap::fromImage(this->imgTileset));
 	emit(this->tilesetChanged(this->bTallSprite));
+}
+
+void TilesetManager::getCHRError(QString title,QString body)
+{
+	QMessageBox::warning(NULL,title,body,QMessageBox::NoButton);
 }
 
 

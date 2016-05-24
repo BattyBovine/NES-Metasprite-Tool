@@ -45,6 +45,7 @@ public slots:
 	void getNewTile(QPointF);
 	void updateSpriteTile(MetaspriteTileItem*);
 	void getNewCHRData(QImage);
+	void getCHRError(QString,QString);
 
 	void reloadCurrentTileset();
 
