@@ -168,7 +168,9 @@ void TilesetManager::getNewCHRData(QImage img)
 	img.setColor(2,this->imgTileset.color(2));
 	img.setColor(3,this->imgTileset.color(3));
 	this->imgTileset = img;
+
 	this->loadCHRBank();
+	emit(this->chrDataChanged(this->imgTileset));
 }
 
 void TilesetManager::getCHRError(QString title,QString body)
@@ -191,7 +193,7 @@ QImage TilesetManager::createNewTile(quint32 tile)
 {
 	QImage newtile(MSTI_TILEWIDTH, MSTI_TILEWIDTH*(this->bTallSprite?2:1), QImage::Format_Indexed8);
 
-	QImage toptile = (this->imgSelectedBank.copy((tile&0x0F)*MSTI_TILEWIDTH,(((tile%this->iBankDivider)&0xF0)>>4)*MSTI_TILEWIDTH,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
+	QImage toptile = (this->imgSelectedBank.copy((tile&0x0F)*MSTI_TILEWIDTH,((((tile%this->iBankDivider)&0xF0)>>4)*MSTI_TILEWIDTH)%this->imgSelectedBank.height(),MSTI_TILEWIDTH,MSTI_TILEWIDTH));
 	newtile.setColor(0,toptile.color(0));
 	newtile.setColor(1,toptile.color(1));
 	newtile.setColor(2,toptile.color(2));

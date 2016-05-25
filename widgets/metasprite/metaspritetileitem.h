@@ -43,6 +43,7 @@ public:
 	void setPalette(quint8 p){this->iPalette=p;}
 	quint32 tileIndex(){return this->iTile;}
 	void setTileIndex(quint32 t){this->iTile=t;}
+	QRgb getPaletteColour(quint8 i){return this->imgTile.color(i);}
 
 protected:
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent*);

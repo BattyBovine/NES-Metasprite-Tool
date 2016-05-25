@@ -24,12 +24,15 @@ public:
 
 signals:
 	void requestFrameData(quint8,qreal);
+	void sendAnimationFrameData(MetaspriteTileList);
 
 public slots:
 	void setBackgroundColour(PaletteVector);
 	void updateCurrentFrame();
 	void setNewFrame(int);
 	void getFrameData(MetaspriteTileList);
+	void getAnimationFrameData(MetaspriteTileList);
+	void getTilesetData(QImage);
 
 protected:
 	void mousePressEvent(QMouseEvent*);
@@ -38,10 +41,14 @@ protected:
 	void wheelEvent(QWheelEvent*);
 
 private:
+	MetaspriteTileList getTileImageData(MetaspriteTileList l);
+
 	QGraphicsScene *gsFrame;
 	quint8 iFrame;
 	MetaspriteTileList mtlFrameData;
 	qreal iScale,iMouseTranslateX,iMouseTranslateY;
+
+	QImage imgTileset;
 };
 
 #endif // ANIMATIONFRAMEMANAGER_H

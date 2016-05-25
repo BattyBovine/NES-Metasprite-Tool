@@ -1579,6 +1579,7 @@
     <signal>sendNewTile(QPointF,QImage,quint32,quint8)</signal>
     <signal>tilesetChanged(bool)</signal>
     <signal>chrBankChanged(quint16)</signal>
+    <signal>chrDataChanged(QImage)</signal>
     <slot>loadCHRData(QString)</slot>
     <slot>setNewSpriteColours(QVector,quint8)</slot>
     <slot>getNewTile(QPointF)</slot>
@@ -1603,9 +1604,9 @@
     <signal>updateList(GraphicsItemList,GraphicsItemList)</signal>
     <signal>sendFrameData(MetaspriteTileList)</signal>
     <signal>updateAnimationFrame()</signal>
-    <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
     <signal>bankDividerChanged(quint16)</signal>
     <signal>updateSpriteBank(quint16)</signal>
+    <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
     <slot>addNewTile(QPointF,QImage,quint32,quint8)</slot>
     <slot>flipHorizontal()</slot>
@@ -1654,6 +1655,7 @@
     <signal>addAnimationFrame(quint8,quint8)</signal>
     <signal>insertAnimationFrame(quint8,quint8)</signal>
     <signal>replaceAnimationFrame(quint8,quint8)</signal>
+    <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
     <slot>setBackgroundColour(PaletteVector)</slot>
     <slot>getFrameData(MetaspriteTileList)</slot>
     <slot>setNewFrame(int)</slot>
@@ -1662,6 +1664,8 @@
     <slot>addFrame()</slot>
     <slot>insertFrame()</slot>
     <slot>replaceFrame()</slot>
+    <slot>getTilesetData(QImage)</slot>
+    <slot>getAnimationFrameData(MetaspriteTileList)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -2534,16 +2538,16 @@
   <connection>
    <sender>gvMetasprite</sender>
    <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>drawAnimationFrameData(MetaspriteTileList)</slot>
+   <receiver>gvFrames</receiver>
+   <slot>getAnimationFrameData(MetaspriteTileList)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>128</x>
-     <y>206</y>
+     <x>129</x>
+     <y>209</y>
     </hint>
     <hint type="destinationlabel">
-     <x>160</x>
-     <y>238</y>
+     <x>605</x>
+     <y>181</y>
     </hint>
    </hints>
   </connection>
@@ -3136,6 +3140,38 @@
     <hint type="destinationlabel">
      <x>573</x>
      <y>219</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvTileset</sender>
+   <signal>chrDataChanged(QImage)</signal>
+   <receiver>gvFrames</receiver>
+   <slot>getTilesetData(QImage)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>573</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>605</x>
+     <y>181</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvFrames</sender>
+   <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
+   <receiver>gvAnimation</receiver>
+   <slot>drawAnimationFrameData(MetaspriteTileList)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>605</x>
+     <y>181</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>241</y>
     </hint>
    </hints>
   </connection>

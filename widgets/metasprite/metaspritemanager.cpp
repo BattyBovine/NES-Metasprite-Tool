@@ -757,7 +757,6 @@ MetaspriteTileList MetaspriteManager::createFrame(quint8 f, qreal s)
 		newitem->flipVertical(i->flippedVertical());
 		newitem->setPalette(i->palette());
 		newitem->setTileIndex(i->tileIndex());
-		emit(this->getTileUpdate(newitem));
 		emit(this->getPaletteUpdate(newitem));
 		listcopy.append(newitem);
 	}

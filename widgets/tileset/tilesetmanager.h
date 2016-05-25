@@ -37,6 +37,7 @@ signals:
 	void tilesetChanged(bool);
 	void sendNewTile(QPointF,QImage,quint32,quint8);
 	void chrBankChanged(quint16);
+	void chrDataChanged(QImage);
 
 public slots:
 	void loadCHRData(QString);
