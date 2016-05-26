@@ -38,6 +38,7 @@ signals:
 	void sendNewTile(QPointF,QImage,quint32,quint8);
 	void chrBankChanged(quint16);
 	void chrDataChanged(QImage);
+	void checkTilesBank(quint16,quint16);
 
 public slots:
 	void loadCHRData(QString);

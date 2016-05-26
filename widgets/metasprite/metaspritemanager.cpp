@@ -735,12 +735,27 @@ void MetaspriteManager::clearAllMetaspriteData()
 void MetaspriteManager::sendTileUpdates()
 {
 	if(!this->vMetaspriteStages[this->iMetaspriteStage].isEmpty()) {
-		quint16 currentbank = (this->vMetaspriteStages[this->iMetaspriteStage].at(0)->tileIndex())/this->iBankDivider;
+		quint16 currentbank = (this->vMetaspriteStages.at(this->iMetaspriteStage)[0]->tileIndex())/this->iBankDivider;
 		emit(this->updateSpriteBank(currentbank));
 	}
 
 	emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
 	emit(this->updateAnimationFrame());
+}
+
+void MetaspriteManager::checkTilesBank(quint16 newbank, quint16 maxbank)
+{
+	this->iSelectedBank = newbank;
+	quint32 maxtileindex = maxbank*this->iBankDivider;
+	bool update = false;
+	MetaspriteTileList list = this->vMetaspriteStages.at(this->iMetaspriteStage);
+	foreach(MetaspriteTileItem *i, list) {
+		if(i->tileIndex()>maxtileindex) {
+			update = true;
+			i->setTileIndex(i->tileIndex()%maxtileindex);
+		}
+	}
+	if(update)	this->sendTileUpdates();
 }
 
 MetaspriteTileList MetaspriteManager::createFrame(quint8 f, qreal s)

@@ -125,7 +125,9 @@ MetaspriteTileList AnimationFrameManager::getTileImageData(MetaspriteTileList l)
 		newtile.setColor(2,i->getPaletteColour(2));
 		newtile.setColor(3,i->getPaletteColour(3));
 
-		QImage toptile = (this->imgTileset.copy((i->tileIndex()&0x0000000F)*MSTI_TILEWIDTH,((i->tileIndex()&0xFFFFFFF0)>>4)*MSTI_TILEWIDTH,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
+		int x = (i->tileIndex()&0x0000000F)*MSTI_TILEWIDTH;
+		int y = ((i->tileIndex()&0xFFFFFFF0)>>4)*MSTI_TILEWIDTH;
+		QImage toptile = (this->imgTileset.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
 
 		for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
 			for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
@@ -134,7 +136,9 @@ MetaspriteTileList AnimationFrameManager::getTileImageData(MetaspriteTileList l)
 		}
 
 		if(newtile.height()>MSTI_TILEWIDTH) {
-			QImage antoniostellabottomtile = (this->imgTileset.copy(((i->tileIndex()+1)&0x0000000F)*MSTI_TILEWIDTH,(((i->tileIndex()&0xFFFFFFF0)>>4)*MSTI_TILEWIDTH),MSTI_TILEWIDTH,MSTI_TILEWIDTH));
+			x = ((i->tileIndex()+1)&0x0000000F)*MSTI_TILEWIDTH;
+			y = ((i->tileIndex()&0xFFFFFFF0)>>4)*MSTI_TILEWIDTH;
+			QImage antoniostellabottomtile = (this->imgTileset.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
 			for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
 				for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
 					newtile.setPixel(x,y+MSTI_TILEWIDTH,antoniostellabottomtile.pixelIndex(x,y));

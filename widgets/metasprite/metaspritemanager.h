@@ -97,6 +97,7 @@ public slots:
 	void toggleSnapToGrid(bool);
 	void setBankDivider(int);
 	void setSelectedBank(quint16);
+	void checkTilesBank(quint16,quint16);
 
 	QVector<QByteArray> createMetaspriteBinaryData();
 	QString createMetaspriteASMData(QString);

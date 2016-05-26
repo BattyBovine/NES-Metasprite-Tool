@@ -1580,6 +1580,7 @@
     <signal>tilesetChanged(bool)</signal>
     <signal>chrBankChanged(quint16)</signal>
     <signal>chrDataChanged(QImage)</signal>
+    <signal>checkTilesBank(quint16,quint16)</signal>
     <slot>loadCHRData(QString)</slot>
     <slot>setNewSpriteColours(QVector,quint8)</slot>
     <slot>getNewTile(QPointF)</slot>
@@ -1626,6 +1627,7 @@
     <slot>toggleSnapToGrid(bool)</slot>
     <slot>setBankDivider(int)</slot>
     <slot>setSelectedBank(quint16)</slot>
+    <slot>checkTilesBank(quint16,quint16)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -3172,6 +3174,22 @@
     <hint type="destinationlabel">
      <x>161</x>
      <y>241</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvTileset</sender>
+   <signal>checkTilesBank(quint16,quint16)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>checkTilesBank(quint16,quint16)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>573</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>129</x>
+     <y>209</y>
     </hint>
    </hints>
   </connection>

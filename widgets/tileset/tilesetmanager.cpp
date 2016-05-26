@@ -71,18 +71,20 @@ void TilesetManager::wheelEvent(QWheelEvent *e)
 	}
 
 	this->loadCHRBank();
-
 	emit(this->chrBankChanged(this->iSelectedBank));
 }
 
 void TilesetManager::setSelectedBank(quint16 bankno)
 {
-	quint32 bankmax = ((this->imgTileset.height()/(this->iBankDivider>>1))-1);
-	quint32 newbank = ((bankno>=bankmax)?bankmax:bankno);
+	quint16 bankmax = ((this->imgTileset.height()/(this->iBankDivider>>1))-1);
+	quint16 newbank = ((bankno>=bankmax)?bankmax:bankno);
+	emit(this->checkTilesBank(newbank,bankmax));
 
-	if(!(this->iSelectedBank==bankno)) {
+	if(this->iSelectedBank != bankno) {
 		this->iSelectedBank = newbank;
+
 		this->loadCHRBank();
+		emit(this->chrBankChanged(this->iSelectedBank));
 	}
 }
 
@@ -193,7 +195,9 @@ QImage TilesetManager::createNewTile(quint32 tile)
 {
 	QImage newtile(MSTI_TILEWIDTH, MSTI_TILEWIDTH*(this->bTallSprite?2:1), QImage::Format_Indexed8);
 
-	QImage toptile = (this->imgSelectedBank.copy((tile&0x0F)*MSTI_TILEWIDTH,((((tile%this->iBankDivider)&0xF0)>>4)*MSTI_TILEWIDTH)%this->imgSelectedBank.height(),MSTI_TILEWIDTH,MSTI_TILEWIDTH));
+	int x = (tile&0x0F)*MSTI_TILEWIDTH;
+	int y = (((tile%this->iBankDivider)&0xF0)>>4)*MSTI_TILEWIDTH;
+	QImage toptile = (this->imgSelectedBank.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
 	newtile.setColor(0,toptile.color(0));
 	newtile.setColor(1,toptile.color(1));
 	newtile.setColor(2,toptile.color(2));
@@ -206,7 +210,9 @@ QImage TilesetManager::createNewTile(quint32 tile)
 	}
 
 	if(this->bTallSprite) {
-		QImage antoniostellabottomtile = (this->imgSelectedBank.copy(((tile+1)&0x0F)*MSTI_TILEWIDTH,((((tile%this->iBankDivider)&0xF0)>>4)*MSTI_TILEWIDTH)%this->iBankDivider,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
+		x = ((tile+1)&0x0F)*MSTI_TILEWIDTH;
+		y = (((tile%this->iBankDivider)&0xF0)>>4)*MSTI_TILEWIDTH;
+		QImage antoniostellabottomtile = (this->imgSelectedBank.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
 		for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
 			for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
 				newtile.setPixel(x,y+MSTI_TILEWIDTH,antoniostellabottomtile.pixelIndex(x,y));
