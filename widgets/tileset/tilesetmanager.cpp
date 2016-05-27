@@ -187,6 +187,8 @@ void TilesetManager::getBankDivider(quint16 bankdiv)
 	this->iSelectedBank *= diff;
 
 	this->loadCHRBank();
+	emit(this->chrDataChanged(this->imgTileset));
+	this->drawSelectionBox();
 }
 
 

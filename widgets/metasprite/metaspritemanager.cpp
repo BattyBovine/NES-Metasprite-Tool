@@ -746,11 +746,11 @@ void MetaspriteManager::sendTileUpdates()
 void MetaspriteManager::checkTilesBank(quint16 newbank, quint16 maxbank)
 {
 	this->iSelectedBank = newbank;
-	quint32 maxtileindex = maxbank*this->iBankDivider;
+	quint32 maxtileindex = (maxbank+1)*this->iBankDivider;
 	bool update = false;
 	MetaspriteTileList list = this->vMetaspriteStages.at(this->iMetaspriteStage);
 	foreach(MetaspriteTileItem *i, list) {
-		if(i->tileIndex()>maxtileindex) {
+		if(maxtileindex && i->tileIndex()>maxtileindex) {
 			update = true;
 			i->setTileIndex(i->tileIndex()%maxtileindex);
 		}
