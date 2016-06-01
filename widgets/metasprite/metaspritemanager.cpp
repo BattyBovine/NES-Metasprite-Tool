@@ -479,6 +479,21 @@ void MetaspriteManager::swapMetaspriteStage(int s)
 	this->sendTileUpdates();
 }
 
+void MetaspriteManager::selectFirstMetaspriteStage()
+{
+	emit(this->sendMetaspriteStageChange(0));
+}
+
+void MetaspriteManager::selectNextEmptyMetaspriteStage()
+{
+	for(int i=0; i<this->vMetaspriteStages.size(); i++) {
+		if(this->vMetaspriteStages.at(i).isEmpty()) {
+			emit(this->sendMetaspriteStageChange(i));
+			break;
+		}
+	}
+}
+
 void MetaspriteManager::createFrameData(quint8 frame, qreal zoom)
 {
 	MetaspriteTileList list = this->createFrame(frame,zoom);

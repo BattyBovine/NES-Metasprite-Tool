@@ -68,6 +68,7 @@ signals:
 	void requestPaletteUpdates(quint8);
 	void sendFrameData(MetaspriteTileList);
 	void sendAnimationFrameData(MetaspriteTileList);
+	void sendMetaspriteStageChange(int);
 
 	void setMetaspriteLabel(QString);
 	void bankDividerChanged(quint16);
@@ -89,6 +90,8 @@ public slots:
 
 	void updateTiles(bool);
 	void swapMetaspriteStage(int);
+	void selectFirstMetaspriteStage();
+	void selectNextEmptyMetaspriteStage();
 	void updateMetaspriteStage(){this->swapMetaspriteStage(this->iMetaspriteStage);}
 	void createFrameData(quint8,qreal);
 	void createAnimationFrameData(quint8,qreal);
