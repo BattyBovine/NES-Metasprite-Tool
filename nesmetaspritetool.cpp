@@ -173,6 +173,11 @@ void NESMetaspriteTool::saveProjectToFolder(QString f)
 	}
 }
 
+void NESMetaspriteTool::showWikiPage()
+{
+	QDesktopServices::openUrl(QUrl(NESMT_WIKI_URL));
+}
+
 
 
 void NESMetaspriteTool::saveSpriteMode()

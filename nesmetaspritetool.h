@@ -5,12 +5,15 @@
 #include <QGraphicsRectItem>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QDesktopServices>
 #include <QDirIterator>
 #include <QTextStream>
 #include <QRegularExpression>
 #include <QSettings>
 #include <QEvent>
 
+
+#define NESMT_WIKI_URL				"https://github.com/BattyBovine/NES-Metasprite-Tool/wiki"
 
 #define FILE_OPEN_ERROR_TITLE       "Error opening file"
 #define FILE_OPEN_ERROR_BODY        "Could not open file. Please make sure you have the necessary permissions to access files in this location."
@@ -39,6 +42,7 @@ private slots:
 	void openProject();
 	void saveProject();
 	void saveProjectToFolder(QString);
+	void showWikiPage();
 
 	void saveSpriteMode();
 	void saveShowGrid();

@@ -3251,6 +3251,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionWikiPage</sender>
+   <signal>triggered()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>showWikiPage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>367</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -3272,5 +3288,6 @@
   <slot>openAnimation()</slot>
   <slot>openProject()</slot>
   <slot>saveProject()</slot>
+  <slot>showWikiPage()</slot>
  </slots>
 </ui>
