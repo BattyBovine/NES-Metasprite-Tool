@@ -62,7 +62,7 @@ bool PaletteManager::drawFullPaletteColours(QString palfile)
 
 	this->drawSelectionBox(this->gsFullPaletteScene, this->iFullPaletteIndex);
 
-	this->generateNewSpritePalettes(true);
+	this->generateNewSpritePalettes(false);
 
 	return true;
 }
@@ -112,7 +112,7 @@ bool PaletteManager::setPaletteData(QString filename)
 			this->iSpritePaletteIndices[i][j] = (pal.at(j+(4*i))&0x3F);
 		}
 	}
-	this->generateNewSpritePalettes(false);
+	this->generateNewSpritePalettes(true);
 	this->drawSelectionBox(this->gsFullPaletteScene, this->iSpritePaletteIndices[this->iSpritePaletteSelected][this->iSpritePaletteSelectedIndex]);
 	return true;
 }
