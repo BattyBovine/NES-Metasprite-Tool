@@ -754,6 +754,9 @@ void MetaspriteManager::sendTileUpdates()
 		emit(this->updateSpriteBank(currentbank));
 	}
 
+	foreach(MetaspriteTileItem *i, this->vMetaspriteStages[this->iMetaspriteStage]) {
+		emit(this->getPaletteUpdate(i));
+	}
 	emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
 	emit(this->updateAnimationFrame());
 }
