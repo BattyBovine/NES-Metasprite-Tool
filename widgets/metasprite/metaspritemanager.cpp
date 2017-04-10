@@ -590,7 +590,7 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 			databytes += QString(",$%1").arg(oamattr,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamx,2,16,QChar('0')).toUpper();
 		}
-		databanks += QString("$%1").arg(int(floor(oamfullindex/this->iBankDivider)),2,16,QChar('0')).append(",");
+		databanks += QString("$%1").arg(this->iSelectedBank,2,16,QChar('0')).append(",");
 		oamfullindex = 0;
 	}
 
@@ -617,7 +617,7 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 	}
 	quint8 labelnum = 0;
 	QVector<QByteArray> inputbytes(256);
-	QByteArray bankbytes;
+	QList<quint16> banks;
 	QString labelname;
 	while(!file.atEnd()) {
 		QString line = file.readLine();
@@ -630,7 +630,7 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 			QRegularExpressionMatchIterator bytesiter = bytes.globalMatch(line);
 			while(bytesiter.hasNext()) {
 				QRegularExpressionMatch bytesmatch = bytesiter.next();
-				bankbytes.append(quint8(bytesmatch.captured(1).toUInt(NULL,16)));
+				banks.append(quint16(bytesmatch.captured(1).toUInt(NULL,16)));
 			}
 		}
 
@@ -652,10 +652,10 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 		}
 		if(!bytesin.isEmpty())  inputbytes.replace(labelnum,bytesin);
 	}
-	if(!labelname.isEmpty() && !bankbytes.isEmpty()) {
+	if(!labelname.isEmpty() && !banks.isEmpty()) {
 		foreach(QByteArray test, inputbytes) {
 			if(!test.isEmpty()) {
-				this->importMetaspriteBinaryData(inputbytes,bankbytes);
+				this->importMetaspriteBinaryData(inputbytes,banks);
 				file.close();
 				return;
 			}
@@ -688,7 +688,7 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 	QMessageBox::critical(this,tr(MSM_INVALID_SPRITES_TITLE),tr(MSM_INVALID_SPRITES_BODY),QMessageBox::NoButton);
 }
 
-void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, QByteArray banks)
+void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, QList<quint16> banks)
 {
 	int blankcounter = 0;
 	for(int j=0; j<256; j++) {
@@ -732,6 +732,11 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, 
 	}
 
 	this->sendTileUpdates();
+	if(this->iMetaspriteStage<banks.length()) {
+		emit(this->updateSpriteBank(banks[this->iMetaspriteStage]));
+	} else {
+		emit(this->updateSpriteBank(0));
+	}
 }
 
 void MetaspriteManager::clearAllMetaspriteData()

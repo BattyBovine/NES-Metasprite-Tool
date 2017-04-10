@@ -50,7 +50,7 @@ public:
 
 	qreal scale(){return this->iScale;}
 	void openMetaspriteFile(QString);
-	void importMetaspriteBinaryData(QVector<QByteArray>, QByteArray);
+	void importMetaspriteBinaryData(QVector<QByteArray>, QList<quint16>);
 	void clearAllMetaspriteData();
 
 	void selectAllSprites();
