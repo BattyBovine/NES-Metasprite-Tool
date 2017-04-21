@@ -247,33 +247,35 @@ void MetaspriteManager::moveSelectedY(bool down, bool shiftmod)
 
 void MetaspriteManager::drawGridLines()
 {
-	QPen thicksolid(Qt::black,0.5,Qt::SolidLine);
-	QPen thickdashes(Qt::white,0.5,Qt::DashLine);
-	QPen thinsolid(Qt::black,0.25,Qt::SolidLine);
-	QPen thindashes(Qt::white,0.25,Qt::DashLine);
-	QVector<qreal> dp;
-	dp << 1 << 1;
-	thickdashes.setDashPattern(dp);
-	thindashes.setDashPattern(dp);
+	if(this->bShowGrid) {
+		QPen thicksolid(Qt::black,0.5,Qt::SolidLine);
+		QPen thickdashes(Qt::white,0.5,Qt::DashLine);
+		QPen thinsolid(Qt::black,0.25,Qt::SolidLine);
+		QPen thindashes(Qt::white,0.25,Qt::DashLine);
+		QVector<qreal> dp;
+		dp << 1 << 1;
+		thickdashes.setDashPattern(dp);
+		thindashes.setDashPattern(dp);
 
-	qreal canvas = MSM_CANVAS_SIZE*this->iScale;
+		qreal canvas = MSM_CANVAS_SIZE*this->iScale;
 
-	for(int i=MSTI_TILEWIDTH*this->iScale; i<=canvas; i+=MSTI_TILEWIDTH*this->iScale) {
-		this->gsMetasprite->addLine(-canvas,-i,canvas,-i,thinsolid);
-		this->gsMetasprite->addLine(-canvas,i,canvas,i,thinsolid);
-		this->gsMetasprite->addLine(-i,-canvas,-i,canvas,thinsolid);
-		this->gsMetasprite->addLine(i,-canvas,i,canvas,thinsolid);
+		for(int i=MSTI_TILEWIDTH*this->iScale; i<=canvas; i+=MSTI_TILEWIDTH*this->iScale) {
+			this->gsMetasprite->addLine(-canvas,-i,canvas,-i,thinsolid);
+			this->gsMetasprite->addLine(-canvas,i,canvas,i,thinsolid);
+			this->gsMetasprite->addLine(-i,-canvas,-i,canvas,thinsolid);
+			this->gsMetasprite->addLine(i,-canvas,i,canvas,thinsolid);
 
-		this->gsMetasprite->addLine(-canvas,-i,canvas,-i,thindashes);
-		this->gsMetasprite->addLine(-canvas,i,canvas,i,thindashes);
-		this->gsMetasprite->addLine(-i,-canvas,-i,canvas,thindashes);
-		this->gsMetasprite->addLine(i,-canvas,i,canvas,thindashes);
+			this->gsMetasprite->addLine(-canvas,-i,canvas,-i,thindashes);
+			this->gsMetasprite->addLine(-canvas,i,canvas,i,thindashes);
+			this->gsMetasprite->addLine(-i,-canvas,-i,canvas,thindashes);
+			this->gsMetasprite->addLine(i,-canvas,i,canvas,thindashes);
+		}
+
+		this->gsMetasprite->addLine(-canvas,0,canvas,0,thicksolid);
+		this->gsMetasprite->addLine(0,-canvas,0,canvas,thicksolid);
+		this->gsMetasprite->addLine(-canvas,0,canvas,0,thickdashes);
+		this->gsMetasprite->addLine(0,-canvas,0,canvas,thickdashes);
 	}
-
-	this->gsMetasprite->addLine(-canvas,0,canvas,0,thicksolid);
-	this->gsMetasprite->addLine(0,-canvas,0,canvas,thicksolid);
-	this->gsMetasprite->addLine(-canvas,0,canvas,0,thickdashes);
-	this->gsMetasprite->addLine(0,-canvas,0,canvas,thickdashes);
 }
 
 void MetaspriteManager::setNewSpriteColours(PaletteVector c, quint8 p, bool s)
@@ -562,9 +564,9 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
 QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 {
 	QString asmlabel = labelprefix.isEmpty()?"emptylabel_":labelprefix;
-	QString datatable_hi = asmlabel+"hi:\n\t.byte ";
 	QString datatable_lo = asmlabel+"lo:\n\t.byte ";
-	QString databanks = asmlabel+"bank:\n\t.byte ";
+	QString datatable_hi = asmlabel+"hi:\n\t.byte ";
+	QString databanks = asmlabel+"banks:\n\t.byte ";
 	QString databytes;
 
 	for(int i=0; i<256; i++) {
@@ -594,16 +596,15 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 		oamfullindex = 0;
 	}
 
-	datatable_hi.remove(datatable_hi.size()-1,1);
 	datatable_lo.remove(datatable_lo.size()-1,1);
+	datatable_hi.remove(datatable_hi.size()-1,1);
 	databanks.remove(databanks.size()-1,1);
-	datatable_hi += "\n";
 	datatable_lo += "\n";
+	datatable_hi += "\n";
 	databanks += "\n";
 	databytes += "\n";
-	databytes += asmlabel+"end:\n";
 
-	return datatable_hi+datatable_lo+databanks+databytes;
+	return datatable_lo+datatable_hi+databanks+databytes;
 }
 
 
@@ -622,7 +623,7 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 	while(!file.atEnd()) {
 		QString line = file.readLine();
 
-		QRegularExpression banklabel("^(.*?)_bank:$");
+		QRegularExpression banklabel("^(.*?)_banks:$");
 		QRegularExpressionMatch banklabelmatch = banklabel.match(line);
 		if(banklabelmatch.hasMatch()) {
 			QString line = file.readLine();
@@ -731,12 +732,12 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, 
 		this->gsMetasprite->addItem(ms);
 	}
 
-	this->sendTileUpdates();
 	if(this->iMetaspriteStage<banks.length()) {
 		emit(this->updateSpriteBank(banks[this->iMetaspriteStage]));
 	} else {
 		emit(this->updateSpriteBank(0));
 	}
+	this->sendTileUpdates();
 }
 
 void MetaspriteManager::clearAllMetaspriteData()

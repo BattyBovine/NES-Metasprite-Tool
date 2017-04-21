@@ -239,7 +239,7 @@ void AnimationManager::openAnimationFile(QString filename)
 
 		matchpattern.setPattern(baselabel+"(.*):$");
 		matcher = matchpattern.match(line);
-		if(matcher.hasMatch()) {
+		if(matcher.hasMatch() && !baselabel.isEmpty()) {
 			animlabels.append(matcher.captured(1));
 			while(!file.atEnd()) {
 				line = file.readLine();

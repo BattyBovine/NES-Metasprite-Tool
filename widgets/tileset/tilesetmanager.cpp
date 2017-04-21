@@ -81,7 +81,7 @@ void TilesetManager::setSelectedBank(quint16 bankno)
 	emit(this->checkTilesBank(newbank,bankmax));
 
 	if(this->iSelectedBank != bankno) {
-		this->iSelectedBank = newbank;
+		this->iSelectedBank = bankno;
 
 		this->loadCHRBank();
 		emit(this->chrBankChanged(this->iSelectedBank));

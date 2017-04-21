@@ -240,6 +240,12 @@ void NESMetaspriteTool::saveASMMetaspriteBank(QString path)
 		return;
 	}
 
+	QString datatable_header = ui->lineASMLabel->text()+"_header:\n";
+	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_lo\n");
+	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_hi\n");
+	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_banks\n\n");
+
+	file.write(datatable_header.toLocal8Bit());
 	file.write(ui->gvMetasprite->createMetaspriteASMData(ui->lineASMLabel->text()+"_").toLocal8Bit());
 
 	file.close();
