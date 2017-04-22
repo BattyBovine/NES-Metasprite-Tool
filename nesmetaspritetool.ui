@@ -39,9 +39,9 @@
           <property name="title">
            <string>Metasprites</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_23">
+          <layout class="QHBoxLayout" name="horizontalLayout_27">
            <item>
-            <layout class="QVBoxLayout" name="verticalLayout">
+            <layout class="QVBoxLayout" name="verticalLayout_11">
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout">
                <item>
@@ -215,7 +215,7 @@
                 </layout>
                </item>
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_11">
+                <layout class="QVBoxLayout" name="verticalLayout">
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_24">
                    <item>
@@ -226,6 +226,9 @@
                      <property name="checked">
                       <bool>true</bool>
                      </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">buttonGroup</string>
+                     </attribute>
                     </widget>
                    </item>
                    <item>
@@ -233,6 +236,36 @@
                      <property name="text">
                       <string>8x16</string>
                      </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">buttonGroup</string>
+                     </attribute>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_23">
+                   <item>
+                    <widget class="QRadioButton" name="radioChrTable0">
+                     <property name="text">
+                      <string>$0000</string>
+                     </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">buttonGroup_2</string>
+                     </attribute>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="radioChrTable1">
+                     <property name="text">
+                      <string>$1000</string>
+                     </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">buttonGroup_2</string>
+                     </attribute>
                     </widget>
                    </item>
                   </layout>
@@ -1638,6 +1671,7 @@
     <slot>checkTilesBank(quint16,quint16)</slot>
     <slot>selectFirstMetaspriteStage()</slot>
     <slot>selectNextEmptyMetaspriteStage()</slot>
+    <slot>toggleChrTable1(bool)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -3267,6 +3301,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>radioChrTable1</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>toggleChrTable1(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>405</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -3290,4 +3340,8 @@
   <slot>saveProject()</slot>
   <slot>showWikiPage()</slot>
  </slots>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+ </buttongroups>
 </ui>

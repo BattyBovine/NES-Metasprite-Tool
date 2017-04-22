@@ -98,6 +98,7 @@ public slots:
 
 	void toggleShowGrid(bool);
 	void toggleSnapToGrid(bool);
+	void toggleChrTable1(bool);
 	void setBankDivider(int);
 	void setSelectedBank(quint16);
 	void checkTilesBank(quint16,quint16);
@@ -125,7 +126,7 @@ private:
 	qreal iScale;
 	int iMouseTranslateX, iMouseTranslateY;
 
-	bool bTallSprites, bShowGrid, bSnapToGrid;
+	bool bTallSprites, bChrTable1, bShowGrid, bSnapToGrid;
 	quint16 iBankDivider;
 	quint16 iSelectedBank;
 	QGraphicsScene *gsMetasprite;

@@ -45,6 +45,7 @@ private slots:
 	void showWikiPage();
 
 	void saveSpriteMode();
+	void saveSpriteTable();
 	void saveShowGrid();
 	void saveSnapToGrid();
 	void saveBankSize();

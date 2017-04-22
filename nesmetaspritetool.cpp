@@ -22,6 +22,7 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 	this->sSettings.setDefaultFormat(QSettings::NativeFormat);
 	this->restoreSettings();
 	connect(ui->radio8x16,SIGNAL(toggled(bool)),this,SLOT(saveSpriteMode()));
+	connect(ui->radioChrTable1,SIGNAL(toggled(bool)),this,SLOT(saveSpriteTable()));
 	connect(ui->chkShowGrid,SIGNAL(toggled(bool)),this,SLOT(saveShowGrid()));
 	connect(ui->chkSnapToGrid,SIGNAL(toggled(bool)),this,SLOT(saveSnapToGrid()));
 	connect(ui->comboBankSize,SIGNAL(currentIndexChanged(int)),this,SLOT(saveBankSize()));
@@ -184,6 +185,10 @@ void NESMetaspriteTool::saveSpriteMode()
 {
 	this->sSettings.setValue("SpriteMode", ui->radio8x16->isChecked());
 }
+void NESMetaspriteTool::saveSpriteTable()
+{
+	this->sSettings.setValue("SpriteTable1", ui->radioChrTable1->isChecked());
+}
 void NESMetaspriteTool::saveShowGrid()
 {
 	this->sSettings.setValue("ShowGrid", ui->chkShowGrid->isChecked());
@@ -208,6 +213,7 @@ void NESMetaspriteTool::saveRefreshRate()
 void NESMetaspriteTool::restoreSettings()
 {
 	ui->radio8x16->setChecked(this->sSettings.value("SpriteMode",false).toBool());
+	ui->radioChrTable1->setChecked(this->sSettings.value("SpriteTable1",false).toBool());
 	ui->chkShowGrid->setChecked(this->sSettings.value("ShowGrid",true).toBool());
 	ui->chkSnapToGrid->setChecked(this->sSettings.value("SnapToGrid",false).toBool());
 	ui->comboBankSize->setCurrentIndex(this->sSettings.value("BankSize",0).toInt());

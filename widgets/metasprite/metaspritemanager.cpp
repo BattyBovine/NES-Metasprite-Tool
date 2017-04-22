@@ -521,6 +521,11 @@ void MetaspriteManager::toggleSnapToGrid(bool snaptogrid)
 	this->bSnapToGrid = snaptogrid;
 }
 
+void MetaspriteManager::toggleChrTable1(bool chrtable1)
+{
+	this->bChrTable1 = chrtable1;
+}
+
 void MetaspriteManager::setBankDivider(int banksizeindex)
 {
 	this->iBankDivider = (0x100/(1<<banksizeindex));
@@ -548,7 +553,7 @@ QVector<QByteArray> MetaspriteManager::createMetaspriteBinaryData()
 				MetaspriteTileItem *ms = mslist.at(j);
 				quint8 oamx = ms->realX();
 				quint8 oamy = ms->realY();
-				quint8 oamindex = ms->tileIndex()%this->iBankDivider;
+				quint8 oamindex = (ms->tileIndex()%this->iBankDivider)+((this->bTallSprites&&this->bChrTable1)?1:0);
 				quint8 oamattr = ms->palette()|(ms->flippedHorizontal()?0x40:0x00)|(ms->flippedVertical()?0x80:0x00);
 				bin.append(oamy);
 				bin.append(oamindex);
@@ -585,7 +590,7 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 			quint8 oamx = mti->realX();
 			quint8 oamy = mti->realY();
 			oamfullindex = (oamfullindex>mti->tileIndex()) ? oamfullindex : mti->tileIndex();
-			quint8 oamindex = mti->tileIndex()%this->iBankDivider;
+			quint8 oamindex = (mti->tileIndex()%this->iBankDivider)+((this->bTallSprites&&this->bChrTable1)?1:0);
 			quint8 oamattr = mti->palette()|(mti->flippedHorizontal()?0x40:0x00)|(mti->flippedVertical()?0x80:0x00);
 			databytes += QString(",$%1").arg(oamy,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamindex,2,16,QChar('0')).toUpper();
