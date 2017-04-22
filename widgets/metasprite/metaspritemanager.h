@@ -131,6 +131,7 @@ private:
 	quint16 iSelectedBank;
 	QGraphicsScene *gsMetasprite;
 	MetaspriteStageList vMetaspriteStages;
+	QList<quint16> lMetaspriteBanks;
 	quint8 iMetaspriteStage;
 
 	MetaspriteTileList mtlClipboard;

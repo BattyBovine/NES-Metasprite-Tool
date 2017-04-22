@@ -5,7 +5,7 @@ MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
 	this->gsMetasprite = new QGraphicsScene(this);
 	this->setScene(this->gsMetasprite);
 	this->iScale = MSM_DEFAULT_ZOOM;
-	this->bTallSprites = this->bSnapToGrid = false;
+	this->bTallSprites = this->bSnapToGrid = this->bChrTable1 = false;
 	this->bShowGrid = true;
 	this->iBankDivider = 0x100;
 	this->iSelectedBank = 0;
@@ -20,6 +20,8 @@ MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
 
 	this->vMetaspriteStages = MetaspriteStageList(256);
 	this->iMetaspriteStage = 0;
+	for(int i=0; i<256; i++)
+		this->lMetaspriteBanks.append(0);
 }
 
 MetaspriteManager::~MetaspriteManager()
@@ -535,6 +537,7 @@ void MetaspriteManager::setBankDivider(int banksizeindex)
 void MetaspriteManager::setSelectedBank(quint16 bankno)
 {
 	this->iSelectedBank = bankno;
+	this->lMetaspriteBanks[this->iMetaspriteStage] = bankno;
 }
 
 
@@ -597,7 +600,8 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 			databytes += QString(",$%1").arg(oamattr,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamx,2,16,QChar('0')).toUpper();
 		}
-		databanks += QString("$%1").arg(this->iSelectedBank,2,16,QChar('0')).append(",");
+//		databanks += QString("$%1").arg(this->iSelectedBank,2,16,QChar('0')).append(",");
+		databanks += QString("$%1").arg(this->lMetaspriteBanks[i],2,16,QChar('0')).append(",");
 		oamfullindex = 0;
 	}
 
@@ -742,6 +746,10 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, 
 	} else {
 		emit(this->updateSpriteBank(0));
 	}
+
+	for(int i=0; i<banks.length(); i++)
+		this->lMetaspriteBanks[i] = banks[i];
+
 	this->sendTileUpdates();
 }
 
