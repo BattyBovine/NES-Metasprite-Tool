@@ -341,6 +341,11 @@ void NESMetaspriteTool::saveASMAnimation(QString path)
 		return;
 	}
 
+	QString datatable_header = ui->lineASMLabel->text()+"_anim_header:\n";
+	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_anim_lo\n");
+	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_anim_hi\n");
+	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_anim_length\n\n");
+	file.write(datatable_header.toLocal8Bit());
 	file.write(ui->gvAnimation->createAnimationASMData(ui->labelMetaspriteName->text()+"_").toLocal8Bit());
 
 	file.close();

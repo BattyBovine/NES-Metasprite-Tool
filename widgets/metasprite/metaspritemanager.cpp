@@ -600,7 +600,6 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 			databytes += QString(",$%1").arg(oamattr,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamx,2,16,QChar('0')).toUpper();
 		}
-//		databanks += QString("$%1").arg(this->iSelectedBank,2,16,QChar('0')).append(",");
 		databanks += QString("$%1").arg(this->lMetaspriteBanks[i],2,16,QChar('0')).append(",");
 		oamfullindex = 0;
 	}

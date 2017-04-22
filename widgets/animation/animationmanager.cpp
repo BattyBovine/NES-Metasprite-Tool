@@ -285,8 +285,8 @@ void AnimationManager::openAnimationFile(QString filename)
 
 QString AnimationManager::createAnimationASMData(QString labelprefix)
 {
-	QString animdatatable_hi = labelprefix+"anim_hi:\n\t.byte ";
 	QString animdatatable_lo = labelprefix+"anim_lo:\n\t.byte ";
+	QString animdatatable_hi = labelprefix+"anim_hi:\n\t.byte ";
 	QString animdatatable_len = labelprefix+"anim_length:\n\t.byte ";
 	QString animdatabytes;
 
@@ -297,8 +297,8 @@ QString AnimationManager::createAnimationASMData(QString labelprefix)
 		loopanimation = ap.loop();
 
 		QString animlabel = labelprefix+(ap.label().isEmpty()?(QString("unnamed")+QString::number(counter++)):ap.label());
-		animdatatable_hi += QString(">").append(animlabel).append(",");
 		animdatatable_lo += QString("<").append(animlabel).append(",");
+		animdatatable_hi += QString(">").append(animlabel).append(",");
 		animdatatable_len += QString("$%1").arg(ap.size(),2,16,QChar('0')).toUpper().append(",");
 		if(!ap.isEmpty()) {
 			animdatabytes += "\n";
@@ -312,15 +312,15 @@ QString AnimationManager::createAnimationASMData(QString labelprefix)
 		}
 	}
 
-	animdatatable_hi.remove(animdatatable_hi.size()-1,1);
 	animdatatable_lo.remove(animdatatable_lo.size()-1,1);
+	animdatatable_hi.remove(animdatatable_hi.size()-1,1);
 	animdatatable_len.remove(animdatatable_len.size()-1,1);
-	animdatatable_hi += "\n";
 	animdatatable_lo += "\n";
+	animdatatable_hi += "\n";
 	animdatatable_len += "\n";
 	animdatabytes += "\n";
 
-	return animdatatable_hi+animdatatable_lo+animdatatable_len+animdatabytes;
+	return animdatatable_lo+animdatatable_hi+animdatatable_len+animdatabytes;
 }
 
 void AnimationManager::clearAllAnimationData()
