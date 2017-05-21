@@ -136,7 +136,8 @@ void FrameListWidget::generateListDisplay(int s)
 
 QString FrameListWidget::generateListItem(int i)
 {
-	return QString("%1").arg(i,3,10,QChar('0'))+
-			QString(": MS=%1").arg(this->aflFrames[i].frame(),3,10,QChar('0'))+
-			QString(",Delay=")+QString("%1").arg(this->aflFrames[i].delay(),3,10,QChar('0'));
+	return QString("%1: MS=%2,Delay=%3")
+			.arg(i,2,10,QChar('0'))
+			.arg(this->aflFrames[i].frame(),3,10,QChar('0'))
+			.arg(this->aflFrames[i].delay(),3,10,QChar('0'));
 }

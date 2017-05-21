@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>735</width>
+    <width>758</width>
     <height>587</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>735</width>
+    <width>758</width>
     <height>587</height>
    </size>
   </property>
@@ -77,12 +77,6 @@
                <item>
                 <widget class="MetaspriteManager" name="gvMetasprite">
                  <property name="minimumSize">
-                  <size>
-                   <width>192</width>
-                   <height>192</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
                   <size>
                    <width>192</width>
                    <height>192</height>
@@ -199,20 +193,20 @@
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <spacer name="verticalSpacer_7">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
                 </layout>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_11">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
                <item>
                 <layout class="QVBoxLayout" name="verticalLayout">
@@ -270,19 +264,6 @@
                    </item>
                   </layout>
                  </item>
-                 <item>
-                  <spacer name="verticalSpacer_6">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
                 </layout>
                </item>
               </layout>
@@ -328,6 +309,19 @@
                </item>
               </layout>
              </item>
+             <item>
+              <spacer name="verticalSpacer">
+               <property name="orientation">
+                <enum>Qt::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
             </layout>
            </item>
            <item>
@@ -336,8 +330,14 @@
               <widget class="SpriteListWidget" name="listSprites">
                <property name="minimumSize">
                 <size>
-                 <width>177</width>
+                 <width>200</width>
                  <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>200</width>
+                 <height>16777215</height>
                 </size>
                </property>
                <property name="font">
@@ -499,111 +499,39 @@
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
-              <spacer name="verticalSpacer_8">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
+              <widget class="GlobalTilesetManager" name="gvGlobalTileset">
+               <property name="minimumSize">
                 <size>
-                 <width>20</width>
-                 <height>40</height>
+                 <width>256</width>
+                 <height>32</height>
                 </size>
                </property>
-              </spacer>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_10">
-               <property name="spacing">
-                <number>0</number>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
                </property>
-               <item>
-                <spacer name="horizontalSpacer_11">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="TilesetManager" name="gvTileset">
-                 <property name="minimumSize">
-                  <size>
-                   <width>256</width>
-                   <height>256</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>256</width>
-                   <height>256</height>
-                  </size>
-                 </property>
-                 <property name="frameShape">
-                  <enum>QFrame::NoFrame</enum>
-                 </property>
-                 <property name="verticalScrollBarPolicy">
-                  <enum>Qt::ScrollBarAlwaysOff</enum>
-                 </property>
-                 <property name="horizontalScrollBarPolicy">
-                  <enum>Qt::ScrollBarAlwaysOff</enum>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_12">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-             <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
+               <property name="verticalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
                </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
+               <property name="horizontalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
                </property>
-              </spacer>
+              </widget>
              </item>
             </layout>
            </widget>
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="title">
              <string>Palettes</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <spacer name="verticalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
              <item>
               <layout class="QGridLayout" name="gridLayout_6">
                <item row="0" column="1">
@@ -885,19 +813,6 @@
              </item>
              <item>
               <widget class="QComboBox" name="comboPalettes"/>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
              </item>
             </layout>
            </widget>
@@ -1437,7 +1352,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>735</width>
+     <width>758</width>
      <height>21</height>
     </rect>
    </property>
@@ -1612,45 +1527,19 @@
    </slots>
   </customwidget>
   <customwidget>
-   <class>TilesetManager</class>
-   <extends>QGraphicsView</extends>
-   <header>tilesetmanager.h</header>
-   <slots>
-    <signal>sendNewTile(QPointF,QImage,quint32,quint8)</signal>
-    <signal>tilesetChanged(bool)</signal>
-    <signal>chrBankChanged(quint16)</signal>
-    <signal>chrDataChanged(QImage)</signal>
-    <signal>checkTilesBank(quint16,quint16)</signal>
-    <slot>loadCHRData(QString)</slot>
-    <slot>setNewSpriteColours(QVector,quint8)</slot>
-    <slot>getNewTile(QPointF)</slot>
-    <slot>updateSpriteTile(MetaspriteTileItem*)</slot>
-    <slot>setNewSpriteColours(PaletteVector,quint8)</slot>
-    <slot>setSprites(bool)</slot>
-    <slot>getBankDivider(quint16)</slot>
-    <slot>loadCHRBank()</slot>
-    <slot>setSelectedBank(quint16)</slot>
-   </slots>
-  </customwidget>
-  <customwidget>
    <class>MetaspriteManager</class>
    <extends>QGraphicsView</extends>
    <header>metaspritemanager.h</header>
    <slots>
     <signal>requestNewTile(QPointF)</signal>
-    <signal>requestPaletteUpdates(quint8)</signal>
-    <signal>getTileUpdate(MetaspriteTileItem*)</signal>
-    <signal>getPaletteUpdate(MetaspriteTileItem*)</signal>
     <signal>setMetaspriteLabel(QString)</signal>
     <signal>updateList(GraphicsItemList,GraphicsItemList)</signal>
     <signal>sendFrameData(MetaspriteTileList)</signal>
-    <signal>updateAnimationFrame()</signal>
-    <signal>bankDividerChanged(quint16)</signal>
-    <signal>updateSpriteBank(quint16)</signal>
     <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
     <signal>sendMetaspriteStageChange(int)</signal>
+    <signal>sendMetaspriteBankChange(quint16)</signal>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
-    <slot>addNewTile(QPointF,QImage,quint32,quint8)</slot>
+    <slot>addNewTile(QPointF,quint32,quint8)</slot>
     <slot>flipHorizontal()</slot>
     <slot>flipVertical()</slot>
     <slot>deleteSelectedTiles()</slot>
@@ -1666,12 +1555,13 @@
     <slot>setTallSprites()</slot>
     <slot>toggleShowGrid(bool)</slot>
     <slot>toggleSnapToGrid(bool)</slot>
-    <slot>setBankDivider(int)</slot>
-    <slot>setSelectedBank(quint16)</slot>
+    <slot>setBank(quint16)</slot>
     <slot>checkTilesBank(quint16,quint16)</slot>
     <slot>selectFirstMetaspriteStage()</slot>
     <slot>selectNextEmptyMetaspriteStage()</slot>
     <slot>toggleChrTable1(bool)</slot>
+    <slot>setSprites(bool)</slot>
+    <slot>getBankSize(int)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1778,6 +1668,20 @@
     <slot>getNewAnimation(AnimationFrameList)</slot>
    </slots>
   </customwidget>
+  <customwidget>
+   <class>GlobalTilesetManager</class>
+   <extends>QGraphicsView</extends>
+   <header>globaltilesetmanager.h</header>
+   <slots>
+    <signal>sendNewTile(QPointF,quint32,quint8)</signal>
+    <signal>bankChanged(quint16)</signal>
+    <slot>getBankSize(int)</slot>
+    <slot>getNewTile(QPointF)</slot>
+    <slot>setBackgroundColour(PaletteVector)</slot>
+    <slot>setTallSprites(bool)</slot>
+    <slot>setNewBank(quint16)</slot>
+   </slots>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -1848,7 +1752,7 @@
   <connection>
    <sender>NESMetaspriteTool</sender>
    <signal>chrFileOpened(QString)</signal>
-   <receiver>gvTileset</receiver>
+   <receiver>gvGlobalTileset</receiver>
    <slot>loadCHRData(QString)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -2022,38 +1926,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>gvTileset</sender>
-   <signal>sendNewTile(QPointF,QImage,quint32,quint8)</signal>
-   <receiver>gvMetasprite</receiver>
-   <slot>addNewTile(QPointF,QImage,quint32,quint8)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>520</x>
-     <y>138</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>180</x>
-     <y>174</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvMetasprite</sender>
-   <signal>requestNewTile(QPointF)</signal>
-   <receiver>gvTileset</receiver>
-   <slot>getNewTile(QPointF)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>212</x>
-     <y>228</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>543</x>
-     <y>163</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>btnMetaspriteHFlip</sender>
    <signal>clicked()</signal>
    <receiver>gvMetasprite</receiver>
@@ -2102,22 +1974,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>gvMetasprite</sender>
-   <signal>requestPaletteUpdates(quint8)</signal>
-   <receiver>gvPaletteManager</receiver>
-   <slot>sendRequestedPaletteUpdate(quint8)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>212</x>
-     <y>271</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>685</x>
-     <y>520</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>hsMetaspriteSlider</sender>
    <signal>valueChanged(int)</signal>
    <receiver>gvMetasprite</receiver>
@@ -2130,54 +1986,6 @@
     <hint type="destinationlabel">
      <x>212</x>
      <y>271</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvMetasprite</sender>
-   <signal>getTileUpdate(MetaspriteTileItem*)</signal>
-   <receiver>gvTileset</receiver>
-   <slot>updateSpriteTile(MetaspriteTileItem*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>212</x>
-     <y>166</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>518</x>
-     <y>93</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvTileset</sender>
-   <signal>tilesetChanged(bool)</signal>
-   <receiver>gvMetasprite</receiver>
-   <slot>updateTiles(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>502</x>
-     <y>104</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>212</x>
-     <y>189</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvMetasprite</sender>
-   <signal>getPaletteUpdate(MetaspriteTileItem*)</signal>
-   <receiver>gvPaletteManager</receiver>
-   <slot>setNewSpritePalette(MetaspriteTileItem*)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>212</x>
-     <y>271</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>685</x>
-     <y>520</y>
     </hint>
    </hints>
   </connection>
@@ -2328,12 +2136,12 @@
   <connection>
    <sender>gvPaletteManager</sender>
    <signal>newSpriteColours(PaletteVector,quint8,bool)</signal>
-   <receiver>gvTileset</receiver>
+   <receiver>gvGlobalTileset</receiver>
    <slot>setNewSpriteColours(PaletteVector,quint8)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>672</x>
-     <y>458</y>
+     <x>685</x>
+     <y>526</y>
     </hint>
     <hint type="destinationlabel">
      <x>675</x>
@@ -2534,22 +2342,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>gvMetasprite</sender>
-   <signal>updateAnimationFrame()</signal>
-   <receiver>gvFrames</receiver>
-   <slot>updateCurrentFrame()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>128</x>
-     <y>206</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>601</x>
-     <y>180</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>gvPaletteManager</sender>
    <signal>newSpriteColours(PaletteVector,quint8,bool)</signal>
    <receiver>gvAnimation</receiver>
@@ -2626,22 +2418,6 @@
     <hint type="destinationlabel">
      <x>128</x>
      <y>206</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvMetasprite</sender>
-   <signal>updateAnimationFrame()</signal>
-   <receiver>gvAnimation</receiver>
-   <slot>updateCurrentFrame()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>128</x>
-     <y>206</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>160</x>
-     <y>238</y>
     </hint>
    </hints>
   </connection>
@@ -2808,8 +2584,8 @@
   <connection>
    <sender>radio8x16</sender>
    <signal>toggled(bool)</signal>
-   <receiver>gvTileset</receiver>
-   <slot>setSprites(bool)</slot>
+   <receiver>gvGlobalTileset</receiver>
+   <slot>setTallSprites(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>225</x>
@@ -3113,7 +2889,7 @@
    <sender>comboBankSize</sender>
    <signal>currentIndexChanged(int)</signal>
    <receiver>gvMetasprite</receiver>
-   <slot>setBankDivider(int)</slot>
+   <slot>getBankSize(int)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>229</x>
@@ -3158,54 +2934,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>gvMetasprite</sender>
-   <signal>bankDividerChanged(quint16)</signal>
-   <receiver>gvTileset</receiver>
-   <slot>getBankDivider(quint16)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>129</x>
-     <y>209</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>573</x>
-     <y>213</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvMetasprite</sender>
-   <signal>updateSpriteBank(quint16)</signal>
-   <receiver>gvTileset</receiver>
-   <slot>setSelectedBank(quint16)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>129</x>
-     <y>209</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>573</x>
-     <y>219</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvTileset</sender>
-   <signal>chrDataChanged(QImage)</signal>
-   <receiver>gvFrames</receiver>
-   <slot>getTilesetData(QImage)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>573</x>
-     <y>219</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>605</x>
-     <y>181</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>gvFrames</sender>
    <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
    <receiver>gvAnimation</receiver>
@@ -3218,22 +2946,6 @@
     <hint type="destinationlabel">
      <x>161</x>
      <y>241</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>gvTileset</sender>
-   <signal>checkTilesBank(quint16,quint16)</signal>
-   <receiver>gvMetasprite</receiver>
-   <slot>checkTilesBank(quint16,quint16)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>573</x>
-     <y>219</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>129</x>
-     <y>209</y>
     </hint>
    </hints>
   </connection>
@@ -3317,6 +3029,102 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>comboBankSize</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>gvGlobalTileset</receiver>
+   <slot>getBankSize(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>157</x>
+     <y>542</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>572</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radio8x16</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>setSprites(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>203</x>
+     <y>380</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvGlobalTileset</sender>
+   <signal>bankChanged(quint16)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>setBank(quint16)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>575</x>
+     <y>225</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>requestNewTile(QPointF)</signal>
+   <receiver>gvGlobalTileset</receiver>
+   <slot>getNewTile(QPointF)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>209</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>575</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvGlobalTileset</sender>
+   <signal>sendNewTile(QPointF,quint32,quint8)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>addNewTile(QPointF,quint32,quint8)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>575</x>
+     <y>225</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>209</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>sendMetaspriteBankChange(quint16)</signal>
+   <receiver>gvGlobalTileset</receiver>
+   <slot>setNewBank(quint16)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>209</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>575</x>
+     <y>225</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -3341,7 +3149,7 @@
   <slot>showWikiPage()</slot>
  </slots>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>

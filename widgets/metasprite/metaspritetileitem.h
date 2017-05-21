@@ -1,7 +1,7 @@
 #ifndef METASPRITETILEITEM_H
 #define METASPRITETILEITEM_H
 
-#include <QGraphicsPixmapItem>
+#include <QGraphicsItem>
 #include <QStyleOptionGraphicsItem>
 #include <QPainter>
 #include <QPen>
@@ -11,14 +11,15 @@
 
 #include <QtMath>
 
+#include "tilesetcache.h"
+
 #define MSTI_TILEWIDTH 8
 
-class MetaspriteTileItem : public QGraphicsPixmapItem
+class MetaspriteTileItem : public QGraphicsItem
 {
 public:
 	MetaspriteTileItem(QGraphicsItem *parent = 0);
-	MetaspriteTileItem(QImage,QGraphicsItem *parent = 0);
-	MetaspriteTileItem(QImage,bool,QGraphicsItem *parent = 0);
+	MetaspriteTileItem(quint32,quint16,quint8,bool,QGraphicsItem *parent = 0);
 
 	enum { Type = UserType+1 };
 	int type() const {return Type;}
@@ -35,24 +36,24 @@ public:
 	void setTallSprite(bool dh){this->bTallSprite=dh;}
 
 	void setTile(QImage);
-	void setNewColours(QRgb,QRgb,QRgb,quint8);
 
 	bool flippedHorizontal(){return this->bHFlip;}
 	bool flippedVertical(){return this->bVFlip;}
+	quint16 bank(){return this->iBank;}
+	void setBank(quint16 b){this->iBank=b;}
 	quint8 palette(){return this->iPalette;}
 	void setPalette(quint8 p){this->iPalette=p;}
 	quint32 tileIndex(){return this->iTile;}
 	void setTileIndex(quint32 t){this->iTile=t;}
-	QRgb getPaletteColour(quint8 i){return this->imgTile.color(i);}
 
 protected:
-	void mouseReleaseEvent(QGraphicsSceneMouseEvent*);
+	QRectF boundingRect() const {return QRectF(0,0,MSTI_TILEWIDTH,(MSTI_TILEWIDTH*(this->bTallSprite?2:1)));}
 	void paint(QPainter*,const QStyleOptionGraphicsItem*,QWidget*);
 
 private:
-	QImage imgTile;
-	quint8 iPalette;
 	quint32 iTile;
+	quint16 iBank;
+	quint8 iPalette;
 	qreal iX,iY,iW,iH;
 	bool bTallSprite,bHFlip,bVFlip;
 };

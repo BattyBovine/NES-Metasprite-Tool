@@ -16,30 +16,37 @@ TilesetManager::TilesetManager(QWidget *parent) : QGraphicsView(parent)
 	this->gpiTileset->setScale(TSM_SCALE);
 	this->gsTileset->addItem(this->gpiTileset);
 	this->griSelection[0] = this->griSelection[1] = NULL;
+	this->iScale = TSM_SCALE;
+
+	this->iGlobalTileset = 0;
 	this->iSelectedTile = 0;
-	this->iPalette = 0;
+	this->iSelectedPalette = 0;
+	this->iBankDivider = qPow(2,2);
+	this->iAnimFrame = 0;
 	this->bTallSprite = false;
-	this->iBankDivider = 0x100;
-	this->iSelectedBank = 0;
 
 	this->pSelection = QPointF(0,0);
 	this->drawSelectionBox();
-
-	this->threadCHR = new CHRThread();
-	connect(this->threadCHR,SIGNAL(sendCHRImageData(QImage)),this,SLOT(getNewCHRData(QImage)));
-	connect(this->threadCHR,SIGNAL(error(QString,QString)),this,SLOT(getCHRError(QString,QString)));
-
-	connect(&this->fswCHR,SIGNAL(fileChanged(QString)),this,SLOT(reloadCurrentTileset()));
 }
 
 TilesetManager::~TilesetManager()
 {
 	this->gsTileset->removeItem(this->gpiTileset);
+//	this->threadCHR->deleteLater();
 	delete this->gpiTileset;
-	delete this->gsTileset;
+	this->gsTileset->deleteLater();
 }
 
 
+
+void TilesetManager::resizeEvent(QResizeEvent*)
+{
+	QRectF viewrect = this->mapToScene(this->rect()).boundingRect();
+	this->iScale = qFloor(qMin(viewrect.width(),viewrect.height())/this->imgTileset.width());
+	this->gpiTileset->setScale(this->iScale);
+	this->setSceneRect(0,0,this->imgTileset.width()*this->gpiTileset->scale(),this->imgTileset.height()*this->gpiTileset->scale());
+	this->drawSelectionBox();
+}
 
 void TilesetManager::dropEvent(QDropEvent *e)
 {
@@ -57,122 +64,109 @@ void TilesetManager::dropEvent(QDropEvent *e)
 void TilesetManager::mousePressEvent(QMouseEvent *e)
 {
 	this->pSelection = this->mapToScene(e->pos());
+	this->pSelection.setX(qFloor(pSelection.x()/this->iScale));
+	this->pSelection.setY(qFloor(pSelection.y()/this->iScale));
 	this->drawSelectionBox();
 }
 
 void TilesetManager::wheelEvent(QWheelEvent *e)
 {
-	qreal steps = -(((qreal)e->angleDelta().y()/8)/15);
+	int steps = -qFloor(((qreal)e->angleDelta().y()/8)/15);
 
-	if(((this->iSelectedBank+steps)>=1) && ((this->iSelectedBank+steps)<=((this->imgTileset.height()/(this->iBankDivider>>1))-1))) {
-		this->iSelectedBank += steps;
-	} else {
-		this->iSelectedBank = ((steps<0)?0:((this->imgTileset.height()/(this->iBankDivider>>1))-1));
-	}
+	this->iGlobalTileset = ((this->iGlobalTileset+steps)<0)?0:((this->iGlobalTileset+steps)>7)?7:(this->iGlobalTileset+steps);
 
-	this->loadCHRBank();
-	emit(this->chrBankChanged(this->iSelectedBank));
-}
-
-void TilesetManager::setSelectedBank(quint16 bankno)
-{
-	quint16 bankmax = ((this->imgTileset.height()/(this->iBankDivider>>1))-1);
-	quint16 newbank = ((bankno>=bankmax)?bankmax:bankno);
-	emit(this->checkTilesBank(newbank,bankmax));
-
-	if(this->iSelectedBank != bankno) {
-		this->iSelectedBank = bankno;
-
-		this->loadCHRBank();
-		emit(this->chrBankChanged(this->iSelectedBank));
-	}
+//	this->loadCHRBank();
+//	emit(chrBankChanged(this->iGlobalTileset));
+	emit(tilesetChangedDelta(steps));
 }
 
 
 
 bool TilesetManager::drawSelectionBox()
 {
+	qreal xorigin = qFloor(this->pSelection.x()/TSM_TILEWIDTH);
+	qreal yorigin = qFloor(this->pSelection.y()/TSM_TILEWIDTH);
+	if((xorigin < 0 || xorigin>=this->imgTileset.width()/TSM_TILEWIDTH) ||
+		(yorigin < 0 || yorigin>=this->imgTileset.height()/TSM_TILEWIDTH))
+		return false;
+
+	this->iSelectedTile = (yorigin*(this->imgTileset.width()/TSM_TILEWIDTH))+xorigin;
+
 	if(this->griSelection[0] && this->griSelection[1]) {
-		this->gsTileset->removeItem(this->griSelection[0]);
-		this->gsTileset->removeItem(this->griSelection[1]);
+		if(this->griSelection[0]->parentItem()) this->gsTileset->removeItem(this->griSelection[0]);
+		if(this->griSelection[1]->parentItem()) this->gsTileset->removeItem(this->griSelection[1]);
 		delete this->griSelection[0];
 		delete this->griSelection[1];
+		this->griSelection[0] = NULL;
+		this->griSelection[1] = NULL;
 	}
-
-	quint8 xorigin = qFloor(this->pSelection.x())-(qFloor(this->pSelection.x())%(TSM_TILESIZE*(this->bTallSprite?2:1)));
-	quint16 yorigin = (qFloor(this->pSelection.y())-(qFloor(this->pSelection.y())%TSM_TILESIZE))%(this->iBankDivider);
-	this->pSelection = QPointF(xorigin,yorigin);
-	this->iSelectedTile = ((qFloor((yorigin/TSM_TILESIZE)<<4)|qFloor(xorigin/TSM_TILESIZE))%this->iBankDivider);
 
 	QPen dashes(Qt::black,1,Qt::DashLine);
 	QVector<qreal> dp;
 	dp << 2 << 2;
 	dashes.setDashPattern(dp);
-	this->griSelection[0] = this->gsTileset->addRect(QRectF(xorigin,yorigin,TSM_TILESIZE*(this->bTallSprite?2:1)-1,TSM_TILESIZE-1),QPen(Qt::white),Qt::NoBrush);
-	this->griSelection[1] = this->gsTileset->addRect(QRectF(xorigin,yorigin,TSM_TILESIZE*(this->bTallSprite?2:1)-1,TSM_TILESIZE-1),dashes,Qt::NoBrush);
+	this->griSelection[0] = this->gsTileset->addRect(QRectF(xorigin*TSM_TILEWIDTH*this->iScale,yorigin*TSM_TILEWIDTH*this->iScale,(TSM_TILEWIDTH*this->iScale)-1,(TSM_TILEWIDTH*this->iScale)-1),QPen(Qt::white),Qt::NoBrush);
+	this->griSelection[1] = this->gsTileset->addRect(QRectF(xorigin*TSM_TILEWIDTH*this->iScale,yorigin*TSM_TILEWIDTH*this->iScale,(TSM_TILEWIDTH*this->iScale)-1,(TSM_TILEWIDTH*this->iScale)-1),dashes,Qt::NoBrush);
+
+	emit(selectedTileChanged(this->iSelectedTile));
 
 	return true;
 }
 
 void TilesetManager::reloadCurrentTileset()
 {
-	threadCHR->loadFile(this->sCurrentTilesetFile);
+//	threadCHR->loadFile(this->sCurrentTilesetFile);
 }
 
 
 
 void TilesetManager::loadCHRData(QString filename)
 {
-	this->threadCHR->loadFile(filename);
-	if(!this->fswCHR.files().isEmpty()) this->fswCHR.removePath(this->sCurrentTilesetFile);
-	this->sCurrentTilesetFile = filename;
-	this->fswCHR.addPath(filename);
-	return;
+//	this->threadCHR->loadFile(filename);
+//	if(!this->fswCHR.files().isEmpty()) this->fswCHR.removePath(this->sCurrentTilesetFile);
+//	this->sCurrentTilesetFile = filename;
+//	this->fswCHR.addPath(filename);
 }
 
-void TilesetManager::loadCHRBank()
+void TilesetManager::setNewSpriteColours(PaletteVector/* c*/, quint8 i)
 {
-	this->imgSelectedBank = this->imgTileset.copy(QRect(0,((this->iBankDivider>>1)*this->iSelectedBank),128,(this->iBankDivider>>1)));
-	this->setFixedSize(256,this->iBankDivider);
-	this->setSceneRect(0,0,256,this->iBankDivider);
+//	this->gsTileset->setBackgroundBrush(QBrush(QColor(c.at(PM_PALETTE_COLOURS_MAX*i))));
+//	this->imgTileset.setColor(1,c.at((PM_PALETTE_COLOURS_MAX*i)+1));
+//	this->imgTileset.setColor(2,c.at((PM_PALETTE_COLOURS_MAX*i)+2));
+//	this->imgTileset.setColor(3,c.at((PM_PALETTE_COLOURS_MAX*i)+3));
+	this->iSelectedPalette = i;
 
-	this->gpiTileset->setPixmap(QPixmap::fromImage(this->imgSelectedBank));
-	emit(this->tilesetChanged(this->bTallSprite));
-}
-
-void TilesetManager::setNewSpriteColours(PaletteVector c, quint8 i)
-{
-	this->gsTileset->setBackgroundBrush(QBrush(QColor(c.at(4*i))));
-	this->imgTileset.setColor(1,c.at((4*i)+1));
-	this->imgTileset.setColor(2,c.at((4*i)+2));
-	this->imgTileset.setColor(3,c.at((4*i)+3));
-	this->iPalette = i;
-
-	this->gpiTileset->setPixmap(QPixmap::fromImage(this->imgTileset));
+//	this->loadCHRBank();
 }
 
 
-
-void TilesetManager::getNewTile(QPointF p)
-{
-	quint32 selection = this->iSelectedTile+(this->iBankDivider*this->iSelectedBank);
-	emit(sendNewTile(p,this->createNewTile(selection),selection,this->iPalette));
-}
-
-void TilesetManager::updateSpriteTile(MetaspriteTileItem *t)
-{
-	t->setTile(this->createNewTile((t->tileIndex()+(this->iSelectedBank*this->iBankDivider))&(t->tallSprite()?0xFFFFFFFE:0xFFFFFFFF)));
-}
 
 void TilesetManager::getNewCHRData(QImage img)
 {
-	img.setColor(1,this->imgTileset.color(1));
-	img.setColor(2,this->imgTileset.color(2));
-	img.setColor(3,this->imgTileset.color(3));
-	this->imgTileset = img;
+//	int bankheight = qFloor(128/this->iBankDivider);
+//	uchar *src = img.bits();
+//	for(int bank=0; bank<(img.height()/bankheight); bank++) {
+//		for(int pal=0; pal<PM_SUBPALETTES_MAX; pal++) {
+//			QImage destimg = QImage(128, bankheight, QImage::Format_Indexed8);
+//			destimg.fill(0);
+//			uchar *dest = destimg.bits();
+//			for(int y=0; y<bankheight; y++) {
+//				for(int x=0; x<128; x++) {
+//					int destpixel = (128*y)+x;
+//					int srcpixel = (128*y+(128*bankheight*bank))+x;
+//					dest[destpixel] = src[srcpixel];
+//				}
+//			}
+//			destimg.setColor(0,qRgb(0x00,0x00,0x00));
+//			destimg.setColor(1,qRgb(0x55,0x55,0x55));
+//			destimg.setColor(2,qRgb(0xAA,0xAA,0xAA));
+//			destimg.setColor(3,qRgb(0xFF,0xFF,0xFF));
+//			TilesetCache::insert(bank,pal,QPixmap::fromImage(destimg));
+//		}
+//	}
+//	this->gpiTileset->setPixmap(TilesetCache::find(0,0));
 
-	this->loadCHRBank();
-	emit(this->chrDataChanged(this->imgTileset));
+//	this->resizeEvent(NULL);
 }
 
 void TilesetManager::getCHRError(QString title,QString body)
@@ -180,47 +174,14 @@ void TilesetManager::getCHRError(QString title,QString body)
 	QMessageBox::warning(NULL,title,body,QMessageBox::NoButton);
 }
 
-void TilesetManager::getBankDivider(quint16 bankdiv)
+void TilesetManager::getGlobalTileset(int t)
 {
-	qreal diff = qreal(this->iBankDivider)/qreal(bankdiv);
-	this->iBankDivider = bankdiv;
-	this->iSelectedBank *= diff;
-
-	this->loadCHRBank();
-	emit(this->chrDataChanged(this->imgTileset));
-	this->drawSelectionBox();
+	this->iGlobalTileset = t;
+//	this->loadCHRBank();
 }
 
-
-
-QImage TilesetManager::createNewTile(quint32 tile)
+void TilesetManager::getNewAnimationFrame(int f)
 {
-	QImage newtile(MSTI_TILEWIDTH, MSTI_TILEWIDTH*(this->bTallSprite?2:1), QImage::Format_Indexed8);
-
-	int x = (tile&0x0F)*MSTI_TILEWIDTH;
-	int y = (((tile%this->iBankDivider)&0xF0)>>4)*MSTI_TILEWIDTH;
-	QImage toptile = (this->imgSelectedBank.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
-	newtile.setColor(0,toptile.color(0));
-	newtile.setColor(1,toptile.color(1));
-	newtile.setColor(2,toptile.color(2));
-	newtile.setColor(3,toptile.color(3));
-
-	for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
-		for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
-			newtile.setPixel(x,y,toptile.pixelIndex(x,y));
-		}
-	}
-
-	if(this->bTallSprite) {
-		x = ((tile+1)&0x0F)*MSTI_TILEWIDTH;
-		y = (((tile%this->iBankDivider)&0xF0)>>4)*MSTI_TILEWIDTH;
-		QImage antoniostellabottomtile = (this->imgSelectedBank.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
-		for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
-			for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
-				newtile.setPixel(x,y+MSTI_TILEWIDTH,antoniostellabottomtile.pixelIndex(x,y));
-			}
-		}
-	}
-
-	return newtile;
+	this->iAnimFrame = f;
+//	this->loadCHRBank();
 }

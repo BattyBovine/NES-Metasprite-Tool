@@ -117,36 +117,37 @@ void AnimationFrameManager::getTilesetData(QImage tiles)
 
 MetaspriteTileList AnimationFrameManager::getTileImageData(MetaspriteTileList l)
 {
-	MetaspriteTileList newlist;
-	foreach(MetaspriteTileItem *i, l) {
-		QImage newtile(i->width(), i->height(), QImage::Format_Indexed8);
-		newtile.setColor(0,i->getPaletteColour(0));
-		newtile.setColor(1,i->getPaletteColour(1));
-		newtile.setColor(2,i->getPaletteColour(2));
-		newtile.setColor(3,i->getPaletteColour(3));
+//	MetaspriteTileList newlist;
+//	foreach(MetaspriteTileItem *i, l) {
+//		QImage newtile(i->width(), i->height(), QImage::Format_Indexed8);
+//		newtile.setColor(0,i->getPaletteColour(0));
+//		newtile.setColor(1,i->getPaletteColour(1));
+//		newtile.setColor(2,i->getPaletteColour(2));
+//		newtile.setColor(3,i->getPaletteColour(3));
 
-		int x = (i->tileIndex()&0x0000000F)*MSTI_TILEWIDTH;
-		int y = ((i->tileIndex()&0xFFFFFFF0)>>4)*MSTI_TILEWIDTH;
-		QImage toptile = (this->imgTileset.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
+//		int x = (i->tileIndex()&0x0F)*MSTI_TILEWIDTH;
+//		int y = ((i->tileIndex()&0xF0)>>4)*MSTI_TILEWIDTH;
+//		QImage toptile = (this->imgTileset.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
 
-		for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
-			for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
-				newtile.setPixel(x,y,toptile.pixelIndex(x,y));
-			}
-		}
+//		for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
+//			for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
+//				newtile.setPixel(x,y,toptile.pixelIndex(x,y));
+//			}
+//		}
 
-		if(newtile.height()>MSTI_TILEWIDTH) {
-			x = ((i->tileIndex()+1)&0x0000000F)*MSTI_TILEWIDTH;
-			y = ((i->tileIndex()&0xFFFFFFF0)>>4)*MSTI_TILEWIDTH;
-			QImage antoniostellabottomtile = (this->imgTileset.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
-			for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
-				for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
-					newtile.setPixel(x,y+MSTI_TILEWIDTH,antoniostellabottomtile.pixelIndex(x,y));
-				}
-			}
-		}
-		i->setTile(newtile);
-		newlist.append(i);
-	}
-	return newlist;
+//		if(newtile.height()>MSTI_TILEWIDTH) {
+//			x = ((i->tileIndex()+1)&0x0000000F)*MSTI_TILEWIDTH;
+//			y = ((i->tileIndex()&0xFFFFFFF0)>>4)*MSTI_TILEWIDTH;
+//			QImage antoniostellabottomtile = (this->imgTileset.copy(x,y,MSTI_TILEWIDTH,MSTI_TILEWIDTH));
+//			for(quint8 y=0; y<MSTI_TILEWIDTH; y++) {
+//				for(quint8 x=0; x<MSTI_TILEWIDTH; x++) {
+//					newtile.setPixel(x,y+MSTI_TILEWIDTH,antoniostellabottomtile.pixelIndex(x,y));
+//				}
+//			}
+//		}
+//		i->setTile(newtile);
+//		newlist.append(i);
+//	}
+//	return newlist;
+	return l;
 }

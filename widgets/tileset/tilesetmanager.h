@@ -19,12 +19,14 @@
 
 #include <QtMath>
 
+#include "tilesetcache.h"
+#include "globaltilesetmanager.h"
 #include "palettemanager.h"
 #include "metaspritetileitem.h"
-#include "chrthread.h"
 
 #define TSM_SCALE       2
-#define TSM_TILESIZE    (MSTI_TILEWIDTH*TSM_SCALE)
+#define TSM_TILEWIDTH   8
+#define TSM_TILES_W     16
 
 class TilesetManager : public QGraphicsView
 {
@@ -36,26 +38,28 @@ public:
 signals:
 	void tilesetChanged(bool);
 	void sendNewTile(QPointF,QImage,quint32,quint8);
+	void sendNewMetasprite(MetaspriteTileItem*);
 	void chrBankChanged(quint16);
+	void tilesetChangedDelta(int);
 	void chrDataChanged(QImage);
+	void selectedTileChanged(int);
 	void checkTilesBank(quint16,quint16);
+	void metaspriteUpdated(MetaspriteTileItem*);
 
 public slots:
 	void loadCHRData(QString);
-	void loadCHRBank();
 	void setNewSpriteColours(PaletteVector,quint8);
 	void setSprites(bool tall){this->bTallSprite=tall;this->drawSelectionBox();emit(this->tilesetChanged(this->bTallSprite));}
-	void setSelectedBank(quint16);
 
-	void getNewTile(QPointF);
-	void updateSpriteTile(MetaspriteTileItem*);
 	void getNewCHRData(QImage);
 	void getCHRError(QString,QString);
-	void getBankDivider(quint16);
+	void getGlobalTileset(int);
+	void getNewAnimationFrame(int);
 
 	void reloadCurrentTileset();
 
 protected:
+	void resizeEvent(QResizeEvent*);
 	void dragMoveEvent(QDragMoveEvent*e){e->accept();}
 	void dragEnterEvent(QDragEnterEvent*e){e->acceptProposedAction();}
 	void dropEvent(QDropEvent*);
@@ -66,21 +70,19 @@ protected:
 private:
 	bool drawBankDivider();
 	bool drawSelectionBox();
-	QImage createNewTile(quint32);
 
 	QGraphicsScene *gsTileset;
 	QString sCurrentTilesetFile;
-	QFileSystemWatcher fswCHR;
-	CHRThread *threadCHR;
 	QImage imgTileset;
-	QImage imgSelectedBank;
 	PaletteVector pvCurrentColours;
 	QGraphicsPixmapItem *gpiTileset;
-	quint32 iSelectedTile;
-	quint8 iPalette;
+	quint8 iGlobalTileset;
+	quint8 iSelectedTile;
+	quint8 iSelectedPalette;
+	quint8 iBankDivider;
+	quint8 iAnimFrame;
 	bool bTallSprite;
-	quint16 iBankDivider;
-	quint16 iSelectedBank;
+	qreal iScale;
 
 	QGraphicsRectItem *griSelection[2];
 	QPointF pSelection;

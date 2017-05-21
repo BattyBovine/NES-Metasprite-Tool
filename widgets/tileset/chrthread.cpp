@@ -58,10 +58,10 @@ void CHRThread::run()
 
 	QImage imgtileset(128, (filesize>>5), QImage::Format_Indexed8);
 	imgtileset.fill(0);
-	imgtileset.setColor(0,qRgba(0x00,0x00,0x00,0x00));
-	imgtileset.setColor(1,qRgb(0x00,0x00,0x00));
-	imgtileset.setColor(2,qRgb(0x00,0x00,0x00));
-	imgtileset.setColor(3,qRgb(0x00,0x00,0x00));
+	imgtileset.setColor(0,qRgb(0x00,0x00,0x00));
+	imgtileset.setColor(1,qRgb(0x55,0x55,0x55));
+	imgtileset.setColor(2,qRgb(0xAA,0xAA,0xAA));
+	imgtileset.setColor(3,qRgb(0xFF,0xFF,0xFF));
 
 	for(int imgy=0; imgy<((filesize/0x0200)*2); imgy++) {
 		for(int imgx=0; imgx<16; imgx++) {

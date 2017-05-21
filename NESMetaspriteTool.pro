@@ -33,7 +33,9 @@ SOURCES += main.cpp \
 	widgets/animation/animationmanager.cpp \
 	widgets/animation/animationframemanager.cpp \
 	widgets/animation/animationframeitem.cpp \
-    widgets/tileset/chrthread.cpp
+    widgets/tileset/chrthread.cpp \
+    widgets/tileset/tilesetcache.cpp \
+    widgets/tileset/globaltilesetmanager.cpp
 
 HEADERS  += nesmetaspritetool.h \
 	widgets/ui/lineeditasm.h \
@@ -48,7 +50,9 @@ HEADERS  += nesmetaspritetool.h \
 	widgets/animation/animationmanager.h \
 	widgets/animation/animationframemanager.h \
 	widgets/animation/animationframeitem.h \
-    widgets/tileset/chrthread.h
+    widgets/tileset/chrthread.h \
+    widgets/tileset/tilesetcache.h \
+    widgets/tileset/globaltilesetmanager.h
 
 FORMS    += nesmetaspritetool.ui
 

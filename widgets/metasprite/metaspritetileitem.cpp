@@ -1,60 +1,57 @@
 #include "metaspritetileitem.h"
 
-MetaspriteTileItem::MetaspriteTileItem(QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
+MetaspriteTileItem::MetaspriteTileItem(QGraphicsItem *parent) : QGraphicsItem(parent)
 {
 	this->bHFlip = this->bVFlip = false;
+	this->iTile = 0;
+	this->iBank = 0;
 	this->iPalette = 0;
 	this->iX = this->iY = 0;
-	this->iW = this->iH = MSTI_TILEWIDTH;
+	this->iW = MSTI_TILEWIDTH;
+	this->iH = MSTI_TILEWIDTH*(this->bTallSprite?2:1);
 	this->bTallSprite = false;
-	this->imgTile = QImage(this->iW,this->iH,QImage::Format_Indexed8);
-	this->imgTile.fill(0);
-	this->imgTile.setColor(0,qRgba(0x00,0x00,0x00,0x00));
+
+	this->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+	this->setZValue(-100);
 }
 
-MetaspriteTileItem::MetaspriteTileItem(QImage img, QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
+MetaspriteTileItem::MetaspriteTileItem(quint32 tile, quint16 bank, quint8 palette, bool tall, QGraphicsItem *parent) : QGraphicsItem(parent)
 {
 	this->bHFlip = this->bVFlip = false;
-	this->iPalette = 0;
-	this->iW = this->iH = MSTI_TILEWIDTH;
-	this->bTallSprite = false;
-	this->imgTile = img;
-	this->setPixmap(QPixmap::fromImage(img));
-}
-
-MetaspriteTileItem::MetaspriteTileItem(QImage img, bool tall, QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
-{
-	this->bHFlip = this->bVFlip = false;
-	this->iPalette = 0;
+	this->iTile = tile;
+	this->iBank = bank;
+	this->iPalette = palette;
 	this->bTallSprite = tall;
 	this->iW = MSTI_TILEWIDTH;
 	this->iH = MSTI_TILEWIDTH*(this->bTallSprite?2:1);
-	this->imgTile = img;
-	this->setPixmap(QPixmap::fromImage(img));
+
+	this->setFlags(QGraphicsItem::ItemIsMovable|QGraphicsItem::ItemIsSelectable);
+	this->setZValue(-100);
 }
 
 
 
-void MetaspriteTileItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *e)
+void MetaspriteTileItem::paint(QPainter *p, const QStyleOptionGraphicsItem*, QWidget*)
 {
-	QGraphicsPixmapItem::mouseReleaseEvent(e);
-}
+	QPixmap tileset = TilesetCache::find(this->iBank,this->iPalette);
+	QRectF tile0 = QRect(((this->iTile%16)*MSTI_TILEWIDTH)&(this->bTallSprite?0xFE:0xFF),((this->iTile>>4)*MSTI_TILEWIDTH),MSTI_TILEWIDTH,MSTI_TILEWIDTH);
+	p->drawPixmap(QRectF(0,0,MSTI_TILEWIDTH,MSTI_TILEWIDTH),tileset,tile0);
+	if(this->bTallSprite) {
+		QRectF tile1 = QRect(((this->iTile%16)*MSTI_TILEWIDTH)+MSTI_TILEWIDTH,((this->iTile>>4)*MSTI_TILEWIDTH),MSTI_TILEWIDTH,MSTI_TILEWIDTH);
+		p->drawPixmap(QRectF(0,MSTI_TILEWIDTH,MSTI_TILEWIDTH,MSTI_TILEWIDTH),tileset,tile1);
+	}
 
-void MetaspriteTileItem::paint(QPainter *p, const QStyleOptionGraphicsItem *o, QWidget *w)
-{
-	Q_UNUSED(w);
-	p->drawPixmap(QGraphicsPixmapItem::offset(),QGraphicsPixmapItem::pixmap());
-
-	if(o->state & QStyle::State_Selected){
-		QRectF r = this->pixmap().rect();
-		QPen dashes(Qt::black,1/QGraphicsPixmapItem::scale(),Qt::DashLine);
+	if(this->isSelected()) {
+		QPen dashes(Qt::black,(1/this->scale()),Qt::DashLine);
 		QVector<qreal> dp;
-		dp << QGraphicsPixmapItem::scale() << QGraphicsPixmapItem::scale();
+		dp << 2 << 2;
 		dashes.setDashPattern(dp);
-		p->setPen(QPen(Qt::white,1/QGraphicsPixmapItem::scale(),Qt::SolidLine));
-		p->drawRect(r);
+
+		p->setPen(QPen(Qt::white,(1/this->scale())));
+		p->drawRect(QRectF(0,0,MSTI_TILEWIDTH,MSTI_TILEWIDTH*(this->bTallSprite?2:1)));
 		p->setPen(dashes);
-		p->drawRect(r);
+		p->drawRect(QRectF(0,0,MSTI_TILEWIDTH,MSTI_TILEWIDTH*(this->bTallSprite?2:1)));
+
 	}
 }
 
@@ -74,21 +71,4 @@ void MetaspriteTileItem::flipVertical(bool f)
 	this->bVFlip = f;
 	qreal t = qRound((this->height()/2)*this->scale());
 	this->setTransform(QTransform().translate(0,t).scale(1,-1).translate(0,-t),true);
-}
-
-
-
-void MetaspriteTileItem::setTile(QImage img)
-{
-	this->imgTile = img;
-	this->setPixmap(QPixmap::fromImage(this->imgTile));
-}
-
-void MetaspriteTileItem::setNewColours(QRgb a, QRgb b, QRgb c, quint8 p)
-{
-	this->iPalette = p;
-	this->imgTile.setColor(1,a);
-	this->imgTile.setColor(2,b);
-	this->imgTile.setColor(3,c);
-	this->setPixmap(QPixmap::fromImage(this->imgTile));
 }

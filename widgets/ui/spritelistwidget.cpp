@@ -71,10 +71,11 @@ void SpriteListWidget::generateListDisplay()
 	foreach(QGraphicsItem *i, this->lItems) {
 		if(i->type()!=MetaspriteTileItem::Type)   continue;
 		MetaspriteTileItem *ms = qgraphicsitem_cast<MetaspriteTileItem*>(i);
-		QString lineitem = QString("%1").arg(ms->tileIndex(),3,16,QChar('0')).toUpper()+
-				QString(" X=")+QString("%1").arg(ms->realX(),3,10,QChar('_'))+
-				QString(" Y=")+QString("%1").arg(ms->realY(),3,10,QChar('_'))+
-				QString(" P=")+QString::number(ms->palette(),10);
+		QString lineitem = QString("%1 X=%2 Y=%3 P=%4")
+						   .arg(ms->tileIndex(),2,16,QChar('0'))
+						   .arg(ms->realX(),4,10,QChar(' '))
+						   .arg(ms->realY(),4,10,QChar(' '))
+						   .arg(ms->palette(),1,10,QChar(' ')).toUpper();
 		lineitem += " ";
 		if(ms->flippedHorizontal()) lineitem += "H";
 		if(ms->flippedVertical()) lineitem += "V";

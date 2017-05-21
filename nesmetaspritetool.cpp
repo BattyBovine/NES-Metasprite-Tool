@@ -29,7 +29,7 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 	connect(ui->comboPalettes,SIGNAL(currentIndexChanged(int)),this,SLOT(savePaletteSwatch()));
 	connect(ui->radioPAL,SIGNAL(toggled(bool)),this,SLOT(saveRefreshRate()));
 
-	ui->gvTileset->loadCHRData(":/chr/blank.chr");
+	ui->gvGlobalTileset->loadCHRData(":/chr/blank.chr");
 }
 
 NESMetaspriteTool::~NESMetaspriteTool()
@@ -90,7 +90,7 @@ void NESMetaspriteTool::keyPressEvent(QKeyEvent *e)
 			case Qt::Key_2:
 			case Qt::Key_3:
 			case Qt::Key_4:
-				ui->gvMetasprite->changePalette(e->key()-Qt::Key_1);
+				ui->gvMetasprite->setPaletteForSelected(e->key()-Qt::Key_1);
 			}
 		}
 		return;
@@ -293,7 +293,7 @@ void NESMetaspriteTool::openPalette()
 {
 	QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenPalette->text(), "", tr("Palette data (*.pal);;All files (*.*)"));
 	if(filename.isEmpty())  return;
-	ui->gvPaletteManager->setPaletteData(filename);
+	ui->gvPaletteManager->openPaletteFile(filename);
 }
 
 void NESMetaspriteTool::savePalette(QString path)
@@ -311,7 +311,7 @@ void NESMetaspriteTool::savePalette(QString path)
 		QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
 		return;
 	}
-	QByteArray pal = ui->gvPaletteManager->paletteData();
+	QByteArray pal = ui->gvPaletteManager->createPaletteBinaryData();
 	file.write(pal);
 	file.close();
 }

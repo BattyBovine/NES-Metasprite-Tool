@@ -12,7 +12,6 @@
 #include <QSettings>
 #include <QEvent>
 
-
 #define NESMT_WIKI_URL				"https://github.com/BattyBovine/NES-Metasprite-Tool/wiki"
 
 #define FILE_OPEN_ERROR_TITLE       "Error opening file"

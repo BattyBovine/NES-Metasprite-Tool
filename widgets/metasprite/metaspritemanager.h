@@ -25,7 +25,7 @@
 #define getMultDiff(x,f)    (roundToMult(x,f)-x)
 
 
-#define MSM_CANVAS_SIZE     128
+#define MSM_CANVAS_SIZE     512
 #define MSM_DEFAULT_ZOOM    2
 #define MSM_MAX_ZOOM        8
 
@@ -57,7 +57,6 @@ public:
 	void deselectAllSprites();
 	void copySpritesToClipboard(bool);
 	void pasteSpritesFromClipboard();
-	void changePalette(int);
 	void moveSelectedX(bool,bool);
 	void moveSelectedY(bool,bool);
 
@@ -65,23 +64,20 @@ signals:
 	void requestNewTile(QPointF);
 	void getTileUpdate(MetaspriteTileItem*);
 	void getPaletteUpdate(MetaspriteTileItem*);
-	void requestPaletteUpdates(quint8);
 	void sendFrameData(MetaspriteTileList);
 	void sendAnimationFrameData(MetaspriteTileList);
 	void sendMetaspriteStageChange(int);
+	void sendMetaspriteBankChange(quint16);
 
 	void setMetaspriteLabel(QString);
-	void bankDividerChanged(quint16);
 
 	void updateList(GraphicsItemList,GraphicsItemList);
-	void updateAnimationFrame();
-	void updateSpriteBank(quint16);
 
 public slots:
 	void setScale(qreal s){this->iScale=s;}
 
 	void setNewSpriteColours(PaletteVector,quint8,bool);
-	void addNewTile(QPointF,QImage,quint32,quint8);
+	void addNewTile(QPointF,quint32,quint8);
 	void moveSelectedUp();
 	void moveSelectedDown();
 	void flipHorizontal();
@@ -92,21 +88,22 @@ public slots:
 	void swapMetaspriteStage(int);
 	void selectFirstMetaspriteStage();
 	void selectNextEmptyMetaspriteStage();
-	void updateMetaspriteStage(){this->swapMetaspriteStage(this->iMetaspriteStage);}
 	void createFrameData(quint8,qreal);
 	void createAnimationFrameData(quint8,qreal);
 
+	void setSprites(bool);
 	void toggleShowGrid(bool);
 	void toggleSnapToGrid(bool);
 	void toggleChrTable1(bool);
-	void setBankDivider(int);
-	void setSelectedBank(quint16);
-	void checkTilesBank(quint16,quint16);
+	void getBankSize(int);
+	void setBank(quint16);
+	void setPaletteForSelected(quint8);
 
 	QVector<QByteArray> createMetaspriteBinaryData();
 	QString createMetaspriteASMData(QString);
 
 protected:
+	void resizeEvent(QResizeEvent*);
 	void dragMoveEvent(QDragMoveEvent*e){e->accept();}
 	void dragEnterEvent(QDragEnterEvent*e){e->acceptProposedAction();}
 	void dropEvent(QDropEvent*);
