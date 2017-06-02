@@ -28,6 +28,7 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 	connect(ui->comboBankSize,SIGNAL(currentIndexChanged(int)),this,SLOT(saveBankSize()));
 	connect(ui->comboPalettes,SIGNAL(currentIndexChanged(int)),this,SLOT(savePaletteSwatch()));
 	connect(ui->radioPAL,SIGNAL(toggled(bool)),this,SLOT(saveRefreshRate()));
+	connect(ui->spinSpriteSlot,SIGNAL(valueChanged(int)),this,SLOT(saveSpriteSlot()));
 
 	ui->gvGlobalTileset->loadCHRData(":/chr/blank.chr");
 }
@@ -209,6 +210,10 @@ void NESMetaspriteTool::saveRefreshRate()
 {
 	this->sSettings.setValue("RefreshRate", ui->radioPAL->isChecked());
 }
+void NESMetaspriteTool::saveSpriteSlot()
+{
+	this->sSettings.setValue("SpriteSlot", ui->spinSpriteSlot->value());
+}
 
 void NESMetaspriteTool::restoreSettings()
 {
@@ -219,6 +224,18 @@ void NESMetaspriteTool::restoreSettings()
 	ui->comboBankSize->setCurrentIndex(this->sSettings.value("BankSize",0).toInt());
 	ui->comboPalettes->setCurrentIndex(this->sSettings.value("PaletteSwatch",0).toInt());
 	ui->radioPAL->setChecked(this->sSettings.value("RefreshRate",false).toBool());
+	ui->spinSpriteSlot->setValue(this->sSettings.value("SpriteSlot",0).toInt());
+}
+
+
+
+void NESMetaspriteTool::adjustSpriteSlot(int bankindex)
+{
+	int bankdiv = qPow(2,bankindex);
+	int spriteslot = ui->spinSpriteSlot->value();
+	ui->spinSpriteSlot->setMaximum(bankdiv-1);
+	ui->spinSpriteSlot->setValue(spriteslot%bankdiv);
+	ui->spinSpriteSlot->setEnabled(bankindex!=0);
 }
 
 

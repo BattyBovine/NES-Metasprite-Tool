@@ -50,7 +50,10 @@ private slots:
 	void saveBankSize();
 	void savePaletteSwatch();
 	void saveRefreshRate();
+	void saveSpriteSlot();
 	void restoreSettings();
+
+	void adjustSpriteSlot(int);
 
 	void openMetaspriteBank();
 	void saveASMMetaspriteBank(QString path="");

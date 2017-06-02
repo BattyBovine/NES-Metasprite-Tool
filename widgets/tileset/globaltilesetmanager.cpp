@@ -12,6 +12,7 @@ GlobalTilesetManager::GlobalTilesetManager(QWidget *parent) : QGraphicsView(pare
 	this->griSelection[0] = this->griSelection[1] = NULL;
 	this->iSelectedTile = this->iSelectedPalette = this->iSelectedBank = 0;
 	this->iBankDivider = 1;
+	this->iScale = 2;
 
 	this->pSelection = QPointF(0,0);
 
@@ -96,8 +97,9 @@ bool GlobalTilesetManager::drawSelectionBox()
 //	QVector<qreal> dp;
 //	dp << 2 << 2;
 //	dashes.setDashPattern(dp);
-	this->griSelection[0] = this->gsTileset->addRect(QRectF(xorigin*GTSM_TILEWIDTH*this->iScale,yorigin*GTSM_TILEWIDTH*this->iScale,((GTSM_TILEWIDTH*this->iScale)-1)*(this->bTallSprite?2:1),(GTSM_TILEWIDTH*this->iScale)-1),QPen(Qt::red),Qt::NoBrush);
-//	this->griSelection[1] = this->gsTileset->addRect(QRectF(xorigin*GTSM_TILEWIDTH*this->iScale,yorigin*GTSM_TILEWIDTH*this->iScale,((GTSM_TILEWIDTH*this->iScale)-1)*(this->bTallSprite?2:1),(GTSM_TILEWIDTH*this->iScale)-1),dashes,Qt::NoBrush);
+	QRectF selectrect(xorigin*GTSM_TILEWIDTH*this->iScale,yorigin*GTSM_TILEWIDTH*this->iScale,((GTSM_TILEWIDTH*this->iScale)*(this->bTallSprite?2:1))-1,(GTSM_TILEWIDTH*this->iScale)-1);
+	this->griSelection[0] = this->gsTileset->addRect(selectrect,QPen(Qt::red),Qt::NoBrush);
+//	this->griSelection[1] = this->gsTileset->addRect(selectrect,dashes,Qt::NoBrush);
 
 	emit(selectedTileChanged(this->iSelectedTile));
 
@@ -131,9 +133,8 @@ void GlobalTilesetManager::getNewTile(QPointF p)
 void GlobalTilesetManager::getNewCHRData(QImage img)
 {
 	this->imgTileset = img;
-	for(quint8 pal=0; pal<PM_SUBPALETTES_MAX; pal++) {
+	for(quint8 pal=0; pal<PM_SUBPALETTES_MAX; pal++)
 		this->updateCHRPalettes(pal);
-	}
 	emit(bankChanged(this->iSelectedBank));
 	this->iMaxBank = qFloor(this->imgTileset.height()/qFloor(128/this->iBankDivider))-1;
 	this->resizeEvent(NULL);
@@ -193,7 +194,8 @@ void GlobalTilesetManager::setNewSpriteColours(PaletteVector c, quint8 i)
 	this->vPaletteLists = c;
 	this->iSelectedPalette = i;
 	this->setBackgroundBrush(QBrush(QColor(this->vPaletteLists[0])));
-	this->updateCHRPalettes(this->iSelectedPalette);
+	for(quint8 pal=0; pal<PM_SUBPALETTES_MAX; pal++)
+		this->updateCHRPalettes(pal);
 }
 
 

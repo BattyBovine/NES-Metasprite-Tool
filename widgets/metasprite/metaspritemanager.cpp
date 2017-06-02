@@ -8,6 +8,7 @@ MetaspriteManager::MetaspriteManager(QWidget *parent) : QGraphicsView(parent)
 	this->bTallSprites = this->bSnapToGrid = this->bChrTable1 = false;
 	this->bShowGrid = true;
 	this->iSelectedBank = 0;
+	this->iSpriteSlot = 0;
 	this->iBankDivider = 0x100;
 
 	this->setSceneRect(-MSM_CANVAS_SIZE*MSM_DEFAULT_ZOOM,
@@ -327,6 +328,7 @@ void MetaspriteManager::addNewTile(QPointF p, quint32 t, quint8 c)
 		store.append(ms);
 	}
 
+	this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
 	emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
 }
 
@@ -337,11 +339,11 @@ void MetaspriteManager::moveSelectedUp()
 	QVector<int> selindexes;
 	foreach(QGraphicsItem *i, sel) {
 		int index = items.indexOf(i);
-		if(index>=items.size()-1)   return;
+		if(index>items.size())   continue;
 		selindexes.append(index);
 	}
 	qSort(selindexes);
-	for(int i=selindexes.size()-1; i>=0; i--) {
+	for(int i=0; i<selindexes.size(); i++) {
 		QGraphicsItem *take = items.takeAt(selindexes.at(i));
 		items.insert(selindexes.at(i)+1,take);
 	}
@@ -354,18 +356,12 @@ void MetaspriteManager::moveSelectedUp()
 
 void MetaspriteManager::moveSelectedDown()
 {
-	QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder),
-			sel = this->gsMetasprite->selectedItems();
-	QList<QGraphicsItem*> msitems;
+	QList<QGraphicsItem*> items = this->gsMetasprite->items(Qt::AscendingOrder);
+	QList<QGraphicsItem*> sel = this->gsMetasprite->selectedItems();
 	QVector<int> selindexes;
-	foreach(QGraphicsItem *i, items) {
-		if(i->type()!=MetaspriteTileItem::Type) continue;
-		msitems.append(i);
-	}
-	int diff = items.size()-msitems.size();
 	foreach(QGraphicsItem *i, sel) {
 		int index = items.indexOf(i);
-		if(index>=items.size() || index<=diff) return;
+		if(index>items.size())   continue;
 		selindexes.append(index);
 	}
 	qSort(selindexes);
@@ -415,7 +411,6 @@ void MetaspriteManager::deleteSelectedTiles()
 		store.append(ms);
 	}
 	this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
-
 	emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
 }
 
@@ -447,7 +442,6 @@ void MetaspriteManager::swapMetaspriteStage(int s)
 			this->gsMetasprite->removeItem(ms);
 		}
 	}
-	this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
 
 	if(this->bShowGrid) this->drawGridLines();
 
@@ -460,6 +454,7 @@ void MetaspriteManager::swapMetaspriteStage(int s)
 		this->gsMetasprite->addItem(ms);
 		this->iSelectedBank = ms->bank();
 	}
+	this->vMetaspriteStages.replace(this->iMetaspriteStage,store);
 	emit(sendMetaspriteBankChange(this->iSelectedBank));
 	emit(this->updateList(this->gsMetasprite->items(),this->gsMetasprite->selectedItems()));
 }
@@ -532,6 +527,11 @@ void MetaspriteManager::setBank(quint16 bankno)
 	this->swapMetaspriteStage(this->iMetaspriteStage);
 }
 
+void MetaspriteManager::setSpriteSlot(int slot)
+{
+	this->iSpriteSlot = slot;
+}
+
 void MetaspriteManager::setPaletteForSelected(quint8 p)
 {
 	MetaspriteTileList mslist = this->vMetaspriteStages[this->iMetaspriteStage];
@@ -592,14 +592,14 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 		foreach(MetaspriteTileItem *mti, mslist) {
 			quint8 oamx = mti->realX();
 			quint8 oamy = mti->realY();
-			quint8 oamindex = mti->tileIndex()+(this->bChrTable1?1:0);
+			quint8 oamindex = (mti->tileIndex()+(this->bChrTable1?1:0))+(qFloor(256/this->iBankDivider)*this->iSpriteSlot);
 			quint8 oamattr = mti->palette()|(mti->flippedHorizontal()?0x40:0x00)|(mti->flippedVertical()?0x80:0x00);
 			databytes += QString(",$%1").arg(oamy,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamindex,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamattr,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamx,2,16,QChar('0')).toUpper();
 		}
-		databanks += QString("$%1").arg(this->lMetaspriteBanks[i],2,16,QChar('0')).append(",");
+		databanks += QString("$%1").arg(this->lMetaspriteBanks[i],2,16,QChar('0')).append(",").toUpper();
 	}
 
 	datatable_lo.remove(datatable_lo.size()-1,1);
@@ -669,28 +669,6 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 		}
 	}
 
-//    file.reset();
-//    QByteArray byteblob = file.readAll(), bytesin;
-//    QByteArray::iterator i = byteblob.begin();
-//    int loopcount = 0;
-//    while(i!=byteblob.end()) {
-//        bytesin.append(*i);
-//        if((i+((*i)*4))>=byteblob.end()) {
-//            QMessageBox::critical(this,tr(MSM_EOF_ERROR_TITLE),tr(MSM_EOF_ERROR_BODY),QMessageBox::NoButton);
-//            return;
-//        }
-//        for(int count=*(i++); count>0; count--) {
-//            for(int j=0; j<4; j++) {
-//                bytesin.append(*(i++));
-//            }
-//        }
-//        inputbytes.replace(loopcount++,bytesin);
-//    }
-//    QFileInfo fileinfo(filename);
-//    emit(this->setMetaspriteLabel(fileinfo.baseName()));
-
-//    this->importMetaspriteBinaryData(inputbytes);
-
 	file.close();
 	QMessageBox::critical(this,tr(MSM_INVALID_SPRITES_TITLE),tr(MSM_INVALID_SPRITES_BODY),QMessageBox::NoButton);
 }
@@ -717,12 +695,14 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, 
 			ms->setTallSprite(this->bTallSprites);
 			ms->setRealX(oamx);
 			ms->setRealY(oamy);
-			ms->setTileIndex(oamindex&(this->bTallSprites?0xFE:0xFF));
+			ms->setTileIndex((oamindex%qFloor(256/this->iBankDivider))&(this->bTallSprites?0xFE:0xFF));
 			ms->setPalette(oamattr&0x03);
 			ms->setBank(banks[j]);
 			ms->flipHorizontal((oamattr&0x40)?true:false);
 			ms->flipVertical((oamattr&0x80)?true:false);
 			mslist.append(ms);
+
+			emit(sendSpriteSlotChange(qFloor(oamindex/qFloor(256/this->iBankDivider))));
 		}
 		this->vMetaspriteStages.replace(j,mslist);
 		if(mslist.isEmpty()) blankcounter += 1;
@@ -753,20 +733,6 @@ void MetaspriteManager::clearAllMetaspriteData()
 }
 
 
-
-//void MetaspriteManager::checkTilesBank(quint16 newbank, quint16 maxbank)
-//{
-//	quint32 maxtileindex = (maxbank+1)*this->iBankDivider;
-//	bool update = false;
-//	MetaspriteTileList list = this->vMetaspriteStages.at(this->iMetaspriteStage);
-//	foreach(MetaspriteTileItem *i, list) {
-//		if(maxtileindex && i->tileIndex()>maxtileindex) {
-//			update = true;
-//			i->setTileIndex(i->tileIndex()%maxtileindex);
-//		}
-//	}
-//	if(update)	this->sendTileUpdates();
-//}
 
 MetaspriteTileList MetaspriteManager::createFrame(quint8 f, qreal s)
 {

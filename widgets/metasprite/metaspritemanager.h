@@ -68,6 +68,7 @@ signals:
 	void sendAnimationFrameData(MetaspriteTileList);
 	void sendMetaspriteStageChange(int);
 	void sendMetaspriteBankChange(quint16);
+	void sendSpriteSlotChange(int);
 
 	void setMetaspriteLabel(QString);
 
@@ -97,6 +98,7 @@ public slots:
 	void toggleChrTable1(bool);
 	void getBankSize(int);
 	void setBank(quint16);
+	void setSpriteSlot(int);
 	void setPaletteForSelected(quint8);
 
 	QVector<QByteArray> createMetaspriteBinaryData();
@@ -130,6 +132,7 @@ private:
 	MetaspriteStageList vMetaspriteStages;
 	QList<quint16> lMetaspriteBanks;
 	quint8 iMetaspriteStage;
+	quint8 iSpriteSlot;
 
 	MetaspriteTileList mtlClipboard;
 };

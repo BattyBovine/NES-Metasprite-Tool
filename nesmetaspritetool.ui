@@ -39,7 +39,7 @@
           <property name="title">
            <string>Metasprites</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_27">
+          <layout class="QHBoxLayout" name="horizontalLayout_9">
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_11">
              <item>
@@ -269,21 +269,8 @@
               </layout>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_9">
-               <item>
-                <widget class="QLabel" name="labelBankSize">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Bank size:</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
+              <layout class="QGridLayout" name="gridLayout">
+               <item row="0" column="1">
                 <widget class="QComboBox" name="comboBankSize">
                  <item>
                   <property name="text">
@@ -307,20 +294,34 @@
                  </item>
                 </widget>
                </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="labelBankSize">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Bank size:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="labelSpriteSlot">
+                 <property name="text">
+                  <string>Sprite Slot:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QSpinBox" name="spinSpriteSlot">
+                 <property name="maximum">
+                  <number>7</number>
+                 </property>
+                </widget>
+               </item>
               </layout>
-             </item>
-             <item>
-              <spacer name="verticalSpacer">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
              </item>
             </layout>
            </item>
@@ -1538,6 +1539,7 @@
     <signal>sendAnimationFrameData(MetaspriteTileList)</signal>
     <signal>sendMetaspriteStageChange(int)</signal>
     <signal>sendMetaspriteBankChange(quint16)</signal>
+    <signal>sendSpriteSlotChange(int)</signal>
     <slot>setNewSpriteColours(QRgb,QRgb,QRgb,QRgb,quint8)</slot>
     <slot>addNewTile(QPointF,quint32,quint8)</slot>
     <slot>flipHorizontal()</slot>
@@ -1562,6 +1564,7 @@
     <slot>toggleChrTable1(bool)</slot>
     <slot>setSprites(bool)</slot>
     <slot>getBankSize(int)</slot>
+    <slot>setSpriteSlot(int)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -3125,6 +3128,54 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>comboBankSize</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>adjustSpriteSlot(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>516</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>378</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinSpriteSlot</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>gvMetasprite</receiver>
+   <slot>setSpriteSlot(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>542</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>251</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>gvMetasprite</sender>
+   <signal>sendSpriteSlotChange(int)</signal>
+   <receiver>spinSpriteSlot</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>130</x>
+     <y>251</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>160</x>
+     <y>542</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -3147,6 +3198,7 @@
   <slot>openProject()</slot>
   <slot>saveProject()</slot>
   <slot>showWikiPage()</slot>
+  <slot>adjustSpriteSlot(int)</slot>
  </slots>
  <buttongroups>
   <buttongroup name="buttonGroup_2"/>
