@@ -270,7 +270,47 @@
              </item>
              <item>
               <layout class="QGridLayout" name="gridLayout">
-               <item row="0" column="1">
+               <item row="1" column="1">
+                <widget class="QSpinBox" name="spinSpriteSlot">
+                 <property name="maximum">
+                  <number>7</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="labelSpriteSlot">
+                 <property name="text">
+                  <string>Sprite Slot:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="labelBankSize">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Bank size:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QPushButton" name="btnSetAllSpriteSlots">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="text">
+                  <string>Set All</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1" colspan="2">
                 <widget class="QComboBox" name="comboBankSize">
                  <item>
                   <property name="text">
@@ -292,33 +332,6 @@
                    <string>512B</string>
                   </property>
                  </item>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <widget class="QLabel" name="labelBankSize">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="text">
-                  <string>Bank size:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="labelSpriteSlot">
-                 <property name="text">
-                  <string>Sprite Slot:</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QSpinBox" name="spinSpriteSlot">
-                 <property name="maximum">
-                  <number>7</number>
-                 </property>
                 </widget>
                </item>
               </layout>
@@ -1695,12 +1708,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>202</x>
-     <y>356</y>
+     <x>224</x>
+     <y>442</y>
     </hint>
     <hint type="destinationlabel">
-     <x>139</x>
-     <y>333</y>
+     <x>146</x>
+     <y>416</y>
     </hint>
    </hints>
   </connection>
@@ -1983,8 +1996,8 @@
    <slot>swapMetaspriteStage(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>221</x>
-     <y>356</y>
+     <x>230</x>
+     <y>442</y>
     </hint>
     <hint type="destinationlabel">
      <x>212</x>
@@ -2195,8 +2208,8 @@
      <y>472</y>
     </hint>
     <hint type="destinationlabel">
-     <x>601</x>
-     <y>180</y>
+     <x>255</x>
+     <y>232</y>
     </hint>
    </hints>
   </connection>
@@ -2207,12 +2220,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>601</x>
-     <y>325</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>601</x>
-     <y>299</y>
+     <x>127</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2223,8 +2236,8 @@
    <slot>createFrameData(quint8,qreal)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>601</x>
-     <y>180</y>
+     <x>255</x>
+     <y>232</y>
     </hint>
     <hint type="destinationlabel">
      <x>128</x>
@@ -2243,8 +2256,8 @@
      <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>601</x>
-     <y>180</y>
+     <x>255</x>
+     <y>232</y>
     </hint>
    </hints>
   </connection>
@@ -2255,12 +2268,12 @@
    <slot>prevValue()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>105</x>
-     <y>336</y>
+     <x>108</x>
+     <y>416</y>
     </hint>
     <hint type="destinationlabel">
-     <x>33</x>
-     <y>356</y>
+     <x>55</x>
+     <y>442</y>
     </hint>
    </hints>
   </connection>
@@ -2272,11 +2285,11 @@
    <hints>
     <hint type="sourcelabel">
      <x>187</x>
-     <y>336</y>
+     <y>416</y>
     </hint>
     <hint type="destinationlabel">
-     <x>224</x>
-     <y>356</y>
+     <x>230</x>
+     <y>442</y>
     </hint>
    </hints>
   </connection>
@@ -2287,12 +2300,12 @@
    <slot>prevValue()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>37</x>
-     <y>386</y>
+     <x>48</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>33</x>
-     <y>415</y>
+     <x>44</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2303,12 +2316,12 @@
    <slot>nextValue()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>287</x>
-     <y>383</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>288</x>
-     <y>415</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2319,12 +2332,12 @@
    <slot>prevValue()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>583</x>
-     <y>308</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>701</x>
-     <y>334</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2335,12 +2348,12 @@
    <slot>nextValue()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>690</x>
-     <y>300</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>701</x>
-     <y>334</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2367,12 +2380,12 @@
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>147</x>
-     <y>411</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>141</x>
-     <y>388</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2387,8 +2400,8 @@
      <y>209</y>
     </hint>
     <hint type="destinationlabel">
-     <x>605</x>
-     <y>181</y>
+     <x>255</x>
+     <y>233</y>
     </hint>
    </hints>
   </connection>
@@ -2399,12 +2412,12 @@
    <slot>setNewAnimation(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>203</x>
-     <y>413</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>204</x>
-     <y>334</y>
+     <x>215</x>
+     <y>316</y>
     </hint>
    </hints>
   </connection>
@@ -2431,12 +2444,12 @@
    <slot>setTiming(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>290</x>
-     <y>451</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>256</x>
-     <y>334</y>
+     <x>267</x>
+     <y>316</y>
     </hint>
    </hints>
   </connection>
@@ -2479,12 +2492,12 @@
    <slot>moveUpSelected()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>321</x>
-     <y>552</y>
+     <x>40</x>
+     <y>83</y>
     </hint>
     <hint type="destinationlabel">
-     <x>310</x>
-     <y>480</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2495,12 +2508,12 @@
    <slot>moveDownSelected()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>342</x>
-     <y>552</y>
+     <x>40</x>
+     <y>83</y>
     </hint>
     <hint type="destinationlabel">
-     <x>330</x>
-     <y>475</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2511,12 +2524,12 @@
    <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>277</x>
-     <y>273</y>
+     <x>275</x>
+     <y>316</y>
     </hint>
     <hint type="destinationlabel">
-     <x>478</x>
-     <y>549</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2527,8 +2540,8 @@
    <slot>setAnimationLabel(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>96</x>
-     <y>92</y>
+     <x>107</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>46</x>
@@ -2547,8 +2560,8 @@
      <y>238</y>
     </hint>
     <hint type="destinationlabel">
-     <x>189</x>
-     <y>92</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2591,8 +2604,8 @@
    <slot>setTallSprites(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>225</x>
-     <y>373</y>
+     <x>227</x>
+     <y>468</y>
     </hint>
     <hint type="destinationlabel">
      <x>700</x>
@@ -2639,12 +2652,12 @@
    <slot>deleteSelected()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>418</x>
-     <y>552</y>
+     <x>40</x>
+     <y>83</y>
     </hint>
     <hint type="destinationlabel">
-     <x>418</x>
-     <y>480</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2655,12 +2668,12 @@
    <slot>addFrame()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>376</x>
-     <y>552</y>
+     <x>40</x>
+     <y>83</y>
     </hint>
     <hint type="destinationlabel">
-     <x>360</x>
-     <y>463</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2671,12 +2684,12 @@
    <slot>insertFrame()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>397</x>
-     <y>552</y>
+     <x>40</x>
+     <y>83</y>
     </hint>
     <hint type="destinationlabel">
-     <x>389</x>
-     <y>480</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2687,12 +2700,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>444</x>
-     <y>256</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>648</x>
-     <y>330</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2703,12 +2716,12 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>458</x>
-     <y>273</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>563</x>
-     <y>358</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2719,12 +2732,12 @@
    <slot>frameNumberUpdate(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>519</x>
-     <y>322</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>378</x>
-     <y>325</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2735,12 +2748,12 @@
    <slot>frameDelayUpdate(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>549</x>
-     <y>354</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>441</x>
-     <y>346</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2751,8 +2764,8 @@
    <slot>setAnimationLoop(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>478</x>
-     <y>549</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>272</x>
@@ -2767,12 +2780,12 @@
    <slot>setNewFrame(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>448</x>
-     <y>92</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>556</x>
-     <y>95</y>
+     <x>255</x>
+     <y>147</y>
     </hint>
    </hints>
   </connection>
@@ -2787,8 +2800,8 @@
      <y>119</y>
     </hint>
     <hint type="destinationlabel">
-     <x>331</x>
-     <y>124</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
    </hints>
   </connection>
@@ -2799,8 +2812,8 @@
    <slot>getNewAnimation(AnimationFrameList)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>335</x>
-     <y>142</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>229</x>
@@ -2815,8 +2828,8 @@
    <slot>setSelectedFrame(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>333</x>
-     <y>155</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>239</x>
@@ -2831,8 +2844,8 @@
    <slot>saveRefreshRate()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>226</x>
-     <y>444</y>
+     <x>119</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
      <x>2</x>
@@ -2847,12 +2860,12 @@
    <slot>setNewFrame(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>623</x>
-     <y>324</y>
+     <x>163</x>
+     <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>624</x>
-     <y>235</y>
+     <x>255</x>
+     <y>252</y>
     </hint>
    </hints>
   </connection>
@@ -2863,8 +2876,8 @@
    <slot>toggleShowGrid(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>39</x>
-     <y>379</y>
+     <x>63</x>
+     <y>468</y>
     </hint>
     <hint type="destinationlabel">
      <x>162</x>
@@ -2879,8 +2892,8 @@
    <slot>toggleSnapToGrid(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>105</x>
-     <y>401</y>
+     <x>116</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>177</x>
@@ -2896,7 +2909,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>229</x>
-     <y>552</y>
+     <y>523</y>
     </hint>
     <hint type="destinationlabel">
      <x>129</x>
@@ -2943,8 +2956,8 @@
    <slot>drawAnimationFrameData(MetaspriteTileList)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>605</x>
-     <y>181</y>
+     <x>255</x>
+     <y>233</y>
     </hint>
     <hint type="destinationlabel">
      <x>161</x>
@@ -2959,8 +2972,8 @@
    <slot>selectFirstMetaspriteStage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>42</x>
-     <y>319</y>
+     <x>65</x>
+     <y>416</y>
     </hint>
     <hint type="destinationlabel">
      <x>45</x>
@@ -2975,8 +2988,8 @@
    <slot>selectNextEmptyMetaspriteStage()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>197</x>
-     <y>320</y>
+     <x>229</x>
+     <y>416</y>
     </hint>
     <hint type="destinationlabel">
      <x>196</x>
@@ -2995,8 +3008,8 @@
      <y>289</y>
     </hint>
     <hint type="destinationlabel">
-     <x>139</x>
-     <y>355</y>
+     <x>161</x>
+     <y>442</y>
     </hint>
    </hints>
   </connection>
@@ -3023,8 +3036,8 @@
    <slot>toggleChrTable1(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>203</x>
-     <y>405</y>
+     <x>227</x>
+     <y>493</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
@@ -3039,8 +3052,8 @@
    <slot>getBankSize(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>157</x>
-     <y>542</y>
+     <x>229</x>
+     <y>523</y>
     </hint>
     <hint type="destinationlabel">
      <x>572</x>
@@ -3055,8 +3068,8 @@
    <slot>setSprites(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>203</x>
-     <y>380</y>
+     <x>227</x>
+     <y>468</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
@@ -3151,8 +3164,8 @@
    <slot>setSpriteSlot(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>160</x>
-     <y>542</y>
+     <x>148</x>
+     <y>550</y>
     </hint>
     <hint type="destinationlabel">
      <x>130</x>
@@ -3171,8 +3184,24 @@
      <y>251</y>
     </hint>
     <hint type="destinationlabel">
-     <x>160</x>
-     <y>542</y>
+     <x>148</x>
+     <y>550</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSetAllSpriteSlots</sender>
+   <signal>clicked()</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>setAllSpriteSlots()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>186</x>
+     <y>548</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>585</y>
     </hint>
    </hints>
   </connection>
@@ -3199,9 +3228,10 @@
   <slot>saveProject()</slot>
   <slot>showWikiPage()</slot>
   <slot>adjustSpriteSlot(int)</slot>
+  <slot>setAllSpriteSlots()</slot>
  </slots>
  <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
  </buttongroups>
 </ui>

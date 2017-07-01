@@ -50,7 +50,6 @@ private slots:
 	void saveBankSize();
 	void savePaletteSwatch();
 	void saveRefreshRate();
-	void saveSpriteSlot();
 	void restoreSettings();
 
 	void adjustSpriteSlot(int);
@@ -68,6 +67,7 @@ private slots:
 
 	void setNewPaletteFile(QString);
 	void setAnimationLabelPrefix(QString);
+	void setAllSpriteSlots();
 //    void setPlayButtonText();
 //    void setPauseButtonText();
 
