@@ -50,7 +50,7 @@ public:
 
 	qreal scale(){return this->iScale;}
 	void openMetaspriteFile(QString);
-	void importMetaspriteBinaryData(QVector<QByteArray>, QList<quint16>);
+	void importMetaspriteBinaryData(QVector<QByteArray>, QList<quint16>, QList<quint8>);
 	void clearAllMetaspriteData();
 
 	void selectAllSprites();
@@ -99,6 +99,7 @@ public slots:
 	void getBankSize(int);
 	void setBank(quint16);
 	void setSpriteSlot(int);
+	void setAllSpriteSlots(int);
 	void setPaletteForSelected(quint8);
 
 	QVector<QByteArray> createMetaspriteBinaryData();
@@ -131,8 +132,8 @@ private:
 	QGraphicsScene *gsMetasprite;
 	MetaspriteStageList vMetaspriteStages;
 	QList<quint16> lMetaspriteBanks;
+	QList<quint8> lSpriteSlots;
 	quint8 iMetaspriteStage;
-	quint8 iSpriteSlot;
 
 	MetaspriteTileList mtlClipboard;
 };
