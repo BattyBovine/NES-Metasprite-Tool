@@ -60,6 +60,7 @@ void MetaspriteManager::mousePressEvent(QMouseEvent *e)
 			if(response==QMessageBox::No)   return;
 		}
 		emit(this->requestNewTile(this->mapToScene(e->pos())));
+		this->lMetaspriteBanks[this->iMetaspriteStage] = this->iSelectedBank;
 		break;
 	case Qt::MiddleButton:
 		this->iMouseTranslateX = e->x();
@@ -603,10 +604,10 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 			quint8 oamy = mti->realY();
 			quint8 oamindex = (mti->tileIndex()+(this->bChrTable1?1:0))+(qFloor(256/this->iBankDivider)*this->lSpriteSlots[i]);
 			quint8 oamattr = mti->palette()|(mti->flippedHorizontal()?0x40:0x00)|(mti->flippedVertical()?0x80:0x00);
+			databytes += QString(",$%1").arg(oamx,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamy,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamindex,2,16,QChar('0')).toUpper();
 			databytes += QString(",$%1").arg(oamattr,2,16,QChar('0')).toUpper();
-			databytes += QString(",$%1").arg(oamx,2,16,QChar('0')).toUpper();
 		}
 		databanks += QString("$%1").arg(this->lMetaspriteBanks[i],2,16,QChar('0')).append(",").toUpper();
 		dataslots += QString("$%1").arg(this->lSpriteSlots[i],2,16,QChar('0')).append(",").toUpper();
@@ -711,10 +712,10 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, 
 				QMessageBox::critical(this,tr(MSM_COUNT_ERROR_TITLE),tr(MSM_COUNT_ERROR_BODY),QMessageBox::NoButton);
 				return;
 			}
+			int oamx = *(++biniter);
 			int oamy = *(++biniter);
 			quint8 oamindex = *(++biniter);
 			quint8 oamattr = *(++biniter);
-			int oamx = *(++biniter);
 			MetaspriteTileItem *ms = new MetaspriteTileItem();
 			ms->setScale(this->iScale);
 			ms->setTallSprite(this->bTallSprites);
