@@ -1691,6 +1691,7 @@
    <slots>
     <signal>sendNewTile(QPointF,quint32,quint8)</signal>
     <signal>bankChanged(quint16)</signal>
+    <signal>saveOpenedChrFile(QString)</signal>
     <slot>getBankSize(int)</slot>
     <slot>getNewTile(QPointF)</slot>
     <slot>setBackgroundColour(PaletteVector)</slot>
@@ -3205,6 +3206,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>gvGlobalTileset</sender>
+   <signal>saveOpenedChrFile(QString)</signal>
+   <receiver>NESMetaspriteTool</receiver>
+   <slot>saveOpenedChrFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>595</x>
+     <y>225</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>378</x>
+     <y>293</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>chrFileOpened(QString)</signal>
@@ -3229,6 +3246,7 @@
   <slot>showWikiPage()</slot>
   <slot>adjustSpriteSlot(int)</slot>
   <slot>setAllSpriteSlots()</slot>
+  <slot>saveOpenedChrFile(QString)</slot>
  </slots>
  <buttongroups>
   <buttongroup name="buttonGroup"/>

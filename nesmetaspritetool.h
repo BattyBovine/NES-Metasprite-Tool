@@ -50,6 +50,7 @@ private slots:
 	void saveBankSize();
 	void savePaletteSwatch();
 	void saveRefreshRate();
+	void saveOpenedChrFile(QString);
 	void restoreSettings();
 
 	void adjustSpriteSlot(int);

@@ -119,6 +119,7 @@ void GlobalTilesetManager::loadCHRData(QString filename)
 		if(!this->fswCHR.files().isEmpty()) this->fswCHR.removePath(this->sCurrentTilesetFile);
 		this->sCurrentTilesetFile = filename;
 		this->fswCHR.addPath(this->sCurrentTilesetFile);
+		emit(saveOpenedChrFile(this->sCurrentTilesetFile));
 	}
 	this->threadCHR->loadFile(this->sCurrentTilesetFile);
 }

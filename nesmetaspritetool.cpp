@@ -29,7 +29,11 @@ NESMetaspriteTool::NESMetaspriteTool(QWidget *parent) :
 	connect(ui->comboPalettes,SIGNAL(currentIndexChanged(int)),this,SLOT(savePaletteSwatch()));
 	connect(ui->radioPAL,SIGNAL(toggled(bool)),this,SLOT(saveRefreshRate()));
 
-	ui->gvGlobalTileset->loadCHRData(":/chr/blank.chr");
+	QString lastchr = this->sSettings.value("LastOpenedChrFile","").toString();
+	if(!lastchr.isEmpty())
+		ui->gvGlobalTileset->loadCHRData(lastchr);
+	else
+		ui->gvGlobalTileset->loadCHRData(":/chr/blank.chr");
 }
 
 NESMetaspriteTool::~NESMetaspriteTool()
@@ -208,6 +212,10 @@ void NESMetaspriteTool::savePaletteSwatch()
 void NESMetaspriteTool::saveRefreshRate()
 {
 	this->sSettings.setValue("RefreshRate", ui->radioPAL->isChecked());
+}
+void NESMetaspriteTool::saveOpenedChrFile(QString file)
+{
+	this->sSettings.setValue("LastOpenedChrFile", file);
 }
 
 void NESMetaspriteTool::restoreSettings()
