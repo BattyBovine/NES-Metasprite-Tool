@@ -157,18 +157,14 @@ void NESMetaspriteTool::newProject()
 
 void NESMetaspriteTool::openProject()
 {
-	QString foldername = QFileDialog::getExistingDirectory(this, ui->actionOpenProject->text(), "");
-	if(!foldername.isEmpty())   QMessageBox::information(this,"Folder selected",foldername,QMessageBox::NoButton);
+	this->openMetaspriteBank();
+	this->openAnimation();
 }
 
 void NESMetaspriteTool::saveProject()
 {
-	QFileDialog saveproj(this);
-	saveproj.setFileMode(QFileDialog::AnyFile);
-	saveproj.setOptions(QFileDialog::ShowDirsOnly);
-	saveproj.setViewMode(QFileDialog::Detail);
-	connect(&saveproj,SIGNAL(fileSelected(QString)),this,SLOT(saveProjectToFolder(QString)));
-	saveproj.exec();
+	this->saveASMMetaspriteBank();
+	this->saveASMAnimation();
 }
 void NESMetaspriteTool::saveProjectToFolder(QString f)
 {
@@ -244,21 +240,36 @@ void NESMetaspriteTool::adjustSpriteSlot(int bankindex)
 
 void NESMetaspriteTool::openMetaspriteBank()
 {
-	QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenMetaspriteBank->text(), "", tr("All files (*.*)"));
+	QString filename = QFileDialog::getOpenFileName(this,ui->actionOpenMetaspriteBank->text(),
+													this->sSettings.value("LastOpenedProjectDir","").toString(),
+													tr("All files (*.*)"));
 	if(filename.isEmpty())  return;
+
+	QFileInfo info(filename);
+	this->sSettings.setValue("LastOpenedProjectDir",info.absolutePath());
+	QFile file(filename);
+	if(!file.open(QIODevice::ReadOnly)) {
+		QMessageBox::warning(this,tr(FILE_OPEN_ERROR_TITLE),tr(FILE_OPEN_ERROR_BODY),QMessageBox::NoButton);
+		return;
+	}
+	file.close();
+
 	ui->gvMetasprite->openMetaspriteFile(filename);
 }
 
 void NESMetaspriteTool::saveASMMetaspriteBank(QString path)
 {
 	QString filename;
-	if(path.isEmpty()) {
-		filename = QFileDialog::getSaveFileName(this, ui->actionSaveMetaspriteBankASM->text(), "", tr("All files (*.*)"));
-		if(filename.isEmpty())  return;
-	} else {
+	if(path.isEmpty())
+		filename = QFileDialog::getSaveFileName(this,ui->actionSaveMetaspriteBankASM->text(),
+												this->sSettings.value("LastOpenedProjectDir","").toString(),
+												tr("All files (*.*)"));
+	else
 		filename = path;
-	}
+	if(filename.isEmpty())  return;
 
+	QFileInfo info(filename);
+	this->sSettings.setValue("LastOpenedProjectDir",info.absolutePath());
 	QFile file(filename);
 	if(!file.open(QIODevice::WriteOnly)) {
 		QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
@@ -340,21 +351,36 @@ void NESMetaspriteTool::savePalette(QString path)
 
 void NESMetaspriteTool::openAnimation()
 {
-	QString filename = QFileDialog::getOpenFileName(this, ui->actionOpenAnimation->text(), "", tr("All files (*.*)"));
+	QString filename = QFileDialog::getOpenFileName(this,ui->actionOpenAnimation->text(),
+													this->sSettings.value("LastOpenedProjectDir","").toString(),
+													tr("All files (*.*)"));
 	if(filename.isEmpty())  return;
+
+	QFileInfo info(filename);
+	this->sSettings.setValue("LastOpenedProjectDir",info.absolutePath());
+	QFile file(filename);
+	if(!file.open(QIODevice::ReadOnly)) {
+		QMessageBox::warning(this,tr(FILE_OPEN_ERROR_TITLE),tr(FILE_OPEN_ERROR_BODY),QMessageBox::NoButton);
+		return;
+	}
+	file.close();
+
 	ui->gvAnimation->openAnimationFile(filename);
 }
 
 void NESMetaspriteTool::saveASMAnimation(QString path)
 {
 	QString filename;
-	if(path.isEmpty()) {
-		filename = QFileDialog::getSaveFileName(this, ui->actionSaveAnimationASM->text(), "", tr("All files (*.*)"));
-		if(filename.isEmpty())  return;
-	} else {
+	if(path.isEmpty())
+		filename = QFileDialog::getSaveFileName(this,ui->actionSaveAnimationASM->text(),
+												this->sSettings.value("LastOpenedProjectDir","").toString(),
+												tr("All files (*.*)"));
+	else
 		filename = path;
-	}
+	if(filename.isEmpty())  return;
 
+	QFileInfo info(filename);
+	this->sSettings.setValue("LastOpenedProjectDir",info.absolutePath());
 	QFile file(filename);
 	if(!file.open(QIODevice::WriteOnly)) {
 		QMessageBox::warning(this,tr(FILE_SAVE_ERROR_TITLE),tr(FILE_SAVE_ERROR_BODY),QMessageBox::NoButton);
@@ -362,8 +388,7 @@ void NESMetaspriteTool::saveASMAnimation(QString path)
 	}
 
 	QString datatable_header = ui->lineASMLabel->text()+"_anim_header:\n";
-	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_anim_lo\n");
-	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_anim_hi\n");
+	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_anim_ptr\n");
 	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_anim_length\n\n");
 	file.write(datatable_header.toLocal8Bit());
 	file.write(ui->gvAnimation->createAnimationASMData(ui->labelMetaspriteName->text()+"_").toLocal8Bit());

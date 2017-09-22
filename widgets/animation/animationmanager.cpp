@@ -290,11 +290,8 @@ void AnimationManager::openAnimationFile(QString filename)
 
 QString AnimationManager::createAnimationASMData(QString labelprefix)
 {
-	QString animdataheader = labelprefix+"anim_header:\n\t.word ";
 	QString animdatatable_ptr = labelprefix+"anim_ptr:\n\t.word ";
-	QString animlenlabel = labelprefix+"anim_length";
-	QString animdatatable_len = animlenlabel+":\n\t.byte ";
-	animdataheader += animlenlabel;
+	QString animdatatable_len = labelprefix+"anim_length:\n\t.byte ";
 	QString animdatabytes;
 
 	quint8 counter = 0;
@@ -304,7 +301,7 @@ QString AnimationManager::createAnimationASMData(QString labelprefix)
 		loopanimation = ap.loop();
 
 		QString animlabel = labelprefix+(ap.label().isEmpty()?(QString("unnamed")+QString::number(counter++)):ap.label());
-		animdatatable_ptr += animlabel.append(",");
+		animdatatable_ptr += animlabel+",";
 		animdatatable_len += QString("$%1").arg(ap.size(),2,16,QChar('0')).toUpper().append(",");
 		if(!ap.isEmpty()) {
 			animdatabytes += "\n";

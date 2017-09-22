@@ -1416,27 +1416,30 @@
   </widget>
   <action name="actionSavePalette">
    <property name="text">
-    <string>Save P&amp;alette</string>
+    <string>Save Palette</string>
    </property>
   </action>
   <action name="actionOpenPalette">
    <property name="text">
-    <string>Open &amp;Palette</string>
+    <string>Open Palette</string>
    </property>
   </action>
   <action name="actionExit">
    <property name="text">
-    <string>E&amp;xit</string>
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="actionOpenCHR">
    <property name="text">
-    <string>Open &amp;CHR</string>
+    <string>Open CHR</string>
    </property>
   </action>
   <action name="actionSaveMetaspriteBankASM">
    <property name="text">
-    <string>&amp;Save Metasprite Bank</string>
+    <string>Save Metasprite Bank</string>
    </property>
   </action>
   <action name="actionSaveMetaspriteBankBinary">
@@ -1444,7 +1447,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>&amp;Save Metasprite Bank (Binary)</string>
+    <string>Save Metasprite Bank (Binary)</string>
    </property>
    <property name="visible">
     <bool>false</bool>
@@ -1452,7 +1455,7 @@
   </action>
   <action name="actionOpenMetaspriteBank">
    <property name="text">
-    <string>&amp;Open Metasprite Bank</string>
+    <string>Open Metasprite Bank</string>
    </property>
   </action>
   <action name="actionLoadMetaspriteBankBinary">
@@ -1462,17 +1465,20 @@
   </action>
   <action name="actionNewProject">
    <property name="text">
-    <string>&amp;New Project</string>
+    <string>New Project</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionOpenAnimation">
    <property name="text">
-    <string>&amp;Open Animation</string>
+    <string>Open Animation</string>
    </property>
   </action>
   <action name="actionSaveAnimationASM">
    <property name="text">
-    <string>&amp;Save Animation</string>
+    <string>Save Animation</string>
    </property>
   </action>
   <action name="actionSaveAnimationBinary">
@@ -1480,7 +1486,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>&amp;Save Animation (Binary)</string>
+    <string>Save Animation (Binary)</string>
    </property>
    <property name="visible">
     <bool>false</bool>
@@ -1488,28 +1494,28 @@
   </action>
   <action name="actionSaveProject">
    <property name="text">
-    <string>&amp;Save Project</string>
+    <string>Save Project</string>
    </property>
-   <property name="visible">
-    <bool>false</bool>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionOpenProject">
    <property name="text">
-    <string>&amp;Open Project</string>
+    <string>Open Project</string>
    </property>
-   <property name="visible">
-    <bool>false</bool>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionWikiPage">
    <property name="text">
-    <string>&amp;Wiki Page</string>
+    <string>Wiki Page</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>&amp;About...</string>
+    <string>About...</string>
    </property>
   </action>
  </widget>
