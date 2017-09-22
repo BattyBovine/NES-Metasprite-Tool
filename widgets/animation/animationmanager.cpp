@@ -16,7 +16,7 @@ AnimationManager::AnimationManager(QWidget *parent) : QGraphicsView(parent)
 					   AM_CANVAS_SIZE*AM_DEFAULT_ZOOM*2);
 	this->centerOn(0,0);
 
-	this->alAnimations = AnimationList(256);
+	this->alAnimations = AnimationList(128);
 
 	connect(&this->tFrameCounter,SIGNAL(timeout()),this,SLOT(playNextFrame()));
 }
@@ -38,6 +38,9 @@ void AnimationManager::dropEvent(QDropEvent *e)
 void AnimationManager::mousePressEvent(QMouseEvent *e)
 {
 	switch(e->button()) {
+	case Qt::LeftButton:
+		this->playAnimation();
+		break;
 	case Qt::MiddleButton:
 		this->iMouseTranslateX = e->x();
 		this->iMouseTranslateY = e->y();
@@ -163,13 +166,11 @@ void AnimationManager::playAnimationToggle(bool p)
 
 void AnimationManager::playAnimation()
 {
-	if(!this->isPlaying) {
-		if(this->alAnimations[this->iAnimation].isEmpty())  return;
-		this->isPlaying = true;
-		this->setPlayingFrame(0);
-		this->playNextFrame(false);
-//        emit(this->animationStarted());
-	}
+	if(this->alAnimations[this->iAnimation].isEmpty())  return;
+	this->isPlaying = true;
+	this->setPlayingFrame(0);
+	this->playNextFrame(false);
+//	emit(this->animationStarted());
 }
 
 void AnimationManager::playNextFrame(bool inc)
@@ -177,11 +178,10 @@ void AnimationManager::playNextFrame(bool inc)
 	if(this->alAnimations[this->iAnimation].isEmpty())  return;
 	if(inc) this->iPlayingFrame++;
 	if(this->iPlayingFrame>=this->alAnimations[this->iAnimation].size()) {
-		this->iPlayingFrame=0;
-		if(!this->alAnimations[this->iAnimation].loop()) {
-			this->stopAnimation();
-			return;
-		}
+		if(this->alAnimations[this->iAnimation].loop())
+			this->iPlayingFrame=0;
+		else
+			this->iPlayingFrame=this->alAnimations[this->iAnimation].size()-1;
 	}
 	this->setPlayingFrame(this->iPlayingFrame);
 	this->tFrameCounter.start(qRound((qreal(this->alAnimations[this->iAnimation][this->iPlayingFrame].delay())/qreal(this->iFrameTiming))*1000));
@@ -229,7 +229,7 @@ void AnimationManager::openAnimationFile(QString filename)
 
 	while(!file.atEnd()) {
 		QString line = file.readLine();
-		QRegularExpression matchpattern("^(.*?)anim_(hi|lo|len(gth)?):$");
+		QRegularExpression matchpattern("^(.*?)anim_(ptr|len(gth)?):$");
 		QRegularExpressionMatch matcher = matchpattern.match(line);
 		if(matcher.hasMatch()) {
 			if(baselabel.isEmpty())
@@ -258,26 +258,31 @@ void AnimationManager::openAnimationFile(QString filename)
 	}
 	file.close();
 
-	for(int i=0; i<animlabels.size()&&i<animdata.size(); i++) {
-		AnimationPackage ap;
-		ap.setLabel(animlabels[i]);
-		QByteArray::iterator biniter = animdata[i].begin();
+	for(int i=0; i<this->alAnimations.size(); i++) {
+		if(i<animlabels.size()&&i<animdata.size()) {
+			AnimationPackage ap;
+			ap.setLabel(animlabels[i]);
+			QByteArray::iterator biniter = animdata[i].begin();
 
-		AnimationFrameList afl;
-		bool loop = true;
-		while(biniter<animdata[i].end()) {
-			quint8 frame = *(biniter++);
-			quint8 delay = *(biniter++);
-			if(delay==0) {
-				loop = false;
-				delay = 1;
+			AnimationFrameList afl;
+			bool loop = true;
+			while(biniter<animdata[i].end()) {
+				quint8 frame = *(biniter++);
+				quint8 delay = *(biniter++);
+				if(delay==0) {
+					loop = false;
+					delay = 1;
+				}
+				afl.append(AnimationFrameItem(frame,delay));
 			}
-			afl.append(AnimationFrameItem(frame,delay));
-		}
-		ap.setFrames(afl);
-		ap.setLoop(loop);
+			ap.setFrames(afl);
+			ap.setLoop(loop);
 
-		this->alAnimations.replace(i,ap);
+			this->alAnimations.replace(i,ap);
+		} else {
+			AnimationPackage ap;
+			this->alAnimations.replace(i,ap);
+		}
 	}
 
 	this->setNewAnimation(this->iAnimation);
@@ -285,9 +290,11 @@ void AnimationManager::openAnimationFile(QString filename)
 
 QString AnimationManager::createAnimationASMData(QString labelprefix)
 {
-	QString animdatatable_lo = labelprefix+"anim_lo:\n\t.byte ";
-	QString animdatatable_hi = labelprefix+"anim_hi:\n\t.byte ";
-	QString animdatatable_len = labelprefix+"anim_length:\n\t.byte ";
+	QString animdataheader = labelprefix+"anim_header:\n\t.word ";
+	QString animdatatable_ptr = labelprefix+"anim_ptr:\n\t.word ";
+	QString animlenlabel = labelprefix+"anim_length";
+	QString animdatatable_len = animlenlabel+":\n\t.byte ";
+	animdataheader += animlenlabel;
 	QString animdatabytes;
 
 	quint8 counter = 0;
@@ -297,8 +304,7 @@ QString AnimationManager::createAnimationASMData(QString labelprefix)
 		loopanimation = ap.loop();
 
 		QString animlabel = labelprefix+(ap.label().isEmpty()?(QString("unnamed")+QString::number(counter++)):ap.label());
-		animdatatable_lo += QString("<").append(animlabel).append(",");
-		animdatatable_hi += QString(">").append(animlabel).append(",");
+		animdatatable_ptr += animlabel.append(",");
 		animdatatable_len += QString("$%1").arg(ap.size(),2,16,QChar('0')).toUpper().append(",");
 		if(!ap.isEmpty()) {
 			animdatabytes += "\n";
@@ -312,15 +318,13 @@ QString AnimationManager::createAnimationASMData(QString labelprefix)
 		}
 	}
 
-	animdatatable_lo.remove(animdatatable_lo.size()-1,1);
-	animdatatable_hi.remove(animdatatable_hi.size()-1,1);
+	animdatatable_ptr.remove(animdatatable_ptr.size()-1,1);
 	animdatatable_len.remove(animdatatable_len.size()-1,1);
-	animdatatable_lo += "\n";
-	animdatatable_hi += "\n";
+	animdatatable_ptr += "\n";
 	animdatatable_len += "\n";
 	animdatabytes += "\n";
 
-	return animdatatable_lo+animdatatable_hi+animdatatable_len+animdatabytes;
+	return animdatatable_ptr+animdatatable_len+animdatabytes;
 }
 
 void AnimationManager::clearAllAnimationData()

@@ -970,7 +970,7 @@
              <item>
               <widget class="GraphicsViewSlider" name="hsAnimationSlider">
                <property name="maximum">
-                <number>255</number>
+                <number>127</number>
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -3249,7 +3249,7 @@
   <slot>saveOpenedChrFile(QString)</slot>
  </slots>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
