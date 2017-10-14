@@ -54,6 +54,7 @@ private slots:
 	void restoreSettings();
 
 	void adjustSpriteSlot(int);
+	void setFrameIntentionallyBlank(bool);
 
 	void openMetaspriteBank();
 	void saveASMMetaspriteBank(QString path="");
@@ -68,7 +69,6 @@ private slots:
 
 	void setNewPaletteFile(QString);
 	void setAnimationLabelPrefix(QString);
-	void setAllSpriteSlots();
 //    void setPlayButtonText();
 //    void setPauseButtonText();
 

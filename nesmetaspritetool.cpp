@@ -99,12 +99,7 @@ void NESMetaspriteTool::keyPressEvent(QKeyEvent *e)
 		}
 		return;
 	} else if(ui->tabWidget->currentWidget()==ui->tabAnimation) {
-		if(e->modifiers()&Qt::ControlModifier) {
-			switch(e->key()) {
-			default:
-				break;
-			}
-		} else {
+		if(!(e->modifiers()&Qt::ControlModifier)) {
 			switch(e->key()) {
 			case Qt::Key_Comma:
 				ui->hsFrameSlider->prevValue();
@@ -236,6 +231,11 @@ void NESMetaspriteTool::adjustSpriteSlot(int bankindex)
 	ui->spinSpriteSlot->setEnabled(bankindex!=0);
 }
 
+void NESMetaspriteTool::setFrameIntentionallyBlank(bool b)
+{
+	ui->btnSetBlank->setChecked(b);
+}
+
 
 
 void NESMetaspriteTool::openMetaspriteBank()
@@ -280,7 +280,7 @@ void NESMetaspriteTool::saveASMMetaspriteBank(QString path)
 	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_lo\n");
 	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_hi\n");
 	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_banks\n");
-	datatable_header += QString("\t.word ")+ui->lineASMLabel->text()+QString("_slots\n\n");
+	datatable_header += ui->lineASMLabel->text()+QString("_slot:\n\t.byte ")+QString::number(ui->gvMetasprite->spriteSlot())+QString("\n\n");
 
 	file.write(datatable_header.toLocal8Bit());
 	file.write(ui->gvMetasprite->createMetaspriteASMData(ui->lineASMLabel->text()+"_").toLocal8Bit());
@@ -406,11 +406,6 @@ void NESMetaspriteTool::setNewPaletteFile(QString pal)
 void NESMetaspriteTool::setAnimationLabelPrefix(QString s)
 {
 	ui->labelMetaspriteName->setText((!s.isEmpty())?s:"emptylabel");
-}
-
-void NESMetaspriteTool::setAllSpriteSlots()
-{
-	ui->gvMetasprite->setAllSpriteSlots(ui->spinSpriteSlot->value());
 }
 
 //void NESMetaspriteTool::setPlayButtonText()

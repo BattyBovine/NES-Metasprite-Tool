@@ -50,7 +50,7 @@ public:
 
 	qreal scale(){return this->iScale;}
 	void openMetaspriteFile(QString);
-	void importMetaspriteBinaryData(QVector<QByteArray>, QList<quint16>, QList<quint8>);
+	void importMetaspriteBinaryData(QVector<QByteArray>, QList<quint16>, quint8);
 	void clearAllMetaspriteData();
 
 	void selectAllSprites();
@@ -69,6 +69,7 @@ signals:
 	void sendMetaspriteStageChange(int);
 	void sendMetaspriteBankChange(quint16);
 	void sendSpriteSlotChange(int);
+	void sendFrameIntentionallyBlank(bool);
 
 	void setMetaspriteLabel(QString);
 
@@ -99,8 +100,9 @@ public slots:
 	void getBankSize(int);
 	void setBank(quint16);
 	void setSpriteSlot(int);
-	void setAllSpriteSlots(int);
+	quint8 spriteSlot(){return this->iSpriteSlot;}
 	void setPaletteForSelected(quint8);
+	void setFrameIntentionallyBlank(bool);
 
 	QVector<QByteArray> createMetaspriteBinaryData();
 	QString createMetaspriteASMData(QString);
@@ -132,8 +134,9 @@ private:
 	QGraphicsScene *gsMetasprite;
 	MetaspriteStageList vMetaspriteStages;
 	QList<quint16> lMetaspriteBanks;
-	QList<quint8> lSpriteSlots;
+	QList<bool>	lFrameIntentionallyBlank;
 	quint8 iMetaspriteStage;
+	quint8 iSpriteSlot;
 
 	MetaspriteTileList mtlClipboard;
 };
