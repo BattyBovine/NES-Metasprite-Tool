@@ -591,6 +591,7 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 
 	for(int i=0; i<256; i++) {
 		MetaspriteTileList mslist = this->vMetaspriteStages[i];
+		if(!this->lFrameIntentionallyBlank[i] && mslist.empty())	break;
 		QString countedlabel = labelprefix+QString::number(i);
 
 		datatable_hi += QString(">").append(countedlabel).append(",");
@@ -598,7 +599,7 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 
 		databytes += "\n";
 		databytes += countedlabel+":\n\t.byte ";
-		if(mslist.isEmpty()) {
+		if(this->lFrameIntentionallyBlank[i]) {
 			databytes += QString("$00");
 			continue;
 		} else {
@@ -703,7 +704,7 @@ void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, 
 {
 	for(int j=0; j<256; j++) {
 		QByteArray bin = bindata.at(j);
-		if(bin.size()==0)	continue;
+		if(bin.size()==0)	break;
 		QList<MetaspriteTileItem*> mslist = this->vMetaspriteStages.at(j);
 		mslist.clear();
 		QByteArray::iterator biniter = bin.begin();

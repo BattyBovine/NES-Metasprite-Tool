@@ -70,5 +70,5 @@ void MetaspriteTileItem::flipVertical(bool f)
 	if(f==this->bVFlip)  return;
 	this->bVFlip = f;
 	qreal t = qRound((this->height()/2)*this->scale());
-	this->setTransform(QTransform().translate(0,t).scale(1,-1).translate(0,-t),true);
+	this->setTransform(QTransform().translate(0,t).scale(1,-1),true);
 }
