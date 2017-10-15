@@ -471,10 +471,9 @@ void MetaspriteManager::selectFirstMetaspriteStage()
 
 void MetaspriteManager::selectNextEmptyMetaspriteStage()
 {
-	for(int i=0; i<this->vMetaspriteStages.size(); i++) {
-		if(this->lFrameIntentionallyBlank[i])	continue;
-		if(this->vMetaspriteStages.at(i).isEmpty()) {
-			emit(sendMetaspriteStageChange(i));
+	for(int i=this->vMetaspriteStages.size()-1; i>=0; i--) {
+		if(this->lFrameIntentionallyBlank[i] || !this->vMetaspriteStages[i].isEmpty()) {
+			emit(sendMetaspriteStageChange(i+1));
 			break;
 		}
 	}
@@ -591,7 +590,7 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 
 	for(int i=0; i<256; i++) {
 		MetaspriteTileList mslist = this->vMetaspriteStages[i];
-		if(!this->lFrameIntentionallyBlank[i] && mslist.empty())	break;
+		if(!this->lFrameIntentionallyBlank[i] && mslist.empty())	continue;
 		QString countedlabel = labelprefix+QString::number(i);
 
 		datatable_hi += QString(">").append(countedlabel).append(",");
@@ -601,6 +600,7 @@ QString MetaspriteManager::createMetaspriteASMData(QString labelprefix)
 		databytes += countedlabel+":\n\t.byte ";
 		if(this->lFrameIntentionallyBlank[i]) {
 			databytes += QString("$00");
+			databanks += QString("$00,");
 			continue;
 		} else {
 			databytes += QString("$%1").arg(mslist.size(),2,16,QChar('0')).toUpper();
@@ -638,8 +638,7 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 		QMessageBox::warning(this,tr(MSM_FILE_OPEN_ERROR_TITLE),tr(MSM_FILE_OPEN_ERROR_BODY),QMessageBox::NoButton);
 		return;
 	}
-	quint8 labelnum = 0;
-	QVector<QByteArray> inputbytes(256);
+	QList<QByteArray> inputbytes;
 	QList<quint16> banks;
 	quint8 sprslot;
 	QString labelname;
@@ -652,9 +651,11 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 			QString line = file.readLine();
 			QRegularExpression bytes(",?\\$([0-9a-fA-F]+)");
 			QRegularExpressionMatchIterator bytesiter = bytes.globalMatch(line);
+			quint8 count = 0;
 			while(bytesiter.hasNext()) {
 				QRegularExpressionMatch bytesmatch = bytesiter.next();
 				banks.append(quint16(bytesmatch.captured(1).toUInt(NULL,16)));
+				count++;
 			}
 		}
 
@@ -675,36 +676,35 @@ void MetaspriteManager::openMetaspriteFile(QString filename)
 				labelname = labelmatch.captured(1);
 				emit(this->setMetaspriteLabel(labelname));
 			}
-			labelnum = labelmatch.captured(2).toInt();
-		}
-		QRegularExpression bytes(",?\\$([0-9a-fA-F]+)");
-		QRegularExpressionMatchIterator bytesiter = bytes.globalMatch(line);
-		QByteArray bytesin;
-		while(bytesiter.hasNext()) {
-			QRegularExpressionMatch bytesmatch = bytesiter.next();
-			bytesin.append(quint8(bytesmatch.captured(1).toUInt(NULL,16)));
-		}
-		if(!bytesin.isEmpty())  inputbytes.replace(labelnum,bytesin);
-	}
-	if(!labelname.isEmpty() && !banks.isEmpty()) {
-		foreach(QByteArray test, inputbytes) {
-			if(!test.isEmpty()) {
-				this->importMetaspriteBinaryData(inputbytes,banks,sprslot);
-				file.close();
-				return;
+			if(file.atEnd()) {
+				labelname = "";
+				break;
 			}
+			line = file.readLine();
+			QRegularExpression bytes(",?\\$([0-9a-fA-F]+)");
+			QRegularExpressionMatchIterator bytesiter = bytes.globalMatch(line);
+			QByteArray bytesin;
+			while(bytesiter.hasNext()) {
+				QRegularExpressionMatch bytesmatch = bytesiter.next();
+				bytesin.append(quint8(bytesmatch.captured(1).toUInt(NULL,16)));
+			}
+			inputbytes.append(bytesin);
 		}
 	}
-
 	file.close();
+	if(!labelname.isEmpty() && (inputbytes.size()==banks.size())) {
+		this->importMetaspriteBinaryData(inputbytes,banks,sprslot);
+		return;
+	}
 	QMessageBox::critical(this,tr(MSM_INVALID_SPRITES_TITLE),tr(MSM_INVALID_SPRITES_BODY),QMessageBox::NoButton);
 }
 
-void MetaspriteManager::importMetaspriteBinaryData(QVector<QByteArray> bindata, QList<quint16> banks, quint8 sprslot)
+void MetaspriteManager::importMetaspriteBinaryData(QList<QByteArray> bindata, QList<quint16> banks, quint8 sprslot)
 {
-	for(int j=0; j<256; j++) {
+	for(int j=0; j<bindata.size(); j++) {
+		if(bindata[j].isNull() || bindata[j].isEmpty())
+			continue;
 		QByteArray bin = bindata.at(j);
-		if(bin.size()==0)	break;
 		QList<MetaspriteTileItem*> mslist = this->vMetaspriteStages.at(j);
 		mslist.clear();
 		QByteArray::iterator biniter = bin.begin();
